@@ -1,0 +1,54 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+.dark-gray {
+    background-color: #2d3327;
+}
+
+.date {
+    padding: 15px 10px;
+}
+.f-20 {
+    font-size: 20px !important;
+}
+.f-18 {
+    font-size: 18px !important;
+}
+.f-16 {
+    font-size: 16px !important;
+}
+.f-14 {
+    font-size: 14px !important;
+}
+.f-12 {
+    font-size: 12px !important;
+}
+.table-hover:hover {
+    background-color: #f2f4f8;
+}
+
+.full-width {
+    width: 100% !important;
+}
+.text-green {
+    color: #57af04;
+}
+.w-55 {
+    width: 55px;
+}
+.w-250 {
+    width: 250px;
+}
+.w-260 {
+    width: 260px;
+}
+.w-270 {
+    width: 270px;
+}
+.libros {
+    color: #000;
+}
+.libros td {
+    padding: 5px
+}
+.libros td:last-child {
+    width: 40px
+}

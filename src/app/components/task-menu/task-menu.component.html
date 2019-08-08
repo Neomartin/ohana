@@ -1,0 +1,79 @@
+<div class="card">
+    <div class="card-body bg-info">
+      <h4 class="text-white card-title">OPCIONES</h4>
+      <!-- <h6 class="card-subtitle text-white m-b-0 op-5">Checkout my contacts here</h6> -->
+    </div>
+    <div class="card-body task-options">
+      <div class="message-box contact-box">
+        <!-- <h2 class="add-ct-btn"><button type="button" class="btn btn-circle btn-lg btn-success waves-effect waves-dark">+</button></h2> -->
+        <div class="message-widget contact-widget">
+          <!-- Message -->
+          <a [routerLink]="['/add-file']">
+            <!-- <div class="user-img"> <img src="../assets/images/users/1.jpg" alt="user" class="img-circle"> 
+                                   <span class="profile-status online pull-right"></span> 
+                              </div> -->
+            <div class="round round-info m-r-10">
+              <i class="mdi mdi-note-plus"></i>
+            </div>
+            <div class="mail-contnet">
+              <h5>AGREGAR O QUITAR ARCHIVO</h5>
+              <span class="mail-desc">Modificar del listado archivos.</span>
+            </div>
+          </a>
+          <!-- Message -->
+          <a [routerLink]="['/add-task']">
+            <div class="round round-success m-r-10">
+              <i class="mdi mdi-note-multiple"></i>
+            </div>
+            <!-- mdi-folder-remove -->
+            <div class="mail-contnet">
+              <h5>HACER PEDIDO</h5>
+              <span class="mail-desc">Agregar pedido a la cola de tareas.</span>
+            </div>
+          </a>
+          <!-- Message -->
+          <a href="#">
+            <div class="round round-danger m-r-10">
+              <i class="mdi mdi-folder-remove"></i>
+            </div>
+
+            <div class="mail-contnet">
+              <h5>CANCELAR PEDIDO</h5>
+              <span class="mail-desc">Eliminar pedido.</span>
+            </div>
+          </a>
+          <!-- Message -->
+          <div class="card-body bg-info text-center dark-gray">
+            <h5 class="text-white card-title">
+              CANT. DE PEDIDOS PARA MAÑANA
+            </h5>
+            <span class="round round-success">45</span>
+            <!-- <h6 class="card-subtitle text-white m-b-0 op-5">Checkout my contacts here</h6> -->
+          </div>
+          <div class="card-body bg-danger text-center">
+            <h5 class="text-white card-title">CANT. DE PEDIDOS DESPUES</h5>
+            <span class="round round-warning">160</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body task-options">
+      <div class="message-box contact-box">
+        <div class="message-widget contact-widget">
+          <div class="date p-15">
+            <h4>
+              <B>FECHA:</B>
+              {{ date | amLocale: "es" | amDateFormat: "DD-MM-YYYY" }} <br />
+            </h4>
+
+            <B>HORA: </B>
+            <span class="text-muted">{{
+              date | amDateFormat: "h:mm:ss"
+            }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

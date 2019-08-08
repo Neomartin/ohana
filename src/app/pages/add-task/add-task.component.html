@@ -1,0 +1,227 @@
+<div class="row">
+  <div class="col-lg-6 col-xl-5">
+    <div class="card m-b-5 p-r-5">
+      <div class="card-body">
+            <h4 class="card-title">
+              AGREGAR O QUITAR ARCHIVO
+            </h4>
+            <h6 class="card-subtitle">
+              Editar archivos visibles en el sistema.
+            </h6>
+            <form class="form-control-line">
+              <div fxLayout="row" fxFill>
+                <mat-form-field class="full-width">
+                  <span matPrefix class="p-r-10"><i class="fas fas fa-search"></i></span>
+                  <input type="text" matInput placeholder="Buscar" />
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="">
+                <div fxFlex>
+                    <mat-form-field class="p-r-10">
+                        <input matInput [matDatepicker]="picker" placeholder="Fecha de entrega" />
+                        <!-- <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle> -->
+                        <mat-datepicker touchUi #picker></mat-datepicker>
+                    </mat-form-field>
+                    <button type="button" class="btn waves-effect waves-light btn-info" (click)="picker.open()">
+                    Fecha
+                    </button>
+                </div>
+                
+              </div>
+              <div fxLayout="row" fxFill>
+                <div fxFlex>
+                  <mat-form-field class="full-width">
+                    <input type="text" matInput [(ngModel)]="cliente" [matAutocomplete]="auto" name="cliente"
+                      placeholder="Nombre cliente" />
+                  </mat-form-field>
+                  <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of options" [value]="option">{{ option }}</mat-option>
+                  </mat-autocomplete>
+                </div>
+                <div class="p-10" fxFlex="80px">
+                  <button type="button" class="btn waves-effect waves-light btn-success" (click)="inputTry()">
+                    Añadir
+                  </button>
+                </div>
+              </div>
+
+              <!-- <dp-date-picker [(ngModel)]="selectedDate" [config]="datePickerConfig" name="selectedDate" theme="dp-material"></dp-date-picker> -->
+            </form>
+
+      </div>
+    </div>
+    <!-- PEDIDO -->
+    <div class="card ">
+      <div class="card-body">
+          <h4 class="card-title">
+              ARCHIVOS SOLICITADOS
+            </h4>
+            <h6 class="card-subtitle">
+              Se muestran los archivos agregados en el pedido actual.
+            </h6>
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Libro/Editorial</th>
+                    <th>Copias</th>
+                    <th>Opc</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1456</td>
+                    <td >El señor de los anillos la batalla de los Bastardos 
+                        <span class="mytooltip tooltip-effect-1"><span class="tooltip-item2">Euclid</span><span class="tooltip-content4 clearfix"><span class="tooltip-text2"><strong>Euclid</strong>, also known as Euclid of Alexandria, was a Greek mathematician, often referred to as the "Father of Geometry". He was active in Alexandria during the reign of Ptolemy I. <a href="http://en.wikipedia.org/wiki/Euclid">Wikipedia</a></span></span>
+                      </span>
+                    </td>
+                    <td><input type="number" value="2" maxlength="3" class="w-55"></td>
+                    <td>
+                        <button type="button" class="btn waves-effect waves-light btn-sm btn-danger">
+                          <i class="ti-trash"></i>
+                        </button>
+                    </td> 
+                  </tr>
+                  <tr>
+                      <td>502</td>
+                      <td >Tecnologia de los materiales: Metales 4.0 
+                          <span class="mytooltip tooltip-effect-1"><span class="tooltip-item2">Euclid</span><span class="tooltip-content4 clearfix"><span class="tooltip-text2"><strong>Euclid</strong>, also known as Euclid of Alexandria, was a Greek mathematician, often referred to as the "Father of Geometry". He was active in Alexandria during the reign of Ptolemy I. <a href="http://en.wikipedia.org/wiki/Euclid">Wikipedia</a></span></span>
+                        </span>
+                      </td>
+                      <td><input type="number" value="1" maxlength="3" class="w-55"></td>
+                      <td>
+                          <button type="button" class="btn waves-effect waves-light btn-sm btn-danger">
+                            <i class="ti-trash"></i>
+                          </button>
+                      </td> 
+                    </tr>
+                
+                </tbody>
+              </table>
+              <div class="card-body b-t">
+                  <div class="row">
+                      <div class="col-8">
+                        <div class="row" style="margin-left: 0">
+                            <div class="col-6">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">
+                                          <i class="ti ti-money"></i>
+                                        </span>
+                                    </div>
+                                    <input type="number" class="form-control" id="exampleInputuname" placeholder="Seña">
+                                </div>
+                            </div>
+                            <div class="col-5 m-t-5">
+                                <input type="checkbox" id="md_checkbox_7" class="chk-col-light-blue w-55">
+                                <label for="md_checkbox_7">Sin seña</label>
+                            </div>
+                          </div>
+                          
+                        </div>
+                        <div class="col-4 text-right ">
+                            <button type="button" class="btn btn-info">Generar pedido </button>
+                        </div>
+                  </div>
+              </div>
+      </div>
+    </div>
+  </div>
+    <div class="col-lg-6 col-xl-7">
+      <div class="card">
+        <div class="card-body">
+            <table class="table libros">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Libro/Editorial</th>
+                  <th class="w-270">Carrera/Año</th>
+                  <th class="f-18"><i class="mdi mdi-settings "></i> </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1456</td>
+                  <td> <b>El señor de los anillos la batalla de los Bastardos  
+                    <span class="mytooltip tooltip-effect-1">
+                      <span class="tooltip-item2">Euclid</span>
+                      <span class="tooltip-content4 clearfix">
+                        <span class="tooltip-text2"><strong>Euclid</strong>, also known as Euclid of Alexandria, was a Greek mathematician, often referred to as the "Father of Geometry".
+                          <a href="http://en.wikipedia.org/wiki/Euclid">Wikipedia</a>
+                        </span>
+                      </span>
+                      </span>
+                    <br> <small class="text-muted">J.R.R. Tolkien</small> </b>  
+                     
+                    
+                  </td>
+                  <td>Particular</td>
+                  <td>
+                      <button type="button" class="btn waves-effect waves-light btn-sm btn-success" (click)="agregarArchivo()">
+                        <i class="mdi mdi-plus"></i>
+                      </button>
+                  </td> 
+                </tr>
+                <tr>
+                    <td>1456</td>
+                    <td><b>El señor de los anillos la batalla de los Bastardos</b> </td>
+                    <td>Ing. en Sistemas de Informacion Hidraulica de los Fluidos</td>
+                    <td>
+                        <button type="button" class="btn waves-effect waves-light btn-sm btn-success">
+                          <i class="mdi mdi-plus"></i>
+                        </button>
+                    </td> 
+                </tr>
+                <tr>
+                    <td>2815</td>
+                    <td><b>Lo que el viento se llevó</b> <br> <small class="text-muted">de Margaret Mitchell</small> </td>
+                    <td>Abogacia <br> <small class="text-muted">4 año</small> </td>
+                    <td>
+                        <button type="button" class="btn waves-effect waves-light btn-sm btn-success">
+                          <i class="mdi mdi-plus"></i>
+                        </button>
+                    </td> 
+                </tr>
+                <tr>
+                    <td>1456</td>
+                    <td> <b>El señor de los anillos la batalla de los Bastardos  
+                      <span class="mytooltip tooltip-effect-1">
+                        <span class="tooltip-item2">Euclid</span>
+                        <span class="tooltip-content4 clearfix">
+                          <span class="tooltip-text2"><strong>Euclid</strong>, also known as Euclid of Alexandria, was a Greek mathematician, often referred to as the "Father of Geometry".
+                            <a href="http://en.wikipedia.org/wiki/Euclid">Wikipedia</a>
+                          </span>
+                        </span>
+                        </span>
+                      <br> <small class="text-muted">J.R.R. Tolkien</small> </b>  
+                       
+                      
+                    </td>
+                    <td>Particular</td>
+                    <td>
+                        <button type="button" class="btn waves-effect waves-light btn-sm btn-success">
+                          <i class="mdi mdi-plus"></i>
+                        </button>
+                    </td> 
+                  </tr>
+                  <tr>
+                      <td>1456</td>
+                      <td><b>El señor de los anillos la batalla de los Bastardos</b> </td>
+                      <td>Ing. en Sistemas de Informacion Hidraulica de los Fluidos</td>
+                      <td>
+                          <button type="button" class="btn waves-effect waves-light btn-sm btn-success">
+                            <i class="mdi mdi-plus"></i>
+                          </button>
+                      </td> 
+                  </tr>
+              </tbody>
+            </table>
+          
+        </div>
+      </div>
+    </div>
+  
+  <!-- <div class="col-lg-3">
+    <app-task-menu></app-task-menu>
+  </div> -->
+</div>

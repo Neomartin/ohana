@@ -28,37 +28,64 @@
                           </mat-error> -->
                   </mat-form-field>
                   <div fxLayout="row" fxFill>
+                      <div fxFlex>
+                          <mat-form-field fxFlex>
+                              <input matInput placeholder="Lugar" aria-label="Lugar" [matAutocomplete]="auto" [formControl]="searchFromCtrl">
+                              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnFrom">
+                                <!-- <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option> -->
+                                <!-- <ng-container *ngIf="!isLoading"> -->
+                                  <mat-option *ngFor="let from of filteredFrom" [value]="from" >
+                                    <span><b>{{from.name}}</b></span>
+                                  </mat-option>
+                                <!-- </ng-container> -->
+                              </mat-autocomplete>
+                            </mat-form-field>
+                            <!-- <ng-container *ngIf="errorMsg; else elseTemplate">
+                                {{errorMsg}}
+                              </ng-container>
+                              <ng-template #elseTemplate>
+                                <h5>Selected Value: <pre>{{searchClientCtrl.value | json}}</pre></h5>
+                              </ng-template>
+                              <br> -->
+                      </div>
+                      <div class="p-10" fxFlex="60px">
+                        <button mat-mini-fab class="green" aria-label="Add user" (click)="addFrom()">
+                          <i class="fa fa-plus"></i>
+                        </button>
+                      </div>
+                  </div>
+                  <div fxLayout="row" fxFill>
                     <div fxFlex>
                         <mat-form-field fxFlex>
-                            <input matInput placeholder="Search" aria-label="State" [matAutocomplete]="auto" [formControl]="searchMoviesCtrl">
+                            <input matInput placeholder="Cliente" aria-label="State" [matAutocomplete]="auto" [formControl]="searchClientCtrl">
                             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
                               <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
                               <ng-container *ngIf="!isLoading">
-                                <mat-option *ngFor="let movie of filteredMovies; let i = index" [value]="movie" [attr.data-index]="i">
-                                  <span><b>{{movie + i}}</b></span>
+                                <mat-option *ngFor="let client of filteredClients; let i = index" [value]="client" [attr.data-index]="i">
+                                  <span><b>{{client.name}}</b></span>
                                 </mat-option>
                               </ng-container>
                             </mat-autocomplete>
-                            
                           </mat-form-field>
-                        
+                          <!-- <ng-container *ngIf="errorMsg; else elseTemplate">
+                              {{errorMsg}}
+                            </ng-container>
+                            <ng-template #elseTemplate>
+                              <h5>Selected Value: <pre>{{searchClientCtrl.value | json}}</pre></h5>
+                            </ng-template>
+                            <br> -->
                     </div>
                     <div class="p-10" fxFlex="60px">
-                      <button mat-mini-fab aria-label="Add user" (click)="addUser()">
-                        <i class="fa fa-plus"></i>
-                      </button>
-                    </div>
-                    <ng-container *ngIf="errorMsg; else elseTemplate">
-                        {{errorMsg}}
-                      </ng-container>
-                      <ng-template #elseTemplate>
-                        <h5>Selected Value: {{searchMoviesCtrl.value}}</h5>
-                      </ng-template>
-                      <br>
+                        <button mat-mini-fab aria-label="Add user" (click)="addUser()">
+                          <i class="fa fa-plus"></i>
+                        </button>
+                      </div>
                   </div>
                   <div fxLayout="row">
+                      
+                        
                     <mat-form-field>
-                      <input type="number" matInput placeholder="Año">
+                      <input type="number" matInput placeholder="Año" [disabled]="persona">
                     </mat-form-field>
                     <mat-checkbox class="p-l-10 m-t-20" [(ngModel)]="persona" name="person">Persona</mat-checkbox>
                   </div>

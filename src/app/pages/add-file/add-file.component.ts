@@ -25,63 +25,72 @@ import { HttpClient } from '@angular/common/http';
 export class AddFileComponent implements OnInit {
   public selectedDate: Date;
   public newUser: any;
-  public user: UserModel;
+  public user: UserModel = new UserModel('', '', '', '', '', '', '', '', '', '');
+  public client_id = '';
   isLoading = false;
-  searchMoviesCtrl = new FormControl();
-  filteredMovies: any;
+  searchClientCtrl = new FormControl();
+  filteredClients: any;
+  searchFromCtrl = new FormControl();
+  from = [];
+  filteredFrom: any;
   errorMsg: string;
   options = [];
   constructor(
     private _user: UserService,
   ) {
-    this.user = new UserModel('', '', '', '', '', '', '', '', '', '');
+
   }
   ngOnInit() {
 
     this._user.users.subscribe(resp => {
       console.log(resp);
       resp.forEach(element => {
+        const obj = {
+          name: '',
+          id: '',
+        };
         for (const key in element) {
-          if (element.hasOwnProperty(key) && key === 'name') {
-            const name = element[key];
-            this.options.push(name);
+          if (element.hasOwnProperty(key)) {
+            if (key === 'name') {
+              obj.name = element[key];
+            }
+            if (key === 'id') {
+              obj.id = element[key];
+            }
           }
         }
+        this.options.push(obj);
       });
-      this.filteredMovies = this.options;
-      console.log('Creacion filtered: ', this.filteredMovies);
-      // this.options.push(...resp);
+      this.filteredClients = this.options;
     });
-    this.searchMoviesCtrl.valueChanges
+    this.searchClientCtrl.valueChanges
       .pipe(
         startWith(''),
         debounceTime(200),
-        tap((ev) => {
+        tap(() => {
           this.errorMsg = '';
-          this.filteredMovies = [];
-          // console.log('Filtered: ', this.filteredMovies);
-          // this.isLoading = true;
-          console.log(ev);
+          this.filteredClients = [];
+          // console.log(ev);
         }),
         switchMap((value) => this._filter(value))
         )
       .subscribe(data => {
-        // console.log('Entra aca');
-        // console.log('DATA: ', data);
         if (data === undefined) {
-          this.errorMsg = data['Error'];
-          this.filteredMovies = this.options;
+          this.errorMsg = 'Error al cargar';
+          this.filteredClients = this.options;
         } else {
           this.errorMsg = '';
-          this.filteredMovies.push(data);
+          this.filteredClients.push(data);
         }
-        console.log(this.filteredMovies);
+        // console.log(this.filteredMovies);
       });
   }
 
   private _filter(value): string[] {
-    const filterValue = value.toLowerCase();
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+    // if (value && !value.hasOwnProperty('name')) {
+    //   const filterValue = value.toLowerCase();
+    // }
+    return this.options.filter( (s) => new RegExp(value, 'gi').test(s.name));
   }
 
   addUser () {
@@ -132,19 +141,68 @@ export class AddFileComponent implements OnInit {
     })
   }
 
-  displayFn(user: any, index) {
-    console.log('event ', user);
-    console.log('index ', index);
-    
+
+  addFrom () {
+    swal.mixin({
+      input: 'text',
+      confirmButtonText: 'Siguiente &rarr;',
+      showCancelButton: true,
+      cancelButtonColor: '#d33',
+      progressSteps: ['1', '2', '3']
+    }).queue([
+      {
+        title: 'Nombre',
+        text: 'Ingrese nombre del usuario'
+      },
+      {
+        title: 'Apellido',
+        text: 'Ingrese Apellido del usuario'
+      },
+      {
+        title: 'Teléfono',
+        text: 'Ingrese celular o fijo del usuario'
+      }
+    ]).then( (result) => {
+      // const usuarito = result.value[0].trim().split(" ");
+      // console.log(usuarito.length - 1);
+      // this.user.name = usuarito.slice(0, usuarito.length - 1).join(" ");
+      this.user.name = result.value[0];
+      // console.log(usuarito[usuarito.length - 1]);
+      // this.user.surname = usuarito[usuarito.length - 1];
+      this.user.surname = result.value[1];
+      this.user.phone = result.value[2];
+      console.log(this.user);
+      // console.log(usuarito);
+      // console.log(this.newUser.name.string_to_array());
+      this._user.newClient(this.user)
+        .then( resp => {
+          console.log('Retornar', resp);
+        })
+        .catch(err => {
+          console.log('Error: ', err);
+      });
+      swal.fire({
+        title: 'Carga finalizada',
+        html:
+          'Your answers: <pre><code>' +
+            JSON.stringify(result.value) +
+          '</code></pre>'
+      });
+    })
+  }
+
+  displayFn(user) {
     if (!user) {
       return '';
     }
-    console.log('DisplatFN: ',  user);
-    // this.clientId(user);
-    return user;
-  }
-  clientId(e) {
-    this.user.id = e;
+    // console.log('DisplatFN: ',  user);
+    this.client_id = user.id;
+    // this.clientId(user.id);
+    return user.name;
   }
 
+  displayFnFrom() {
+    console.log('displayFnFrom called');
+    
+  }
 }

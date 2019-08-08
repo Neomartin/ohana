@@ -2,7 +2,9 @@
 .dark-gray {
     background-color: #2d3327;
 }
-
+.green {
+    background-color: #57af04 !important;
+}
 .date {
     padding: 15px 10px;
 }

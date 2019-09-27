@@ -1,0 +1,18 @@
+td.mat-column-client,td.mat-column-details {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start !important
+}
+td.mat-column-quantity {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+.mat-header-row {
+    text-transform: uppercase;
+}
+.mat-header-cell {
+    color: #7460ee;
+}

@@ -1854,7 +1854,8 @@ form label {
 
 .topbar .top-navbar .navbar-header {
     line-height: 65px;
-    text-align: center
+    text-align: center;
+    float: left;
 }
 
 .topbar .top-navbar .navbar-header .navbar-brand {
@@ -5183,9 +5184,13 @@ table.dataTable thead .sorting:after {
     cursor: pointer;
     display: inline-block;
     font-weight: 500;
-    padding: 0 10px
+    padding: 0 10px;
 }
-
+.tooltip-item.status {
+    font-weight: normal;
+    color: white;
+    font-size: 0.8em;
+}
 .tooltip-item:after {
     content: '';
     position: absolute;
@@ -5203,8 +5208,9 @@ table.dataTable thead .sorting:after {
     position: absolute;
     z-index: 9999;
     width: 360px;
+    height: 60px;
     left: 50%;
-    margin: 0 0 20px -180px;
+    margin: 0 0 10px -180px;
     bottom: 100%;
     text-align: left;
     font-size: 14px;
@@ -5216,13 +5222,38 @@ table.dataTable thead .sorting:after {
     cursor: default;
     pointer-events: none
 }
-
+.tooltip-content.status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 60px;
+    color: white;
+    margin-left: -130px;
+    width: 260px
+}
 .tooltip-content img {
     position: relative;
-    height: 140px;
+    height: 60px;
     display: block;
     float: left;
     margin-right: 1em
+}
+.tooltip-content .tooltip-status {
+    flex: 1;
+    cursor: pointer;
+}
+.tooltip-status.completed, .tooltip-item.completed {
+    background-color: #26c6da
+}
+.tooltip-status.in_progress, .tooltip-item.in_progress {
+    background-color: #ffb22b
+}
+.tooltip-status.canceled, .tooltip-item.canceled {
+    background-color: #fc4b6c
+}
+.tooltip-status.processed, .tooltip-item.processed {
+    background-color: #1e88e5
 }
 
 .tooltip-effect-5 .tooltip-content {
@@ -7786,7 +7817,7 @@ table.footable thead tr.footable-filtering th ul.dropdown-menu li a.checkbox inp
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
-        width: 100%
+        flex: 1;
     }
     .topbar .top-navbar .navbar-nav {
         -webkit-box-orient: horizontal;

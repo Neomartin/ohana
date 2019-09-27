@@ -32,9 +32,12 @@ export class OrdersComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   constructor() {
     const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
-
+    console.log('USERS:', users);
+    
     // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource(users);
+    console.log(this.dataSource);
+    
    }
 
   ngOnInit() {

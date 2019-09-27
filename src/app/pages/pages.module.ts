@@ -39,6 +39,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
+import {MatSelectModule} from '@angular/material/select';
 
 
 @NgModule({
@@ -76,7 +77,8 @@ import { AutocompleteComponent } from './autocomplete/autocomplete.component';
     MatNativeDateModule,
     MatTableModule,
     MatPaginatorModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSelectModule
   ],
   exports: [
     NotFoundComponent,

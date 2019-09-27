@@ -1,12 +1,33 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+/* BACKGROUND */
 .dark-gray {
     background-color: #2d3327;
 }
 .green {
     background-color: #57af04 !important;
 }
+/* TEXTOS */
+.text-red {
+    color: rgb(255, 0, 0);
+}
+.text-green {
+    color: #5fb410;
+}
+.text-black {
+    color: #000
+}
 .date {
     padding: 15px 10px;
+}
+/* FUENTES */
+.normal {
+    font-weight: 500;
+}
+.bold {
+    font-weight: 700;
+}
+.bolder {
+    font-weight: 900;
 }
 .f-20 {
     font-size: 20px !important;
@@ -23,6 +44,9 @@
 .f-12 {
     font-size: 12px !important;
 }
+.f-10 {
+    font-size: 10px !important;
+}
 .table-hover:hover {
     background-color: #f2f4f8;
 }
@@ -30,9 +54,7 @@
 .full-width {
     width: 100% !important;
 }
-.text-green {
-    color: #57af04;
-}
+
 .w-55 {
     width: 55px;
 }

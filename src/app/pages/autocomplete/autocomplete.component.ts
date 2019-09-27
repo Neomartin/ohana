@@ -1,74 +1,80 @@
 //app.component.ts
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Observable, BehaviorSubject, combineLatest, Subject  } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
  
-import { debounceTime, tap, switchMap, finalize, startWith } from 'rxjs/operators';
-import { UserService } from 'src/app/services/user/user.service';
- 
- 
+export interface Item {
+  text: string;
+  color: string;
+  size: string;
+}
 @Component({
   selector: 'app-root',
   templateUrl: './autocomplete.component.html',
   styleUrls: ['./autocomplete.component.sass']
 })
 export class AutocompleteComponent implements OnInit {
-  searchMoviesCtrl = new FormControl();
-  filteredMovies: any;
-  isLoading = false;
-  errorMsg: string;
-  options = [];
-  constructor(
-    private http: HttpClient,
-    private _user: UserService
-  ) { }
- 
-  ngOnInit() {
-    this._user.users.subscribe(resp => {
-      console.log(resp);
-      resp.forEach(element => {
-        for (const key in element) {
-          if (element.hasOwnProperty(key) && key === 'name') {
-            const name = element[key];
-            this.options.push(name);
-          }
-        }
+  usersCollection: AngularFirestoreCollection<any>;
+  items$ = new Subject<any>();
+  sizeFilter$: BehaviorSubject<string|null>;
+  colorFilter$: BehaviorSubject<string|null>;
+  itemz: any;
+  newQuery = new Observable<any>();
+  constructor(private afs: AngularFirestore) {
+    this.itemz = this.items$.next();
+    this.usersCollection = this.afs.collection<any>('users');
+    this.sizeFilter$ = new BehaviorSubject(null);
+    this.colorFilter$ = new BehaviorSubject(null);
+    // this.items$ = this.afs.collection<any>('users').valueChanges().pipe(
+    //   map( actions => actions.map(a => {
+    //   return a.payload.doc.data();
+    // })));
+    this.newQuery = this.items$.pipe(
+      switchMap((id) =>
+          this.afs.collection<any>('users', ref => {
+            let query: firebase.firestore.Query = ref;
+            if (id) { query = query.where('name', '==', id); }
+            return query;
+        }).valueChanges()
+    ));
+    // console.log('1:', this.newQuery);
+    
+    // .switchMap(([size, color]) => 
+    //   afs.collection<Item>('items', ref => {
+      //     let query : firebase.firestore.Query = ref;
+      //     if (size) { query = query.where('size', '==', size) };
+      //     if (color) { query = query.where('color', '==', color) };
+      //     return query;
+      //   }).valueChanges()
+      // );
+      
+      // console.log('3:', this.newQuery);
+    }
+    
+    ngOnInit() {
+      this.newQuery.subscribe((queriedItems: any) => {
+        console.log('Queried items', queriedItems);
+        this.itemz = queriedItems;
       });
-      this.filteredMovies = this.options;
-      console.log('Creacion filtered: ', this.filteredMovies);
-      // this.options.push(...resp);
-    });
-    this.searchMoviesCtrl.valueChanges
-      .pipe(
-        startWith(''),
-        debounceTime(300),
-        tap(() => {
-          this.errorMsg = '';
-          this.filteredMovies = [];
-          // console.log('Filtered: ', this.filteredMovies);
-          // this.isLoading = true;
-          // console.log(ev);
-        }),
-        switchMap((value) => this._filter(value))
-        )
-      .subscribe(data => {
-        // console.log('Entra aca');
-        // console.log('DATA: ', data);
-        if (data === undefined) {
-          this.errorMsg = data['Error'];
-          this.filteredMovies = this.options;
-        } else {
-          this.errorMsg = '';
-          this.filteredMovies.push(data);
-        }
-        console.log(this.filteredMovies);
-      });
+      this.findId();
+      console.log('2:', this.newQuery);
+    }
+    
+  findId(id: string = null) {
+    setTimeout( _ => {
+      this.items$.next(id);
+
+    }, 300)
+    // console.log('ID: ', id);
+    // console.log('1:', this.newQuery);
   }
-  private _filter(value): string[] {
-    // console.log('Options: ', this.options);
-    // console.log('Value: ', value);
-    const filterValue = value.toLowerCase();
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+
+  filterBySize(size: string|null) {
+    this.sizeFilter$.next(size); 
+  }
+  filterByColor(color: string|null) {
+    this.colorFilter$.next(color); 
   }
 }
- 

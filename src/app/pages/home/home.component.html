@@ -3,10 +3,13 @@
     <div class="card">
       <div class="card-body">
         <div class="d-flex no-block">
-          <h4 class="card-title">TRABAJOS PARA PENDIENTES PARA MAÑANA</h4> 
+          <!-- ===============================================
+          Title Block                       				   
+          =============================================== -->
+          <h4 class="card-title">TRABAJOS PARA PENDIENTES PARA MAÑANA</h4>
           <!-- <h6 class="card-subtitle">
-            Trabajos ordenados por fecha de entrega entre 24 a 36hs
-          </h6> -->
+                Trabajos ordenados por fecha de entrega entre 24 a 36hs
+              </h6> -->
           <div class="ml-auto">
             <select class="custom-select">
               <option selected="">Mañana</option>
@@ -14,8 +17,178 @@
             </select>
           </div>
         </div>
+        <!-- ===============================================
+              Search Block                       				   
+             =============================================== -->
+             <div class="row">
+                <div class="col-6">
+                  <mat-form-field>
+                    <span matPrefix class="p-r-10"><i class="fas fas fa-search"></i></span>
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+                  </mat-form-field>
+                </div>
+              </div>
+
+
+
+
+              <div class="mat-elevation-z8">
+                  <mat-table [dataSource]="dataSource" matSort>
+                
+                    
+                
+                    <!-- Client Column -->
+                    <ng-container matColumnDef="client">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="30" fxLayoutAlign="start center"> Nombre Cliente </th>
+                      <td mat-cell *matCellDef="let row" fxFlex="30" fxLayoutAlign="start center"> 
+                        {{row.client_id.name + ' ' + row.client_id.surname}}
+                        <!-- <span class="text-muted f-10">
+                            {{ row.client_id._id }}
+                        </span>   -->
+                      </td>
+                    </ng-container>
+                
+                    <!-- Books/Files Column -->
+                    <ng-container matColumnDef="details">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="30" fxLayoutAlign="start center"> Libros/Archivos </th>
+                      <td mat-cell *matCellDef="let row" fxFlex="30" fxLayoutAlign="start center">
+                        <span *ngFor="let item of row.items">
+                            {{ item.file_id.name }}
+                        </span> 
+                      </td>
+                    </ng-container>
+                
+                    <!-- Status Column -->
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="120px" fxLayoutAlign="start center"> Estado </th>
+                        <td mat-cell *matCellDef="let row" fxFlex="120px" fxLayoutAlign="start center"> 
+                          <!-- <span class="label label-danger"> -->
+                          <span class="mytooltip tooltip-effect-4 f-14">
+                              <span class="tooltip-item status" [ngClass]="row.status">
+                                <span *ngIf="row.status === 'processed'">Pendiente</span>
+                                <span *ngIf="row.status === 'in_progress'">Working</span>
+                                <span *ngIf="row.status === 'completed'">Terminado</span>
+                                <span *ngIf="row.status === 'canceled'">Cancelado</span>
+                              </span>
+                              <span class="tooltip-content status clearfix">
+                                <!-- <img src="../assets/images/tooltip/Euclid.png"> -->
+                                <span class="tooltip-status processed" (click)="rowStatus(row._id, 'processed')">P</span>
+                                <span class="tooltip-status in_progress" (click)="rowStatus(row._id, 'in_progress')">W</span>
+                                <span class="tooltip-status completed" (click)="rowStatus(row._id, 'completed')">F</span>
+                                <span class="tooltip-status canceled" (click)="rowStatus(row._id, 'canceled')">C</span>
+                              </span>
+                            </span>
+                            <!-- </span> -->  
+                        </td>
+                    </ng-container>
+                    <!-- Quantity Column -->
+                    <ng-container matColumnDef="quantity">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="50px" fxLayoutAlign="start center"> Cant </th>
+                      <td mat-cell *matCellDef="let row" fxFlex="50px" fxLayoutAlign="center center">
+                          <span class="text-center" *ngFor="let item of row.items">
+                              {{ item.quantity }}
+                          </span> 
+                      </td>
+                    </ng-container>
+                    
+
+                    <!-- Price Column -->
+                    <ng-container matColumnDef="price">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header fxFlex fxLayoutAlign="start center"> Total </th>
+                        <td mat-cell *matCellDef="let row" fxFlex fxLayoutAlign="start center">
+                               <b class="normal f-16 text-black">$ {{ row.total }}</b> 
+                        </td>
+                      </ng-container>
+                      <!-- Price Column -->
+                    <ng-container matColumnDef="end_at">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="100px" fxLayoutAlign="center center"> Entrega </th>
+                        <td mat-cell *matCellDef="let row" fxFlex="100px" fxLayoutAlign="end center">
+                               <span class="text-primary">{{ row.end_at | amFromUnix | amDateFormat: 'DD-MM-YYYY' }}</span> 
+                        </td>
+                    </ng-container>
+                    <!-- Options -->
+                    <!-- <ng-container matColumnDef="opt">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="130px" fxLayoutAlign="start center"> Total </th>
+                        <td mat-cell *matCellDef="let row" fxFlex="130px" fxLayoutAlign="start center"> 
+                            <button type="button" class="btn waves-effect waves-light btn-sm btn-success m-r-5 ">
+                              <i class="mdi mdi-plus"></i>
+                            </button>  
+                            <button type="button" class="btn waves-effect waves-light btn-sm btn-danger" matTooltip="Cancelar pedido">
+                              <i class="ti-trash"></i>
+                            </button>  
+                        </td>
+                      </ng-container> -->
+        
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+                    </tr>
+                  </mat-table>
+                
+                  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                </div>
+        <!-- ===============================================
+             Table Block                       				   
+             =============================================== -->
         <div class="table-responsive m-t-20">
           <table class="table stylish-table">
+            <thead>
+              <tr class="text-center">
+                <!-- <th colspan="2">Libro/Autor</th> -->
+                <th>Cliente</th>
+                <th>Detalles(Libros)</th>
+                <th>Estado</th>
+                <th>Cant</th>
+                <th>$</th>
+                <th>Entrega</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr class="table-hover" *ngFor="let order of orders">
+                <!-- <td style="width:50px;" *ngIf="order.status === 'processed'"><span class="round">P</span></td>
+                      <td style="width:50px;" *ngIf="order.status === 'in_progress'"><span class="round round-warning">W</span></td>
+                      <td style="width:50px;" *ngIf="order.status === 'completed'"><span class="round round-success">F</span></td>
+                      <td style="width:50px;" *ngIf="order.status === 'canceled'"><span class="round round-danger">C</span></td> -->
+                <td>
+                  <b> {{ order.client_id.surname + ' ' + order.client_id.name }}</b><br />
+                  <span class="text-muted f-12">{{ order._id }} </span>
+                </td>
+                <td>
+                  <span *ngFor="let item of order.items">{{ item.file_id.name }}<br /></span>
+                </td>
+                <td class="text-center">
+                  <!-- <span class="label label-danger"> -->
+                  <span class="mytooltip tooltip-effect-4 f-14">
+                    <span class="tooltip-item status" [ngClass]="order.status">
+                      <span *ngIf="order.status === 'processed'">Pendiente</span>
+                      <span *ngIf="order.status === 'in_progress'">Working</span>
+                      <span *ngIf="order.status === 'completed'">Terminado</span>
+                      <span *ngIf="order.status === 'canceled'">Cancelado</span>
+                    </span>
+                    <span class="tooltip-content status clearfix">
+                      <!-- <img src="../assets/images/tooltip/Euclid.png"> -->
+                      <span class="tooltip-status processed" (click)="orderStatus(order._id, 'processed')">P</span>
+                      <span class="tooltip-status in_progress" (click)="orderStatus(order._id, 'in_progress')">W</span>
+                      <span class="tooltip-status completed" (click)="orderStatus(order._id, 'completed')">F</span>
+                      <span class="tooltip-status canceled" (click)="orderStatus(order._id, 'canceled')">C</span>
+                    </span>
+                  </span>
+                  <!-- </span> -->
+                </td>
+                <td class="text-center f-14">
+                  <span *ngFor="let item of order.items">{{ item.quantity }}<br /></span>
+                </td>
+                <td class="text-right f-14">
+                  <span *ngFor="let item of order.items">$ {{ item.quantity * item.price}}<br /></span>
+                </td>
+                <td class="f-12 text-primary">
+                  {{ order.end_at | amFromUnix  | amDateFormat: 'DD-MM-YYYY' }}
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+          <!-- <table class="table stylish-table">
             <thead>
               <tr>
                 <th colspan="2">Libro/Autor</th>
@@ -28,7 +201,7 @@
               <tr class="table-hover">
                 <td style="width:50px;"><span class="round">S</span></td>
                 <td>
-                  <b>El Señor de los Anillos: Y la piedra Filosofal</b><br/>
+                  <b>El Señor de los Anillos: Y la piedra Filosofal</b><br />
                   <span class="text-muted f-14">Novela de J. R. R. Tolkien</span>
                 </td>
                 <td>
@@ -90,8 +263,9 @@
                 <td>$2.6K</td>
               </tr>
             </tbody>
-          </table>
+          </table> -->
         </div>
+
       </div>
     </div>
   </div>
@@ -99,3 +273,13 @@
     <app-task-menu></app-task-menu>
   </div>
 </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <pre>{{ orders | json }}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+

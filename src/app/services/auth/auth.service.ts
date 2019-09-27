@@ -36,7 +36,7 @@ export class AuthService {
                 this.loguedIn = true;
                 console.log(this.loguedIn);
                 this.getUserData(user.uid);
-                // this.router.navigate(['/home']);
+                this.router.navigate(['/home']);
             } else {
                 this.router.navigate(['/login']);
                 this.loguedIn = false;

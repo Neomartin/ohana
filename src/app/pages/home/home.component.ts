@@ -26,54 +26,63 @@ export class HomeComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   constructor(
     private _order: OrderService,
-  ) { 
+  ) {
     this._order.getOrder().subscribe( (resp: any) => {
-        if(resp.order) {
+        if (resp.order) {
           // console.log(resp.order);
           let i = 0;
           resp.order.forEach(element => {
             let total = 0;
             for (const key in element) {
               if (key === 'items') {
-                // console.log('Items: ', element[key]);
                 total = element[key].reduce( (acc: number, item: any) => {
-                  // console.log(item);
                   return acc = acc + (item.quantity * item.price);
                 }, 0);
                 element.total = total;
-                // console.log('TOTAL: ', total);
               }
             }
             i++;
             });
             this.orders = resp.order;
             console.log(this.orders);
-            
-          this.dataSource = new MatTableDataSource(this.orders);
-          // console.log(this.dataSource);
           
-        };
+          this.dataSource = new MatTableDataSource(this.orders);
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.filterPredicate = (data, filter: string) => {
+            const transformedFilter = filter.trim().toLowerCase();
+            const listAsFlatString = (obj): string => {
+              let returnVal = '';
+              Object.values(obj).forEach((val) => {
+                if (typeof val !== 'object') {
+                  returnVal = returnVal + ' ' + val;
+                } else if (val !== null) {
+                  returnVal = returnVal + ' ' + listAsFlatString(val);
+                }
+              });
+              return returnVal.trim().toLowerCase();
+            };
+            return listAsFlatString(data).includes(transformedFilter);
+          };
+        }
       }, err => {
         console.log(err);
       });
-  }
+  } // constructor
 
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    // this.dataSource.sort = this.sort;
+    // this.dataSource.paginator = this.paginator;
   }
-
-
   applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
   orderStatus(id, status) {
     console.log(id, status);
-    
   }
 
 }

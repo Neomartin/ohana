@@ -1844,8 +1844,9 @@ form label {
 }
 
 .topbar .top-navbar {
-    min-height: 70px;
-    padding: 0px 15px 0 0
+    min-height: 50px;
+    padding: 0px 15px 0 0;
+    max-height: 50px
 }
 
 .topbar .top-navbar .dropdown-toggle:after {

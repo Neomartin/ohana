@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit {
   ) {
     this._order.getOrder().subscribe( (resp: any) => {
         if (resp.order) {
-          // console.log(resp.order);
+          console.log(resp.order);
           let i = 0;
           resp.order.forEach(element => {
             let total = 0;
@@ -45,7 +45,6 @@ export class HomeComponent implements OnInit {
             });
             this.orders = resp.order;
             console.log(this.orders);
-          
           this.dataSource = new MatTableDataSource(this.orders);
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
@@ -75,6 +74,7 @@ export class HomeComponent implements OnInit {
     // this.dataSource.paginator = this.paginator;
   }
   applyFilter(filterValue: string) {
+    console.log('Entra el filter', filterValue);
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }

@@ -1,91 +1,59 @@
-import { Component, OnInit } from '@angular/core';
-import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import { UserModel } from 'src/app/models/user.model';
-import swal from 'sweetalert2';
-import { UserService } from 'src/app/services/user/user.service';
-import { Observable } from 'rxjs';
-import { map, startWith, debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { OriginService } from 'src/app/services/origin/origin.service';
-import { log } from 'util';
-
-
+import swal from 'sweetalert2';
+import { FilesComponent } from '../files/files.component';
+import { UserModel } from 'src/app/models/user.model';
+import { UserService } from 'src/app/services/user/user.service';
+import { OriginService } from '../../services/origin/origin.service';
+import { map, startWith, debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
+import { FileService } from '../../services/file/file.service';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 
 @Component({
-  selector: 'app-add-file',
-  templateUrl: './add-file.component.html',
-  styleUrls: [ 'add-file.component.css'],
-  providers: [  UserService,
-                OriginService,
-               {provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
-               {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-               {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
-             ]
+    selector: 'app-data-file',
+    templateUrl: 'add-file.component.html',
+    styleUrls: [ 'add-file.component.css' ],
+    providers: [ FileService, OriginService ]
 })
 export class AddFileComponent implements OnInit {
-  public selectedDate: Date;
-  public newUser: any;
-  public user: UserModel = new UserModel('', '', '', '', '', '', '', '', '', '');
-  public client_id = '';
-  public from_id = '';
-  public career_id = '';
-  public years = ['Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto', 'Sexto'];
-  isLoading = false;
-  filteredClients: any;
-  filteredFrom: any;
-  filteredCareer: any;
-  searchClientCtrl = new FormControl();
-  searchFromCtrl = new FormControl();
-  searchCareerCtrl = new FormControl();
-  yearCtrl = new FormControl('', [Validators.required]);
-  career = [];
-  from = [];
-  // career = [];
-  options = [];
-  // froms = ['One', 'Two', 'Three'];
-  errorMsg: string;
-  year: string;
-  constructor(
-    private _user: UserService,
-    private _origin: OriginService
-  ) {
+    @ViewChild(FilesComponent, { static: true }) filesComponent;
+    public user: UserModel = new UserModel('', '', '', '', '', '', '', '', '', '');
+    public name: String = '';
+    public searchClientCtrl = new FormControl();
+    public searchFromCtrl = new FormControl();
+    public searchCareerCtrl = new FormControl();
+    public yearCtrl = new FormControl('', [Validators.required]);
+    public persona = false;
+    public filteredFrom: any;
+    public filteredCareer: any;
+    public from = [];
+    public career = [];
+    public selectedFrom: any;
+    public selectedCareer: String;
+    public validCareer: Boolean;
+    public years = [ 'No corresponde', 'Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto', 
+                     'Sexto', 'Séptimo', 'Inicial', 'Medio', 'Avanzado']
+    public yearSelected = 'No corresponde';
+    public reloadFiles: Subject<boolean> = new Subject();
+    public searchFilter: BehaviorSubject<string> = new BehaviorSubject('');
+    
+    
+    
+    constructor(
+        private _origin: OriginService,
+        private _file: FileService
+    ) {
+      this.yearCtrl.setValue('No corresponde');
+    }
+    ngOnInit() {
+      this.filesComponent.fileListOptions = {
+        add: false,
+        delete: true
+      };
+      this.loadFrom();
 
-  }
-  ngOnInit() {
-    //cargar carreras;
-    this.loadCareers();
-    this._origin.origins.subscribe(resp => {
-      console.log('ORIGINS: ', resp);
-      this.from = resp;
-      this.filteredFrom = this.from;
-    });
-    this._user.users.subscribe(resp => {
-      console.log(resp);
-      this.options = resp;
-      this.filteredClients = this.options;
-      // resp.forEach(element => {
-      //   const obj = {
-      //     name: '',
-      //     id: '',
-      //   };
-      //   for (const key in element) {
-      //     if (element.hasOwnProperty(key)) {
-      //       if (key === 'name') {
-      //         obj.name = element[key];
-      //       }
-      //       if (key === 'id') {
-      //         obj.id = element[key];
-      //       }
-      //     }
-      //   }
-      //   this.options.push(obj);
-      // });
-      // // console.log('Options: ', this.options);
-    });
-    this.searchFromCtrl.valueChanges
+      this.searchFromCtrl.valueChanges
       .pipe(
         startWith(''),
         debounceTime(200),
@@ -96,29 +64,13 @@ export class AddFileComponent implements OnInit {
       ).subscribe(data => {
         if (data === undefined) {
           this.filteredFrom = this.from;
+          // this.from_id = null
         } else {
           this.filteredFrom.push(data);
         }
       });
-    this.searchClientCtrl.valueChanges
-      .pipe(
-        startWith(''),
-        debounceTime(200),
-        tap(() => {
-          this.errorMsg = '';
-          this.filteredClients = [];
-          // console.log(ev);
-        }),
-        switchMap((value) => this._filter(value))
-      ).subscribe(data => {
-        if (data === undefined) {
-          this.errorMsg = 'Error al cargar';
-          this.filteredClients = this.options;
-        } else {
-          this.errorMsg = '';
-          this.filteredClients.push(data);
-        }
-      });
+
+
       this.searchCareerCtrl.valueChanges
       .pipe(
         startWith(''),
@@ -134,237 +86,217 @@ export class AddFileComponent implements OnInit {
           this.filteredCareer.push(data);
         }
       });
-  } // ***********NGONINIT********************/
+    } // NGONINIT END
 
-  private _filter(value): string[] {
-    // if (value && !value.hasOwnProperty('name')) {
-    //   const filterValue = value.toLowerCase();
-    // }
-    return this.options.filter( (s) => new RegExp(value, 'gi').test(s.name));
-  }
-  private _filterFrom(value): string[] {
-    if (!value) {
-      this.searchCareerCtrl.reset();
+
+    loadFrom() {
+      this._origin.getFrom().subscribe((resp: any) => {
+        this.from = resp.from;
+        this.filteredFrom = resp.from;
+        // console.log(resp.from);
+      });
     }
-    console.log('ValueFilter: ', value);
-    return this.from.filter( (s) => new RegExp(value, 'gi').test(s.name));
-  }
-  private _filterCareer(value): string[] {
-    return this.career.filter( (s) => new RegExp(value, 'gi').test(s.name))
-  }
-  loadCareers() {
-    this._origin.careers.subscribe(resp => {
-      console.log('RESPUESTA CARRERAS: ', resp);
-      this.career = resp;
-      localStorage.setItem('careers', JSON.stringify(resp));
-      this.filteredCareer = [];
-      // this.filteredCareer = this.career;
-    });
-  }
-  addUser () {
-    swal.mixin({
-      input: 'text',
-      confirmButtonText: 'Siguiente &rarr;',
-      showCancelButton: true,
-      progressSteps: ['1', '2', '3']
-    }).queue([
-      {
-        title: 'Nombre',
-        text: 'Ingrese nombre del usuario'
-      },
-      {
-        title: 'Apellido',
-        text: 'Ingrese Apellido del usuario'
-      },
-      {
-        title: 'Teléfono',
-        text: 'Ingrese celular o fijo del usuario'
-      }
-    ]).then( (result) => {
-      // const usuarito = result.value[0].trim().split(" ");
-      // console.log(usuarito.length - 1);
-      // this.user.name = usuarito.slice(0, usuarito.length - 1).join(" ");
-      this.user.name = result.value[0];
-      // console.log(usuarito[usuarito.length - 1]);
-      // this.user.surname = usuarito[usuarito.length - 1];
-      this.user.surname = result.value[1];
-      this.user.phone = result.value[2];
-      console.log(this.user);
-      // console.log(usuarito);
-      // console.log(this.newUser.name.string_to_array());
-      this._user.newClient(this.user)
-        .then( resp => {
-          // console.log('Retornar', resp);
-          // console.log('ACTIONS: ', this._origin.origins);
-        })
-        .catch(err => {
-          console.log('Error: ', err);
-      });
-      swal.fire({
-        title: 'Carga finalizada',
-        html:
-          'Your answers: <pre><code>' +
-            JSON.stringify(result.value) +
-          '</code></pre>'
-      });
-    })
-  }
-
-
-  addFrom () {
-    swal.mixin({
-      input: 'text',
-      confirmButtonText: 'Siguiente &rarr;',
-      showCancelButton: true,
-      cancelButtonColor: '#d33',
-      progressSteps: ['1', '2', '3']
-    }).queue([
-      {
-        title: 'LUGAR',
-        input: 'select',
-        inputOptions: {
-          'Universidad': 'Universidad',
-          'Instituto': 'Instituto',
-          'Colegio': 'Colegio',
-          'Escuela': 'Escuela',
-          'Otro': 'Otro'
-        },
-        inputPlaceholder: 'Seleccione tipo',
-      },
-      {
-        title: 'Número',
-        text: 'Ingrese número del colegio/institución'
-      },
-      {
-        title: 'Nombre',
-        text: 'Nombre de la institución'
-      }
-    ]).then( (result) => {
-      // const usuarito = result.value[0].trim().split(" ");
-      // console.log(usuarito.length - 1);
-      // this.user.name = usuarito.slice(0, usuarito.length - 1).join(" ");
-      const newFrom: any = {};
-      newFrom.type = result.value[0];
-
-      // console.log(usuarito[usuarito.length - 1]);
-      // this.user.surname = usuarito[usuarito.length - 1];
-      if (result.value[1]) {
-        newFrom.name = result.value[0] + ' ' + result.value[1] + ' ' + result.value[2];
-        newFrom.number = result.value[1];
-      } else {
-        newFrom.name = result.value[0] + ' '  + result.value[2];
-      }
-      // newFrom.name = result.value[0] + ' ' + result.value[1] + ' ' + result.value[2];
-      // console.log(newFrom);
-      // console.log(this.newUser.name.string_to_array());
-      this._origin.newOrigin(newFrom)
-        .then(resp => {
-          console.log('Respuesta recibida: ', resp);
-        })
-        .catch(err => {
-          console.log('Error en la respuesta: ', err);
-        });
-      swal.fire({
-        title: 'Carga finalizada',
-        html:
-          'Your answers: <pre><code>' +
-            JSON.stringify(result.value) +
-          '</code></pre>'
-      });
-    })
-  }
-  addCareer (value) {
-    const career: any = {};
-    this.from.forEach(element => {
-      // console.log('Elementos: ', element);
-      let name: string;
-      let id: string;
-      for (const key of Object.keys(element)) {
-        if (element.hasOwnProperty(key) && key === 'name') {
-            name = element[key];
-            // console.log('Name ', name);
+    addFrom() {
+        swal.mixin({
+            input: 'text',
+            confirmButtonText: 'Siguiente &rarr;',
+            showCancelButton: true,
+            cancelButtonColor: '#d33',
+            progressSteps: ['1', '2', '3']
+          }).queue([
+            {
+              title: 'LUGAR',
+              input: 'select',
+              inputOptions: {
+                'Universidad': 'Universidad',
+                'Instituto': 'Instituto',
+                'Colegio': 'Colegio',
+                'Escuela': 'Escuela',
+                'Institución': 'Institución',
+                'Otro': 'Otro'
+              },
+              inputPlaceholder: 'Seleccione tipo',
+            },
+            {
+              title: 'Número',
+              html: 'Ingrese número del colegio/institución' +
+                    '<br><span class="bolder text-red">**Si es una universidad agregar <b>Abreviación o Siglas</b>' + 
+                    ' (ej. <b class="bolder text-black">UTN</b>)</span>'
+            },
+            {
+              title: 'Nombre',
+              text: 'Nombre de la institución'
+            }
+          ]).then( (result) => {
+            console.log('Resultado', result);
+            const newFrom: any = {};
+            if(!result.dismiss) {
+              newFrom.type = result.value[0];
+              if (result.value[1]) {
+                newFrom.name = result.value[0] + ' - ' + result.value[1] + ' ' + result.value[2];
+                newFrom.number = result.value[1];
+              } else {
+                newFrom.name = result.value[0] + ' - '  + result.value[2];
+              }
+              result.value[1] ? newFrom.number = result.value[1] : newFrom.number = null;
+              console.log(newFrom);
+              this._origin.newOrigin(newFrom).subscribe(resp => {
+                this.loadFrom();
+                swal.fire({
+                  title: 'Carga finalizada',
+                  html:
+                    '<span class="text-green">Carga correcta</span> <pre><code>' +
+                      JSON.stringify(newFrom.name) +
+                    '</code></pre>'
+                });
+              },
+                error  => {
+                  swal.fire({
+                    type: 'success',
+                    title: 'Carga finalizada',
+                    html:
+                      '<span class="text-red">Error al agregar institución</span> <pre><code>' +
+                        JSON.stringify(newFrom.name) + '<br>' +
+                        JSON.stringify(error) +
+                      '</code></pre>'
+                  });
+              });
+            }
+          });
+    }
+    addCareer() {
+      swal.mixin({
+        input: 'text',
+        confirmButtonText: 'Siguiente &rarr;',
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
+        progressSteps: [ '1' ]
+      }).queue([
+        {
+          title: 'Agregar Carrera / Curso',
+          html: `<span class="text-blue">${this.selectedFrom.name }</span><br>Ingrese nombre de la carrera`
+                // '<br><span class="text-red">**Si es una universidad omitir este campo</span>'
         }
-        if (element.hasOwnProperty(key) && key === 'id') {
-          id = element[key];
-          // console.log('ID ', id);
+      ]).then( (result) => {
+        const newCareer = {
+          from_id: this.selectedFrom._id,
+          name: result.value[0]
         }
-      }
-      career[id] = name;
-    });
-    swal.mixin({
-      input: 'text',
-      confirmButtonText: 'Siguiente &rarr;',
-      showCancelButton: true,
-      cancelButtonColor: '#d33',
-      progressSteps: ['1', '2'] 
-    }).queue([
-      {
-        title: 'Origen',
-        input: 'select',
-        inputOptions: career,
-        inputPlaceholder: 'Seleccione tipo',
-      },
-      {
-        title: 'Carrera',
-        text: 'Ingrese nombre completo de la carrrera'
-      },
-    ]).then( (result) => {
-      const newCareer: any = {};
-      newCareer.origin_id = result.value[0];
-      newCareer.name = result.value[1];
-      // newCareer.year = this.year;
-      this._origin.newCareer(newCareer)
-        .then(resp => {
-          console.log('Respuesta recibida: ', resp);
-        })
-        .catch(err => {
-          console.log('Error en la respuesta: ', err);
+        this._origin.newCareer(newCareer).subscribe( (resp: any) => {
+          // console.log(resp);
+          this.findCareers(this.selectedFrom);
+        }, err => {
+          // console.log(err);
+            swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              html: 'No se agrego <b>carrera</b>! <br>' + 
+                    '<span class="text-red">' + err.error.message +'</span>',
+            })
         });
-      swal.fire({
-        title: 'Carga finalizada',
-        html:
-          'Your answers: <pre><code>' +
-            JSON.stringify(result.value) +
-          '</code></pre>'
-      });
-    })
+      })
+    }
+    // ***********FILTROS*********** //
+    private _filterFrom(value): string[] {
+        if (!value) {
+          this.searchCareerCtrl.reset();
+          this.selectedFrom = null;
+        }
+        // console.log('ValueFilter: ', value);
+        return this.from.filter( (s) => new RegExp(value, 'gi').test(s.name));
+      }
+
+    private _filterCareer(value): string[] {
+        return this.career.filter( (s) => new RegExp(value, 'gi').test(s.name));
+    }
+
+    displayFnFrom(from) {
+      // console.log('From ', from);
+      if (!from) { return ''; }
+      // console.log('From displayFn', from);
+      // this.selectedFrom = from;
+      return from.name;
+    }
+    displayFnCareer(career) {
+      if (!career) {
+        this.selectedCareer = null;
+        return ''; }
+      // console.log('Career displayFn: ', career);
+      // this.career_id = career.id;
+      return career.name;
+    }
+
+
+  filterFile(value: string) {
+    // if (value.length >= 1) {
+      this.searchFilter.next(value);
+      // console.log('Entra al next ');
+    // }
   }
+
+
   findCareers(e) {
-    this.career = JSON.parse(localStorage.getItem('careers'));
-    const provi: any = [];
-    this.career.forEach(element => {
-      for (const key of Object.keys(element)) {
-        if(key === 'origin_id') {
-          if (e.id === element[key]) {
-            provi.push(element);
-          }
-        }
-      }
+    // console.log('entra', e);
+    this.selectedFrom = e;
+    this.searchCareerCtrl.reset();
+    this._origin.findCareers(e._id).subscribe((resp: any) => {
+      console.log(resp);
+      if (resp.ok) {
+        resp.career.length ? this.validCareer = false : this.validCareer = true;
+        this.career = resp.career;
+        this.filteredCareer = resp.career;
+    }
     });
-    this.filteredCareer = provi;
-    this.career = provi;
-    console.log('Career: ', this.career);
-  }
-  displayFn(user) {
-    if (!user) { return ''; }
-    this.client_id = user.id;
-    return user.name;
   }
 
-  displayFnFrom(from) {
-    if (!from) { return ''; }
-    console.log('From displayFn', from);
-    this.from_id = from.id;
-    return from.name;
+  setCareer(e) {
+    this.selectedCareer = e._id;
   }
-  displayFnCareer(career) {
-    if (!career) { return ''; }
-    console.log('Career displayFn: ', career);
-    this.career_id = career.id;
-    return career.name;
+
+  ngDoCheck(): void {
+    if (this.searchCareerCtrl.value) {
+      if (this.searchCareerCtrl.value.hasOwnProperty('_id')) {
+        this.validCareer = true;
+      }
+    }
   }
-  yearFn(e) {
-    console.log(e);
-    
-  }
+
+  send() {
+    const newFile = {
+      name: this.name,
+      status: 'activo',
+      year: this.yearCtrl.value,
+      from_id: this.selectedFrom._id,
+      career_id: this.selectedCareer
+    };
+    this._file.newFile(newFile).subscribe( (resp: any) => {
+      this.reloadFiles.next(true);
+      if (resp.ok) {
+        swal.fire({
+          position: 'bottom-end',
+          type: 'success',
+          title: resp.message,
+          text: resp.saved.name,
+          timer: 1000
+        }).then(() => {
+          // this._file.getFiles();
+          this.searchCareerCtrl.reset();
+          this.searchFromCtrl.reset();
+          this.name = '';
+          this.yearCtrl.reset();
+          this.persona = false;
+        });
+      }
+    }, err => {
+      console.log(err);
+      const error = JSON.stringify(err.error.message);
+      swal.fire({
+        type: 'error',
+        title: 'Error al crear archivo',
+        html: error + '<br>' + error,
+      });
+    });
+  };
+    // this._origin.newFile()
+
 }

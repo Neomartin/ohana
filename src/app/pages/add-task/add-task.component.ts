@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import swal from 'sweetalert2'; 
+import swal from 'sweetalert2';
+import { FilesComponent } from '../files/files.component';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-add-task',
@@ -15,10 +17,18 @@ export class AddTaskComponent implements OnInit {
   public selectedDate: Date;
   name: String = '';
   options: string[] = ['One', 'Two', 'Three'];
+  public fileListOptions = 'añadir';
+  public reloadFiles: Subject<boolean> = new Subject();
+  public searchFilter: BehaviorSubject<string> = new BehaviorSubject('');
+  
+  @ViewChild(FilesComponent, { static: true }) filesComponent;
   constructor() { }
 
   ngOnInit() {
-
+    this.filesComponent.fileListOptions = {
+      add: true,
+      delete: false
+    };
   }
   inputTry() {
     swal.fire({

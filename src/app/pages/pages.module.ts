@@ -40,6 +40,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import {MatSelectModule} from '@angular/material/select';
+import { FilesComponent } from './files/files.component';
+import { MatSortModule } from '@angular/material/sort';
 
 
 @NgModule({
@@ -52,7 +54,8 @@ import {MatSelectModule} from '@angular/material/select';
     AddTaskComponent,
     AddFileComponent,
     OrdersComponent,
-    AutocompleteComponent
+    AutocompleteComponent,
+    FilesComponent
   ],
   imports: [
     CommonModule,
@@ -78,7 +81,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatTableModule,
     MatPaginatorModule,
     MatTooltipModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSortModule
   ],
   exports: [
     NotFoundComponent,

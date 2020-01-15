@@ -1,0 +1,107 @@
+<mat-form-field [hidden]="true">
+  <input matInput (keyup)="applyFilter(filterito)" placeholder="Filter" 
+  [(ngModel)]="filterito"  name="filterito" >
+</mat-form-field>
+<table mat-table matSort
+       [dataSource]="dataSource" multiTemplateDataRows
+       class="mat-elevation-z0">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+  
+      <!-- Institucion Column -->
+      <ng-container matColumnDef="from_id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Institución </th>
+        <td mat-cell *matCellDef="let element"> {{element.from_id.name}} </td>
+      </ng-container>
+  
+      
+  
+      <!-- Año Column -->
+      <ng-container matColumnDef="year">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Año </th>
+        <td mat-cell *matCellDef="let element"> {{element.year}} </td>
+      </ng-container>
+  
+      <!-- Creado Column -->
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-cell-center"                                                                                 > Edit </th>
+        <td mat-cell *matCellDef="let element" class="mat-cell-center"> 
+          <!-- <button class="btn btn-sm btn-warning" matTooltip="Deshabilitar" style="margin-right: 2px; padding: .25rem">
+            <i class="fa fa-ban"></i>
+          </button> -->
+          <button class="btn btn-sm btn-danger" [hidden]="!fileListOptions.delete"
+                  (click)="deleteFile(element)" style="margin-right: 2px" matTooltip="Eliminar archivo">
+            <i class="mdi mdi-close"></i>
+          </button>
+          <button [hidden]="!fileListOptions.delete" [hidden]="!fileListOptions.add" matTooltip="Añadir a orden"
+                  class="btn waves-effect waves-light btn-sm btn-success" type="button">
+            <i class="mdi mdi-plus"></i>
+          </button>
+        </td>
+      </ng-container>
+      
+      <!-- <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr> -->
+      <!-- <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr> -->
+
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+          <div class="example-element-detail"
+              [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+            <div class="example-element-diagram">
+              <div class="example-element-position"> {{element.name}} </div>
+              <!-- <div class="example-element-symbol"> {{element.created_at}} </div> -->
+              <!-- <div class="example-element-name"> {{element.from_id.name}} </div> -->
+              <div class="example-element-weight"> {{element.year}} </div>
+            </div>
+            <div class="example-element-description">
+              {{element.name}} 
+              <br>
+              <b>Creado:</b> {{element.created_at}} <br> 
+              <span class="example-element-description-attribution"> -- Wikipedia </span>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+          class="example-element-row"
+          [class.example-expanded-row]="expandedElement === element"
+          (click)="expandedElement = expandedElement === element ? null : element">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    </table>
+  
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+  <!-- <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+      <div class="example-element-detail"
+           [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+        <div class="example-element-diagram">
+          <div class="example-element-position"> {{element._id}} </div>
+          <div class="example-element-name"> {{element.name}} </div>
+          <div class="example-element-symbol"> {{element.created_at}} </div>
+          <div class="example-element-weight"> {{element.year}} </div>
+        </div>
+        <div class="example-element-description">
+          {{element.status}}
+          <span class="example-element-description-attribution"> -- Wikipedia </span>
+        </div>
+      </div>
+    </td>
+  </ng-container>  -->
+
+   <!-- <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr> -->
+  <!-- <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+      class="example-element-row"
+      [class.example-expanded-row]="expandedElement === element"
+      (click)="expandedElement = expandedElement === element ? null : element">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr> -->
+<!-- </table> -->
+<!-- <button (click)="_file.getFiles()">Test</button> -->

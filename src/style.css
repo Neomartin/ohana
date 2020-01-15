@@ -13,6 +13,9 @@
 .text-green {
     color: #5fb410;
 }
+.text-blue {
+    color: #1e88e5 !important
+}
 .text-black {
     color: #000
 }
@@ -75,4 +78,30 @@
 }
 .libros td:last-child {
     width: 40px
+}
+
+.mat-header-cell {
+    color: #1e88e5;
+    font-size: 1em;
+    line-height: 0.9em;
+}
+.mat-cell-center {
+    text-align: center;
+}
+th.mat-sort-header-sorted {
+    color: black;
+  }
+tr.mat-row:not(.example-expanded-row):hover {
+    background: rgb(199, 236, 253);
+    cursor: pointer;
+}
+
+.example-element-diagram {
+    max-width: 100px;
+    text-align: center;
+}
+
+.btn-sm {
+    padding: .25rem .25rem;
+    font-size: 12px;
 }

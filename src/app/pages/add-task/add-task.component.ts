@@ -120,8 +120,8 @@ export class AddTaskComponent implements OnInit {
   getUsers() {
     this._user.getUsers().subscribe( (resp: any) => {
       console.log(resp);
-      this.clients = resp.usuarios;
-      this.filteredClient = resp.usuarios;
+      this.clients = resp.users;
+      this.filteredClient = resp.users;
     });
   }
   addFileToTask(file) {

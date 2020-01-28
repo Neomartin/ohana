@@ -15,7 +15,7 @@
               (ngModelChange)="filterByDate(ordersSaved)">
               <option value="today" selected="today">Para Mañana</option>
               <option value="later">Posteriores</option>
-              <option value="">Restantes</option>
+              <option value="">Incompletos</option>
             </select>
           </div>
         </div>
@@ -24,9 +24,9 @@
              =============================================== -->
         <div class="row">
           <div class="col-6">
-            <mat-form-field>
+            <mat-form-field fxFlex>
               <span matPrefix class="p-r-10"><i class="fas fas fa-search"></i></span>
-              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar" />
+              <input matInput (keyup)="applyFilter($event.target.value)" id="search" placeholder="Buscar" #searcher />
             </mat-form-field>
           </div>
         </div>
@@ -150,17 +150,25 @@
                         </button>
                       </p>
                       <p>
-                        <button class="btn waves-effect waves-light btn-warning" type="button"
+                        <!-- <button class="btn waves-effect waves-light btn-warning" type="button"
                                 [routerLink]="[ '/add-task', element._id ]"> 
                           <i class="mdi mdi-edit"></i>
                           Editar 
-                        </button>
+                        </button> -->
                       </p>
                     </div>
                     <!-- <button></button> -->
                   </div>
                   <div class="example-element-description" fxFlex>
-                    <h4 class="text-blue">Detalles del pedido:</h4>
+                    <h4 class="text-blue">
+                      Detalles del pedido:
+                      <span fxFlex></span>
+                      <button class="btn btn-warning btn-sm" type="button" matTooltip="Editar Orden"
+                              [routerLink]="[ '/add-task', element._id ]">
+                        Editar
+                      </button>
+                    </h4> 
+                    
                     <hr>
                     <div class="example-container" fxLayout="column">
                       <div *ngFor="let item of element.items" fxLayout="row">
@@ -175,7 +183,10 @@
                         <hr>
                         <div fxLayout="row">
                           <div fxFlex fxLayout="column">
-                            <h5>Datos cliente:</h5>
+                            <h5>
+                              Datos cliente: 
+                              <a href="#" [routerLink]="['/user', element.client_id]">Editar</a>
+                            </h5>
                             <span>
                               <b class="bold">Nombre: </b>
                               {{ element.client_id.name + ' ' + element.client_id.surname }}
@@ -219,21 +230,14 @@
                             </span> 
                           </div>
                         </div>
-                        
-                            
-                           
                       </div>
                       <div>
-
                       </div>
                     </div>
-
-
                   </div>
                 </div>
               </td>
             </ng-container>
-
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let element; columns: displayedColumns" class="example-element-row"
               [class.example-expanded-row]="expandedElement === element" (click)="

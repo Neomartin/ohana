@@ -10,6 +10,7 @@ import { OrderPrintComponent } from '../components/order-print/order-print.compo
 import { TaskMenuComponent } from '../components/task-menu/task-menu.component';
 import { AddFileComponent } from './add-file/add-file.component';
 import { AddTaskComponent } from './add-task/add-task.component';
+import { UsersComponent } from './users/users.component';
 //Components
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HomeComponent } from './home/home.component';
@@ -59,6 +60,7 @@ import {MatSnackBarModule } from '@angular/material/snack-bar';
     AutocompleteComponent,
     FilesComponent,
     OrderPrintComponent,
+    UsersComponent,
   ],
   imports: [
     CommonModule,
@@ -94,8 +96,8 @@ import {MatSnackBarModule } from '@angular/material/snack-bar';
     RegisterComponent,
     LoginComponent,
     TaskMenuComponent,
-    OrderPrintComponent
-
+    OrderPrintComponent,
+    UsersComponent
   ]
 })
 export class PagesModule { }

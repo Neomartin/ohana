@@ -2,6 +2,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { PagesComponent } from './pages.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from '../login/login/login.component';
+import { UsersComponent } from './users/users.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { LoginGuard } from '../services/guard/login.guard';
 import { AddTaskComponent } from './add-task/add-task.component';
@@ -16,6 +17,8 @@ const routes: Routes = [
         children: [
             { path: 'home', component: HomeComponent, data: { title: 'HomeComponent'} },
             { path: 'orders', component: OrdersComponent, data: { title: 'Ordenes'}},
+            { path: 'users', component: UsersComponent, data: { title: 'Usuarios'}},
+            { path: 'users/:id', component: UsersComponent, data: { title: 'Usuario'}},
             { path: 'add-task/:id', component: AddTaskComponent, data: { title: 'Añadir/Quitar Tarea'} },
             { path: 'add-task', component: AddTaskComponent, data: { title: 'Añadir/Quitar Tarea'} },
             { path: 'add-file', component: AddFileComponent, data: { title: 'Añadir o Quitar Archivo'}},

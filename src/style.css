@@ -7,6 +7,9 @@
     background-color: #57af04 !important;
 }
 /* TEXTOS */
+.text-white {
+    color: #fff !important;
+}
 .text-red {
     color: rgb(255, 0, 0);
 }
@@ -21,6 +24,24 @@
 }
 .text-orange {
     color: #dd8902;
+}
+.b-red {
+    background-color: rgb(255, 0, 0);
+    color: #fff;
+}
+.b-green {
+    background-color: #5fb410;
+    color: #fff;
+}
+.b-blue {
+    background-color: #1e88e5 !important
+}
+.b-black {
+    background-color: #000;
+    color: #fff;
+}
+.b-orange {
+    background-color: #dd8902;
 }
 .date {
     padding: 15px 10px;

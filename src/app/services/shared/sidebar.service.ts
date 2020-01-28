@@ -27,8 +27,17 @@ export class SidebarService {
       ]
     },
     {
-      title: 'PERFIL',
+      title: 'Users',
       icon: 'mdi mdi-account-multiple',
+      url: '/users',
+      // submenu: [
+      //   { title: 'Dashboard', url: '/dashboard' },
+      //   { title: 'Rxjs', url: '/rxjs' }
+      // ]
+    },
+    {
+      title: 'PERFIL',
+      icon: 'mdi mdi-account',
       submenu: [
         { title: 'Perfil', url: '/user-profile' },
         { title: 'Register', url: '/register' },

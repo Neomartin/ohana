@@ -44,8 +44,9 @@
               <li class="nav-devider"></li>
               <li class="nav-small-cap">SESIÓN</li>
               <li>
-                  <a [routerLink]="['/login']" (click)="auth.logout()" class="has-arrow waves-effect waves-dark" aria-expanded="false">
-                      <i class="mdi mdi-account"></i><span class="hide-menu">Logout</span>
+                  <a [routerLink]="['/login']" (click)="auth.logout()" routerLinkActive="active"
+                     class="has-arrow waves-effect waves-dark" aria-expanded="false">
+                      <i class="mdi mdi-logout"></i><span class="hide-menu">Logout</span>
                     </a>
                   <!-- <ul aria-expanded="false" class="collapse">
                       <li><a href="layout-single-column.html">1 Column</a></li>

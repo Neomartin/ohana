@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { OrderService } from '../../services/order/order.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 // Componentes
@@ -10,6 +10,7 @@ import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import * as _moment from 'moment';
+import { FormControl } from '@angular/forms';
 
 export interface UserData {
   id: string;
@@ -42,7 +43,6 @@ export class HomeComponent implements OnInit {
   public end = 1579602556;
   public hora = (1579602556 / (3600)) % 24;
   public expandedElement: any | null;
-
   @ViewChild(OrderPrintComponent, { static: true}) _orderPrintComponent;
   @ViewChild(TaskMenuComponent, { static: true }) _taskMenuComponent;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -54,6 +54,7 @@ export class HomeComponent implements OnInit {
   } // constructor
 
   ngOnInit() {
+    document.getElementById('search').focus();
     this._order.getOrder(null).subscribe( (resp: any) => {
       // const dateDiff = _moment.unix(this.end).startOf('day').diff(_moment.unix(this.today).startOf('day'), 'days');
       // if (this.dateFilter === 'today'){

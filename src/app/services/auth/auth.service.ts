@@ -70,9 +70,11 @@ export class AuthService {
         this.afs.doc(`users/${this.user.uid}`).get().subscribe((resp: any) => {
             this.userData = resp.data();
             console.log('USER DATA: ', this.userData);
-            //Set localStorage
+            // Set localStorage
             localStorage.setItem('user', JSON.stringify(this.userData));
-            // if(localStorage.getItem('user')) this.router.navigate(['/home']);
+            if (localStorage.getItem('user')) {
+                // this.router.navigate(['/home']);
+            }
         });
     }
         // return console.log();

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { FileService } from '../../services/file/file.service';
 import * as moment from 'moment';
@@ -26,6 +26,8 @@ export class FilesComponent implements OnInit {
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
+
+  @Output() emitAddFileToTask: EventEmitter<any> = new EventEmitter()
   // Initialize dataSource
   @Input() reload: Subject<boolean>;
   @Input() file: Subject<string>;
@@ -100,13 +102,17 @@ export class FilesComponent implements OnInit {
       });
     }
     applyFilter(filterValue: string) {
-      console.log('Entra', filterValue);
+      // console.log('Entra', filterValue);
       if (this.dataSource.paginator) {
         this.dataSource.paginator.firstPage();
       }
       this.dataSource.filter = filterValue.trim().toLowerCase();
     }
 
+    addFileToTask(file: any) {
+      // console.log('add file to task', file);
+      this.emitAddFileToTask.emit(file);
+    }
     deleteFile(file) {
       console.log(file);
       swal.fire({

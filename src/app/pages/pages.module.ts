@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
 
+import { OrderPrintComponent } from '../components/order-print/order-print.component';
 import { TaskMenuComponent } from '../components/task-menu/task-menu.component';
 import { AddFileComponent } from './add-file/add-file.component';
 import { AddTaskComponent } from './add-task/add-task.component';
@@ -42,6 +43,7 @@ import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import {MatSelectModule} from '@angular/material/select';
 import { FilesComponent } from './files/files.component';
 import { MatSortModule } from '@angular/material/sort';
+import {MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -55,7 +57,8 @@ import { MatSortModule } from '@angular/material/sort';
     AddFileComponent,
     OrdersComponent,
     AutocompleteComponent,
-    FilesComponent
+    FilesComponent,
+    OrderPrintComponent,
   ],
   imports: [
     CommonModule,
@@ -82,14 +85,16 @@ import { MatSortModule } from '@angular/material/sort';
     MatPaginatorModule,
     MatTooltipModule,
     MatSelectModule,
-    MatSortModule
+    MatSortModule,
+    MatSnackBarModule
   ],
   exports: [
     NotFoundComponent,
     HomeComponent,
     RegisterComponent,
     LoginComponent,
-    TaskMenuComponent
+    TaskMenuComponent,
+    OrderPrintComponent
 
   ]
 })

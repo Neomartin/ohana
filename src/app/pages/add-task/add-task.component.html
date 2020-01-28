@@ -1,24 +1,33 @@
-<div class="row">
+<div class="row noDisplay">
   <div class="col-lg-6 col-xl-5">
     <div class="card m-b-5 p-r-5">
       <div class="card-body">
             <h4 class="card-title">
-              AGREGAR O QUITAR ARCHIVO
+              BUSCAR ARCHIVO
             </h4>
-            <h6 class="card-subtitle">
+            <button class="btn btn-success" (click)="resetForm()">
+              Resetear formulario
+            </button>
+            <!-- <h6 class="card-subtitle">
               Editar archivos visibles en el sistema.
-            </h6>
+            </h6> -->
+            
             <form class="form-control-line">
               <div fxLayout="row" fxFill>
                 <mat-form-field class="full-width">
                   <span matPrefix class="p-r-10"><i class="fas fas fa-search"></i></span>
-                  <input type="text" matInput placeholder="Buscar" />
+                  <input type="text" matInput placeholder="Buscar" (keyup)="filterFile($event.target.value)"
+                         [(ngModel)]="name" name="name"/>
+                         <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="filterFile(''); name=''">
+                            <i class="mdi mdi-close" matTooltip="Borrar"></i>
+                         </button>
                 </mat-form-field>
               </div>
               <div fxLayout="row" fxLayoutAlign="">
                 <div fxFlex>
                     <mat-form-field class="p-r-10">
-                        <input matInput [matDatepicker]="picker" placeholder="Fecha de entrega" />
+                        <input matInput [matDatepicker]="picker" [min]="minDate" (dateChange)="changeDate($event.value._i)"
+                               placeholder="Fecha de entrega" [formControl]="date" />
                         <!-- <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle> -->
                         <mat-datepicker touchUi #picker></mat-datepicker>
                     </mat-form-field>
@@ -31,11 +40,23 @@
               <div fxLayout="row" fxFill>
                 <div fxFlex>
                   <mat-form-field class="full-width">
-                    <input type="text" matInput [(ngModel)]="cliente" [matAutocomplete]="auto" name="cliente"
-                      placeholder="Nombre cliente" />
-                  </mat-form-field>
-                  <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option *ngFor="let option of options" [value]="option">{{ option }}</mat-option>
+                    <input type="text" matInput [formControl]="searchFromClient" #searchClient
+                    [matAutocomplete]="auto" name="cliente" placeholder="Nombre cliente" />
+                    <button mat-button *ngIf="searchFromClient.value" matSuffix mat-icon-button aria-label="Clear" 
+                            (click)="searchFromClient.reset(); selectedClient.id = ''; _filterClient('')">
+                      <i class="mdi mdi-close" matTooltip="Borrar"></i>
+                   </button>
+                   </mat-form-field>
+                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnClient"
+                    (optionSelected)="setClientID($event.option.value)">
+                    <mat-option *ngFor="let client of filteredClient" [value]="client">
+                      <span>
+                        {{ client.name + ' ' + client.surname }}
+                      </span>
+                      <span class="text-right text-blue dFlex f-08em">
+                        <i class="mdi mdi-phone"></i> {{ ' ' + client.phone[0] }}
+                      </span>
+                    </mat-option>
                   </mat-autocomplete>
                 </div>
                 <div class="p-10" fxFlex="80px">
@@ -57,46 +78,40 @@
               ARCHIVOS SOLICITADOS
             </h4>
             <h6 class="card-subtitle">
-              Se muestran los archivos agregados en el pedido actual.
+              Pedido actual.
             </h6>
             <table class="table">
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Libro/Editorial</th>
                     <th>Copias</th>
+                    <th>$</th>
                     <th>Opc</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1456</td>
-                    <td >El señor de los anillos la batalla de los Bastardos 
-                        <span class="mytooltip tooltip-effect-1"><span class="tooltip-item2">Euclid</span><span class="tooltip-content4 clearfix"><span class="tooltip-text2"><strong>Euclid</strong>, also known as Euclid of Alexandria, was a Greek mathematician, often referred to as the "Father of Geometry". He was active in Alexandria during the reign of Ptolemy I. <a href="http://en.wikipedia.org/wiki/Euclid">Wikipedia</a></span></span>
-                      </span>
-                    </td>
-                    <td><input type="number" value="2" maxlength="3" class="w-55"></td>
+                  <tr *ngFor="let file of fileList; let i = index" class="w-60p">
+                   
+                    <td>{{  file.name }}</td>
+                    <td><input [(ngModel)]="fileList[i].quantity" name="quantity" (ngModelChange)="calculateTotal()" 
+                               type="number" value="{{ file.quantity }}" maxlength="3" class="w-55 center"></td>
+                    <td><input [(ngModel)]="fileList[i].price" (ngModelChange)="calculateTotal()" 
+                               type="number" value="{{ file.price }}" maxlength="5" class="w-70 center"></td>
                     <td>
-                        <button type="button" class="btn waves-effect waves-light btn-sm btn-danger">
-                          <i class="ti-trash"></i>
-                        </button>
-                    </td> 
+                      <button type="button" (click)="removeFileFromTask(i)"
+                              class="btn waves-effect waves-light btn-sm btn-danger">
+                        <i class="ti-trash"></i>
+                      </button>
+                    </td>
                   </tr>
-                  <tr>
-                      <td>502</td>
-                      <td >Tecnologia de los materiales: Metales 4.0 
-                          <span class="mytooltip tooltip-effect-1"><span class="tooltip-item2">Euclid</span><span class="tooltip-content4 clearfix"><span class="tooltip-text2"><strong>Euclid</strong>, also known as Euclid of Alexandria, was a Greek mathematician, often referred to as the "Father of Geometry". He was active in Alexandria during the reign of Ptolemy I. <a href="http://en.wikipedia.org/wiki/Euclid">Wikipedia</a></span></span>
-                        </span>
-                      </td>
-                      <td><input type="number" value="1" maxlength="3" class="w-55"></td>
-                      <td>
-                          <button type="button" class="btn waves-effect waves-light btn-sm btn-danger">
-                            <i class="ti-trash"></i>
-                          </button>
-                      </td> 
-                    </tr>
-                
                 </tbody>
+                <tfoot>
+                <tr>
+                  <td></td>
+                  <td class="text-right" colspan="3">
+                    TOTAL: $ <b class="bold text-blue add-task-total">{{ total }}</b></td>
+                </tr>
+                </tfoot>
               </table>
               <div class="card-body b-t">
                   <div class="row">
@@ -109,18 +124,27 @@
                                           <i class="ti ti-money"></i>
                                         </span>
                                     </div>
-                                    <input type="number" class="form-control" id="exampleInputuname" placeholder="Seña">
+                                    <input type="number" class="form-control" [(ngModel)]="partialPayment" (ngModelChange)="checkPartialPayment()" name="partialPayment" 
+                                           max="total" placeholder="Seña" [disabled]="checkPayment">
                                 </div>
                             </div>
                             <div class="col-5 m-t-5">
-                                <input type="checkbox" id="md_checkbox_7" class="chk-col-light-blue w-55">
+                                <input type="checkbox" [(ngModel)]="checkPayment" (ngModelChange)="partialPayment = 0" id="md_checkbox_7" class="chk-col-light-blue w-55">
                                 <label for="md_checkbox_7">Sin seña</label>
                             </div>
                           </div>
                           
                         </div>
                         <div class="col-4 text-right ">
-                            <button type="button" class="btn btn-info">Generar pedido </button>
+                            <button (click)="newOrder()" type="button" class="btn btn-info" [hidden]="orderID"
+                                    [disabled]="!fileList.length || !orderButton || date.invalid && (date.dirty || date.touched) || !selectedClient.id">
+                              Generar pedido 
+                            </button>
+                            <!-- newOrder recibe como parametro un booleano para hacer update en vez de generar una nueva orden -->
+                            <button (click)="newOrder(true)" type="button" class="btn btn-primary" [hidden]="!orderID"
+                                    [disabled]="!fileList.length || !updateButton || date.invalid && (date.dirty || date.touched) || !selectedClient._id">
+                              Actualizar Orden
+                            </button>
                         </div>
                   </div>
               </div>
@@ -128,100 +152,10 @@
     </div>
   </div>
     <div class="col-lg-6 col-xl-7">
+      
       <div class="card">
         <div class="card-body">
-            <table class="table libros">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Libro/Editorial</th>
-                  <th class="w-270">Carrera/Año</th>
-                  <th class="f-18"><i class="mdi mdi-settings "></i> </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1456</td>
-                  <td> <b>El señor de los anillos la batalla de los Bastardos  
-                    <span class="mytooltip tooltip-effect-1">
-                      <span class="tooltip-item2">Euclid</span>
-                      <span class="tooltip-content4 clearfix">
-                        <span class="tooltip-text2"><strong>Euclid</strong>, also known as Euclid of Alexandria, was a Greek mathematician, often referred to as the "Father of Geometry".
-                          <a href="http://en.wikipedia.org/wiki/Euclid">Wikipedia</a>
-                        </span>
-                      </span>
-                      </span>
-                    <br> <small class="text-muted">J.R.R. Tolkien</small> </b>  
-                     
-                    
-                  </td>
-                  <td>Particular</td>
-                  <td>
-                      <button type="button" class="btn waves-effect waves-light btn-sm btn-success" (click)="agregarArchivo()">
-                        <i class="mdi mdi-plus"></i>
-                      </button>
-                  </td> 
-                </tr>
-                <tr>
-                    <td>1456</td>
-                    <td><b>El señor de los anillos la batalla de los Bastardos</b> </td>
-                    <td>Ing. en Sistemas de Informacion Hidraulica de los Fluidos</td>
-                    <td>
-                        <button type="button" class="btn waves-effect waves-light btn-sm btn-success">
-                          <i class="mdi mdi-plus"></i>
-                        </button>
-                    </td> 
-                </tr>
-                <tr>
-                    <td>2815</td>
-                    <td><b>Lo que el viento se llevó</b> <br> <small class="text-muted">de Margaret Mitchell</small> </td>
-                    <td>Abogacia <br> <small class="text-muted">4 año</small> </td>
-                    <td>
-                        <button type="button" class="btn waves-effect waves-light btn-sm btn-success">
-                          <i class="mdi mdi-plus"></i>
-                        </button>
-                    </td> 
-                </tr>
-                <tr>
-                    <td>1456</td>
-                    <td> <b>El señor de los anillos la batalla de los Bastardos  
-                      <span class="mytooltip tooltip-effect-1">
-                        <span class="tooltip-item2">Euclid</span>
-                        <span class="tooltip-content4 clearfix">
-                          <span class="tooltip-text2"><strong>Euclid</strong>, also known as Euclid of Alexandria, was a Greek mathematician, often referred to as the "Father of Geometry".
-                            <a href="http://en.wikipedia.org/wiki/Euclid">Wikipedia</a>
-                          </span>
-                        </span>
-                        </span>
-                      <br> <small class="text-muted">J.R.R. Tolkien</small> </b>  
-                       
-                      
-                    </td>
-                    <td>Particular</td>
-                    <td>
-                        <button type="button" class="btn waves-effect waves-light btn-sm btn-success">
-                          <i class="mdi mdi-plus"></i>
-                        </button>
-                    </td> 
-                  </tr>
-                  <tr>
-                      <td>1456</td>
-                      <td><b>El señor de los anillos la batalla de los Bastardos</b> </td>
-                      <td>Ing. en Sistemas de Informacion Hidraulica de los Fluidos</td>
-                      <td>
-                          <button type="button" class="btn waves-effect waves-light btn-sm btn-success">
-                            <i class="mdi mdi-plus"></i>
-                          </button>
-                      </td> 
-                  </tr>
-              </tbody>
-            </table>
-          
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-body">
-          <app-files [reload]="reloadFiles" [file]="searchFilter"></app-files>
+          <app-files [reload]="reloadFiles" [file]="searchFilter" (emitAddFileToTask)="addFileToTask($event)"></app-files>
         </div>
       </div>
     </div>
@@ -230,3 +164,4 @@
     <app-task-menu></app-task-menu>
   </div> -->
 </div>
+<app-order-print class="printMe"></app-order-print>

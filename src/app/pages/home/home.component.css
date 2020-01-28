@@ -10,9 +10,58 @@ td.mat-column-quantity {
     justify-content: center !important;
     align-items: center !important;
 }
-.mat-header-row {
-    text-transform: uppercase;
-}
+table {
+    width: 100%;
+  }
+  
+
 .mat-header-cell {
-    color: #7460ee;
+    color: #1e88e5;
+}
+.mat-row {
+    height: auto !important;
+    min-height: 48px;
+}
+tr.example-detail-row {
+    height: 0;
+}
+
+.example-element-row td {
+    border-bottom-width: 0;
+}
+
+.example-element-detail {
+    overflow: hidden;
+    display: flex;
+    /* flex-flow: row; */
+}
+
+.example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+}
+
+.example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+}
+
+.example-element-description {
+    padding: 16px;
+}
+
+.example-element-description-attribution {
+    opacity: 0.5;
+}
+
+.example-container > div {
+    padding-left: 15px;
+}
+hr {
+    margin: 0.5em auto;
 }

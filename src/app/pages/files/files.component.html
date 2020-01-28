@@ -32,11 +32,11 @@
             <i class="fa fa-ban"></i>
           </button> -->
           <button class="btn btn-sm btn-danger" [hidden]="!fileListOptions.delete"
-                  (click)="deleteFile(element)" style="margin-right: 2px" matTooltip="Eliminar archivo">
+                  (click)="deleteFile(element); $event.stopPropagation()" style="margin-right: 2px" matTooltip="Eliminar archivo">
             <i class="mdi mdi-close"></i>
           </button>
           <button [hidden]="!fileListOptions.delete" [hidden]="!fileListOptions.add" matTooltip="Añadir a orden"
-                  class="btn waves-effect waves-light btn-sm btn-success" type="button">
+                  (click)="addFileToTask(element); $event.stopPropagation()" class="btn waves-effect waves-light btn-sm btn-success" type="button">
             <i class="mdi mdi-plus"></i>
           </button>
         </td>
@@ -54,18 +54,29 @@
               <div class="example-element-position"> {{element.name}} </div>
               <!-- <div class="example-element-symbol"> {{element.created_at}} </div> -->
               <!-- <div class="example-element-name"> {{element.from_id.name}} </div> -->
-              <div class="example-element-weight"> {{element.year}} </div>
+              <!-- <div class="example-element-weight"> {{element.year}} </div> -->
             </div>
             <div class="example-element-description">
-              {{element.name}} 
+              <ng-container *ngIf="element.career_id; else noCareer">
+                <span class="text-blue">
+                  {{element.career_id.name}} 
+                </span> 
+              </ng-container>
+              <ng-template #noCareer>
+                <span class="text-blue">
+                  No hay carrera asociada.
+                </span> 
+              </ng-template>
               <br>
-              <b>Creado:</b> {{element.created_at}} <br> 
-              <span class="example-element-description-attribution"> -- Wikipedia </span>
+              <b class="bold">Creado:</b> {{element.created_at}} <br> 
+              <span class="example-element-description-attribution"> 
+                <b class="bold">ID: </b>
+                {{ element._id }} 
+              </span>
             </div>
           </div>
         </td>
       </ng-container>
-
       <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
       <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
           class="example-element-row"
@@ -75,7 +86,7 @@
       <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
     </table>
   
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
 
   <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
   <!-- <ng-container matColumnDef="expandedDetail">

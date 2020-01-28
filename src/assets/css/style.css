@@ -5244,18 +5244,22 @@ table.dataTable thead .sorting:after {
     flex: 1;
     cursor: pointer;
 }
-.tooltip-status.completed, .tooltip-item.completed {
-    background-color: #26c6da
+.tooltip-status.processed, .tooltip-item.processed {
+    background-color: #ffb22b
 }
 .tooltip-status.in_progress, .tooltip-item.in_progress {
-    background-color: #ffb22b
+    background-color: #26c6da
+}
+.tooltip-status.completed, .tooltip-item.completed {
+    background-color: #2cb414
 }
 .tooltip-status.canceled, .tooltip-item.canceled {
     background-color: #fc4b6c
 }
-.tooltip-status.processed, .tooltip-item.processed {
+.tooltip-status.delivered, .tooltip-item.delivered {
     background-color: #1e88e5
 }
+
 
 .tooltip-effect-5 .tooltip-content {
     width: 180px;

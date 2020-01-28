@@ -38,8 +38,6 @@ export class AddFileComponent implements OnInit {
     public reloadFiles: Subject<boolean> = new Subject();
     public searchFilter: BehaviorSubject<string> = new BehaviorSubject('');
     
-    
-    
     constructor(
         private _origin: OriginService,
         private _file: FileService

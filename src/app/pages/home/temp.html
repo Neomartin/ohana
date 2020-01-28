@@ -1,0 +1,58 @@
+<!-- Books/Files Column -->
+<ng-container matColumnDef="details">
+    <th mat-header-cell *matHeaderCellDef fxFlex="40" fxLayoutAlign="start center"> Libros/Archivos </th>
+    <td mat-cell *matCellDef="let row" fxFlex="40" fxLayoutAlign="start center">
+      <span *ngFor="let item of row.items">
+          {{ item.file_id.name }} 
+      </span> 
+    </td>
+  </ng-container>
+
+  <!-- Status Column -->
+  <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="80px" fxLayoutAlign="start center"> Estado </th>
+      <td mat-cell *matCellDef="let row; let i = dataIndex" fxFlex="80px" fxLayoutAlign="start center"> 
+
+        <span class="mytooltip tooltip-effect-4 f-14">
+            <span class="tooltip-item status" [ngClass]="row.status">
+              <span *ngIf="row.status === 'processed'">Pendiente</span>
+              <span *ngIf="row.status === 'in_progress'">En proceso</span>
+              <span *ngIf="row.status === 'completed'">Terminado</span>
+              <span *ngIf="row.status === 'canceled'">Cancelado</span>
+            </span>
+            <span class="tooltip-content status clearfix">
+              <!-- <img src="../assets/images/tooltip/Euclid.png"> -->
+              <span class="tooltip-status processed" (click)="orderStatus(row._id, 'processed', i)" matTooltip="Pendiente">P</span>
+              <span class="tooltip-status in_progress" (click)="orderStatus(row._id, 'in_progress', i)" matTooltip="En proceso">EP</span>
+              <span class="tooltip-status completed" (click)="orderStatus(row._id, 'completed', i)" matTooltip="Terminado">T</span>
+              <span class="tooltip-status canceled" (click)="orderStatus(row._id, 'canceled', i)" matTooltip="Cancelado">C</span>
+            </span>
+          </span>
+          <!-- </span> -->  
+      </td>
+  </ng-container>
+  <!-- Quantity Column -->
+  <ng-container matColumnDef="quantity">
+    <th mat-header-cell *matHeaderCellDef fxFlex="50px" fxLayoutAlign="start center"> Cant </th>
+    <td mat-cell *matCellDef="let row" fxFlex="50px" fxLayoutAlign="center center">
+        <span class="text-center" *ngFor="let item of row.items">
+            {{ item.quantity }}
+        </span> 
+    </td>
+  </ng-container>
+
+  <!-- Price Column -->
+  <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef  fxFlex="64px" fxLayoutAlign="start center"> Total </th>
+      <td mat-cell *matCellDef="let row" fxFlex="64px" fxLayoutAlign="start center">
+             <b class="normal f-16 text-black">$ {{ row.total }}</b> 
+      </td>
+    </ng-container>
+    <!-- Price Column -->
+  <ng-container matColumnDef="end_at">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="100px" fxLayoutAlign="center center"> Creado/ <br>Entrega </th>
+      <td mat-cell *matCellDef="let row" fxFlex="100px" fxLayout="column" fxLayoutAlign="center center">
+        <span class="text-primary">{{ row.end_at | amFromUnix | amDateFormat: 'DD-MM-YYYY' }}</span>
+        <span class="text-muted f-10">IN: {{ row.created_at | amFromUnix | amDateFormat: 'DD-MM-YYYY' }}</span> 
+      </td>
+  </ng-container>

@@ -19,10 +19,16 @@
 .text-black {
     color: #000
 }
+.text-orange {
+    color: #dd8902;
+}
 .date {
     padding: 15px 10px;
 }
 /* FUENTES */
+.s {
+    text-decoration: underline;
+}
 .normal {
     font-weight: 500;
 }
@@ -31,6 +37,27 @@
 }
 .bolder {
     font-weight: 900;
+}
+.text-right {
+    text-align: right;
+}
+.f-06em {
+    font-size: 0.6em;
+}
+.f-08em  {
+    font-size: 0.8em;
+}
+.f-12em  {
+    font-size: 1.2em;
+}
+.f-32 {
+    font-size: 32px !important;
+}
+.f-28 {
+    font-size: 28px !important;
+}
+.f-24 {
+    font-size: 24px !important;
 }
 .f-20 {
     font-size: 20px !important;
@@ -57,9 +84,14 @@
 .full-width {
     width: 100% !important;
 }
-
+.w-60p {
+    width: 60% !important;
+}
 .w-55 {
     width: 55px;
+}
+.w-70 {
+    width: 70px;
 }
 .w-250 {
     width: 250px;
@@ -79,7 +111,24 @@
 .libros td:last-child {
     width: 40px
 }
+.p-l-15 {
+    padding-left: 15px;
+}
+.p-l-20 {
+    padding-left: 20px;
+}
+.p-l-25 {
+    padding-left: 25px;
+}
 
+tr.example-element-row:not(.example-expanded-row):hover {
+    background: rgb(196, 236, 255);
+    cursor: pointer;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: rgb(131, 211, 248);
+  }
 .mat-header-cell {
     color: #1e88e5;
     font-size: 1em;
@@ -97,11 +146,84 @@ tr.mat-row:not(.example-expanded-row):hover {
 }
 
 .example-element-diagram {
-    max-width: 100px;
+    width: 105px;
     text-align: center;
+    height: auto !important;
+    min-height: 104px !important;
 }
 
 .btn-sm {
     padding: .25rem .25rem;
     font-size: 12px;
+}
+.add-task-total {
+    font-size: 1.5em;
+}
+span.mat-option-text {
+    display: flex !important;
+}   
+.mat-option-text[span]:last-child {
+    flex: 1;
+}   
+.order-detail-date>div {
+    border: 1px  solid #e0e0e0;
+    padding: 7px;
+}
+
+
+/* IMPRESIÓN */
+
+app-order-print {
+    margin-left: -75px;
+    font-size: 0.8rem;
+}
+
+app-order-print hr{
+    border: 1px solid #333;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.order-logo-wrapper {
+    border: 2px solid #333;
+    /* padding: 15px 10px; */
+    margin-right: 20px;
+    height: 184px;
+}
+.order-logo-wrapper > img {
+    width: 180px;
+    height: 180px;
+}
+.order-info-wrapper {
+    margin-left: 10px;
+    padding-left: 10px;
+    border-left: 5px solid transparent; /* For Safari 5.1 to 6.0 */
+    border-image: linear-gradient(to bottom, #b827fc 0%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1892 100%);
+    border-image-slice: 1;
+}
+.order-print-books {
+    border-top: 1px solid #e0e0e0;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+.order-print-items {
+   border-bottom: 1px solid #e0e0e0;
+}
+
+@media print {
+    header, app-sidebar, app-breadcumbs, .noDisplay, app-footer
+    .left-sidebar, matTooltip {
+        display: none !important;
+    }
+    /* .noPrint {
+        visibility: hidden !important;
+    } */
+    .printMe * {
+        visibility: visible !important;
+    } 
+  }
+
+@media screen {
+    .printMe {
+        visibility: hidden;
+    }
 }

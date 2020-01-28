@@ -16,6 +16,7 @@ const routes: Routes = [
         children: [
             { path: 'home', component: HomeComponent, data: { title: 'HomeComponent'} },
             { path: 'orders', component: OrdersComponent, data: { title: 'Ordenes'}},
+            { path: 'add-task/:id', component: AddTaskComponent, data: { title: 'Añadir/Quitar Tarea'} },
             { path: 'add-task', component: AddTaskComponent, data: { title: 'Añadir/Quitar Tarea'} },
             { path: 'add-file', component: AddFileComponent, data: { title: 'Añadir o Quitar Archivo'}},
             { path: 'autocomplete', component: AutocompleteComponent, data: { title: 'Autocomplete'}},

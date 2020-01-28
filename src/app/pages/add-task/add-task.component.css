@@ -13,3 +13,14 @@ label {
 [class^="col-"] {
     padding: 5px;
 }
+
+input.center {
+    text-align: center;
+}
+
+.dFlex {
+    flex: 1;
+}
+.mat-option:hover {
+    background-color: rgba(0,0,0,.1) !important;
+}

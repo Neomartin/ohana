@@ -2,7 +2,7 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <table mat-table [dataSource]="dataSource" fxFlex>
+        <table mat-table [dataSource]="dataSource" fxFlex *ngIf="dataSource">
           <ng-container  matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>
               Nombre y Apellido
@@ -12,13 +12,17 @@
                 {{ client.name + ' ' + client.surname }}
               </div>
               <div *ngIf="client._id === editable">
-                <input type="text" matInput placeholder="nombre" [(ngModel)]="dataSource[i].name" name="name" style="margin-right: 4px;"/>
-                <input type="text" matInput placeholder="apellido" [(ngModel)]="dataSource[i].surname" name="surname"/>
+                <mat-form-field fxFlex style="margin-right: 7px;">
+                  <input type="text" matInput placeholder="nombre" [(ngModel)]="dataSource[i].name" name="name" />
+                </mat-form-field>
+                <mat-form-field fxFlex class="m-r-20">
+                  <input type="text" matInput placeholder="apellido" [(ngModel)]="dataSource[i].surname" name="surname"/>
+                </mat-form-field>
               </div>
             </td>            
           </ng-container>
-          <ng-container matColumnDef="phone">
-            <th mat-header-cell *matHeaderCellDef>
+          <ng-container matColumnDef="phone" >
+            <th mat-header-cell *matHeaderCellDef >
               Teléfono
             </th>
             <td mat-cell *matCellDef="let client; let i = index">
@@ -28,16 +32,19 @@
                     Sin Teléfono
                   </ng-container>
                   <ng-template #elsePhone>
-                    {{ phone + ' ' + 'k: ' + k}}
+                    {{ phone }}
                   </ng-template>
                 </div>
                 <div *ngIf="client._id === editable">
-                  <input type="text" matInput placeholder="Teléfono" [(ngModel)]="dataSource[i].phone[k]" name="phone"/>
+                  <mat-form-field fxFlex="200px">
+                    <input type="text" matInput
+                          [(ngModel)]="dataSource[i].phone[k]" name="phone"/>
+                  </mat-form-field>
                 </div>
               </span>
             </td>
           </ng-container>
-          <ng-container matColumnDef="email">
+          <ng-container matColumnDef="email" fxFlex="250px">
             <th mat-header-cell *matHeaderCellDef>
               Email
             </th>
@@ -51,12 +58,14 @@
                 </ng-template>
               </div>
               <div *ngIf="client._id === editable">
-                <input type="text" matInput placeholder="email" 
-                       [(ngModel)]="dataSource[i].email" name="email"/>
+                <mat-form-field fxFlex class="m-r-20">
+                  <input type="text" matInput 
+                        [(ngModel)]="dataSource[i].email" name="email"/>
+                </mat-form-field>
               </div>
             </td>
           </ng-container>
-          <ng-container matColumnDef="role">
+          <ng-container matColumnDef="role" fxFlex="160px">
             <th mat-header-cell *matHeaderCellDef>
               Tipo
             </th>
@@ -64,6 +73,10 @@
               {{ client.role }}
             </td>
           </ng-container>
+          <!-- <ng-container matColumnDef="office" *ngIf="currentUser.role === 'ADMIN_ROLE'" fxFlex="160px">
+            San Rafael - Olascoaga 21
+          </ng-container> -->
+          
           <ng-container matColumnDef="options">
             <th mat-header-cell *matHeaderCellDef>
               Tipo

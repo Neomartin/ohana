@@ -2,12 +2,12 @@
   <div class="col-lg-6 col-xl-5">
     <div class="card m-b-5 p-r-5">
       <div class="card-body">
-            <h4 class="card-title">
+            <h3 class="card-title text-orange">
               BUSCAR ARCHIVO
-            </h4>
-            <button class="btn btn-success" (click)="resetForm()">
+            </h3>
+            <!-- <button class="btn btn-success" (click)="resetForm()">
               Resetear formulario
-            </button>
+            </button> -->
             <!-- <h6 class="card-subtitle">
               Editar archivos visibles en el sistema.
             </h6> -->
@@ -152,7 +152,6 @@
     </div>
   </div>
     <div class="col-lg-6 col-xl-7">
-      
       <div class="card">
         <div class="card-body">
           <app-files [reload]="reloadFiles" [file]="searchFilter" (emitAddFileToTask)="addFileToTask($event)"></app-files>
@@ -164,4 +163,6 @@
     <app-task-menu></app-task-menu>
   </div> -->
 </div>
-<app-order-print class="printMe"></app-order-print>
+<div class="col-lg-9 col-xs-12">
+  <app-order-print class="printMe"></app-order-print>
+</div>

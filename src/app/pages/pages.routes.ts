@@ -9,6 +9,8 @@ import { AddTaskComponent } from './add-task/add-task.component';
 import { AddFileComponent } from './add-file/add-file.component';
 import { OrdersComponent } from './orders/orders.component';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ProfileStatisticsComponent } from '../components/profile-statistics/profile-statistics.component';
 
 const routes: Routes = [
     {   path: '',
@@ -23,6 +25,8 @@ const routes: Routes = [
             { path: 'add-task', component: AddTaskComponent, data: { title: 'Añadir/Quitar Tarea'} },
             { path: 'add-file', component: AddFileComponent, data: { title: 'Añadir o Quitar Archivo'}},
             { path: 'autocomplete', component: AutocompleteComponent, data: { title: 'Autocomplete'}},
+            { path: 'profile/:id', component: ProfileComponent, data: { title: 'Perfil del Usuario'}},
+            { path: 'statistics', component: ProfileStatisticsComponent, data: { title: 'Perfil del Usuario'}},
             { path: '', redirectTo: '/home', pathMatch: 'full'},
         ]
     },

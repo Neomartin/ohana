@@ -1,0 +1,16 @@
+.card {
+    border: none !important;
+    border-radius: 0%;
+}
+
+.card > * {
+    color: white !important;
+}
+.form-control {
+    color: white !important;
+}
+
+.login-icon > img {
+    width: 100px;
+    margin-bottom: 10px;
+}

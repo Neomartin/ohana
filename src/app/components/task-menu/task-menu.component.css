@@ -8,3 +8,24 @@
 .contact-widget .round {
     font-size: 21px
 }
+
+img.task-menu-orders {
+    width: 95px !important;
+   
+}
+
+.orders-count {
+    padding: 6px;
+}
+tr:first-child {
+    z-index: 10;
+}
+.orders-qty {
+    background-color: black;
+    margin-left: -60px;
+    padding-left: 70px;
+    padding-top: 10px;
+    z-index: 5;
+    height: 80px;
+    margin-top: 20px;
+}

@@ -9,6 +9,7 @@ export class TaskMenuComponent implements OnInit {
   public date = new Date();
   public ordersQtyToday = 0;
   public ordersQtyLater = 0;
+  public allOrders = false;
   constructor() { }
 
   ngOnInit() {

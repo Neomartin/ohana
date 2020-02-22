@@ -17,6 +17,11 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from '../login/register/register.component';
 import { LoginComponent } from '../login/login/login.component';
 import { PAGES_ROUTES } from './pages.routes';
+import { AddUserComponent } from '../components/add-user/add-user.component';
+import { OrdersComponent } from './orders/orders.component';
+import { FilesComponent } from './files/files.component';
+import { AutocompleteComponent } from './autocomplete/autocomplete.component';
+import { ProfileComponent } from './profile/profile.component';
 
 //Modules
 import { MomentModule } from 'ngx-moment';
@@ -27,25 +32,24 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 // import {MatDatepickerModule} from '@angular/material/datepicker';
 //Material Modules
 import { FlexLayoutModule } from '@angular/flex-layout';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
+import { MatButtonModule} from '@angular/material/button';
+import { MatIconModule} from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatTabsModule} from '@angular/material/tabs';
+import { MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { OrdersComponent } from './orders/orders.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { AutocompleteComponent } from './autocomplete/autocomplete.component';
-import {MatSelectModule} from '@angular/material/select';
-import { FilesComponent } from './files/files.component';
+import { MatSelectModule} from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
-import {MatSnackBarModule } from '@angular/material/snack-bar';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ProfileStatisticsComponent } from '../components/profile-statistics/profile-statistics.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -61,6 +65,9 @@ import {MatSnackBarModule } from '@angular/material/snack-bar';
     FilesComponent,
     OrderPrintComponent,
     UsersComponent,
+    AddUserComponent,
+    ProfileComponent,
+    ProfileStatisticsComponent,
   ],
   imports: [
     CommonModule,
@@ -88,7 +95,9 @@ import {MatSnackBarModule } from '@angular/material/snack-bar';
     MatTooltipModule,
     MatSelectModule,
     MatSortModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule,
+    NgxChartsModule
   ],
   exports: [
     NotFoundComponent,
@@ -97,7 +106,10 @@ import {MatSnackBarModule } from '@angular/material/snack-bar';
     LoginComponent,
     TaskMenuComponent,
     OrderPrintComponent,
-    UsersComponent
-  ]
+    UsersComponent,
+    ProfileComponent,
+    ProfileStatisticsComponent,
+  ],
+  entryComponents: [AddUserComponent]
 })
 export class PagesModule { }

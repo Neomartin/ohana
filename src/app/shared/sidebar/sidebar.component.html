@@ -2,18 +2,16 @@
   <!-- Sidebar scroll-->
   <div class="scroll-sidebar">
       <!-- User profile -->
-      <div class="user-profile" style="background: url(../assets/images/background/background.jpg) no-repeat;">
+      <div class="user-profile" style="background: url(../assets/images/background/bg.jpg) no-repeat;">
           <!-- User profile image -->
           <div class="profile-img"> <img src="../assets/images/user.jpg" alt="user" /> </div>
           <!-- User profile text-->
           <div class="profile-text"> 
               <a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
-                  Martin Rodriguez
+                  {{ localUser.user.name + ' ' + localUser.user.surname }}
               </a>
               <div class="dropdown-menu animated flipInY">
-                  <a href="#" class="dropdown-item"><i class="ti-user"></i> My Profile</a>
-                  <a href="#" class="dropdown-item"><i class="ti-wallet"></i> My Balance</a>
-                  <a href="#" class="dropdown-item"><i class="ti-email"></i> Inbox</a>
+                  <a [routerLink]="['/profile', localUser.user._id]" href="" class="dropdown-item"><i class="ti-user"></i> Mi Perfil</a>
                   <div class="dropdown-divider"></div> <a href="#" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a>
                   <div class="dropdown-divider"></div> <a href="pages-login.html" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
               </div>
@@ -29,7 +27,8 @@
                           <i [class]="m.icon"></i><span class="hide-menu">{{ m.title}}</span>
                   </a>
                   <a *ngIf="!m.url" class="has-arrow waves-effect waves-dark" aria-expanded="false">
-                      <i [class]="m.icon"></i><span class="hide-menu">{{ m.title}}</span>
+                      <i [class]="m.icon"></i>
+                      <span class="hide-menu">{{ m.title}}</span>
                   </a>
                       <ul *ngIf="m.submenu" aria-expanded="false" class="collapse">
                           <li>
@@ -48,17 +47,11 @@
                      class="has-arrow waves-effect waves-dark" aria-expanded="false">
                       <i class="mdi mdi-logout"></i><span class="hide-menu">Logout</span>
                     </a>
-                  <!-- <ul aria-expanded="false" class="collapse">
-                      <li><a href="layout-single-column.html">1 Column</a></li>
-                      <li><a href="layout-fix-header.html">Fix header</a></li>
-                      <li><a href="layout-fix-sidebar.html">Fix sidebar</a></li>
-                      <li><a href="layout-fix-header-sidebar.html">Fixe header &amp; Sidebar</a></li>
-                      <li><a href="layout-boxed.html">Boxed Layout</a></li>
-                      <li><a href="layout-logo-center.html">Logo in Center</a></li>
-                  </ul> -->
               </li>
           </ul>
+         
       </nav>
+      
       <!-- End Sidebar navigation -->
   </div>
   <!-- End Sidebar scroll-->

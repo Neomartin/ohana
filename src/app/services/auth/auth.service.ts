@@ -1,81 +1,52 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
-import { AngularFireAuth } from '@angular/fire/auth';
+// import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
+// import { AngularFireAuth } from '@angular/fire/auth';
 import { map } from 'rxjs/operators';
 import { UserModel } from 'src/app/models/user.model';
 import swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { URL} from '../../config/config';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { UserData } from 'src/app/pages/home/home.component';
 
-interface User {
-    uid: string,
-    email: string,
-    displayName: string,
-    photoURL: string
-}
+// interface User {
+//     uid: string;
+//     email: string;
+//     displayName: string;
+//     photoURL: string;
+// }
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-    user: User = <User>{};
-    public userData: Observable<UserModel>;
+    private user: UserModel;
+    private URL: URL;
+    public userLogged;
+    public userData = new Subject<any>();
+    // public data = this.userData.asObservable();
     public loguedIn = false;
-    // authState: any = null;
+    private headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8')
 
     constructor(
-        private afAuth: AngularFireAuth,
-        private afs: AngularFirestore,
-        private router: Router
-    ) {
-        this.afAuth.authState.subscribe( (user: any) => {
-            if (user && user !== null) {
-                // console.log(user.uid);
-                console.log('Logueado');
-                this.user.uid = user.uid;
-                this.loguedIn = true;
-                console.log(this.loguedIn);
-                this.getUserData(user.uid);
-                // this.router.navigate(['/home']);
-            } else {
-                // this.router.navigate(['/login']);
-                this.loguedIn = false;
-                localStorage.removeItem('user');
-                console.log('NO logueado');
-                this.user = <User>{};
-            }
-        });
-
-    }
-    login(user: string, password: string) {
-        const email = user + '@gmail.com';
-        this.afAuth.auth.signInWithEmailAndPassword(email, password)
-            .then((value: any ) => {
-                // console.log(value);
-                console.log('Nice, it worked!');
-            })
-            .catch(err => {
-                console.log('Algo anda mal: ', err.message);
-            });
+        private _http: HttpClient,
+        private _router: Router
+    ) {   }
+    login(user: string, password: string, remember: boolean) {
+        return this._http.post(URL + '/login', { user, password }, { headers: this.headers });
     }
 
     logout() {
-        this.afAuth.auth.signOut().then( () => console.log('Logout correcto')).catch( err => {
-            // console.log('Error al desloguear');
-            this.loguedIn = false;
-        });
-    }
 
-    getUserData(id: string) {
-        this.afs.doc(`users/${this.user.uid}`).get().subscribe((resp: any) => {
-            this.userData = resp.data();
-            console.log('USER DATA: ', this.userData);
-            // Set localStorage
-            localStorage.setItem('user', JSON.stringify(this.userData));
-            if (localStorage.getItem('user')) {
-                // this.router.navigate(['/home']);
-            }
-        });
+    }
+    getData(): Observable<any> {
+        console.log('llamado al GetDFAf', this.userData);
+        return this.userData.asObservable();
+    }
+    setUserData(userToSave) {
+       console.log('llamado al userToSave', userToSave);
+       this.userData.next(userToSave);
     }
         // return console.log();
     

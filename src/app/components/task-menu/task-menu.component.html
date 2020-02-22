@@ -43,14 +43,35 @@
             </div>
           </a>
           <!-- Message -->
-          <div class="card-body bg-info text-center dark-gray">
+          <div class="card-body text-center dark-gray orders-count" *ngIf="allOrders">
+            <h3 class="text-white card-title m-b-0">
+              CANTIDAD DE ORDENES
+            </h3>
+            <table class="table mb-0  mt-3 table-borderless m-t-0">
+              <tbody>
+                  <tr>
+                      <td class="z-100">
+                        <img src="../assets/images/orders.png" alt="Ordenes" class="task-menu-orders">
+                      </td>
+                      <td class="orders-qty" fxFlex fxLayoutAlign="start center">
+                          <h1 class="card-title text-white m-b-0">
+                            {{ ordersQtyToday }}
+                          </h1>
+                          <!-- <h6 class="card-subtitle">This is a sample text</h6> -->
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+            <!-- <h6 class="card-subtitle text-white m-b-0 op-5">Checkout my contacts here</h6> -->
+          </div>
+          <div class="card-body bg-info text-center dark-gray" *ngIf="!allOrders">
             <h5 class="text-white card-title">
               CANT. DE PEDIDOS PARA MAÑANA
             </h5>
             <span class="round round-success">{{ ordersQtyToday }}</span>
             <!-- <h6 class="card-subtitle text-white m-b-0 op-5">Checkout my contacts here</h6> -->
           </div>
-          <div class="card-body bg-danger text-center">
+          <div class="card-body bg-danger text-center" *ngIf="!allOrders">
             <h5 class="text-white card-title">RESTO DE PEDIDOS</h5>
             <span class="round round-warning">{{ ordersQtyLater }}</span>
           </div>

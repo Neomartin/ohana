@@ -19,16 +19,7 @@ export class UserService {
     private afs: AngularFirestore,
     private _http: HttpClient
     // private afsDoc: AngularFirestoreDocument
-  ) {
-    this.usersCollection = this.afs.collection<UserModel>('users');
-    this.users = this.usersCollection.snapshotChanges().pipe(map(
-      actions => actions.map(a => {
-        const data = a.payload.doc.data() as any;
-        const id = a.payload.doc.id;
-        return { id, ...data };
-      })
-    ));
-   }
+  ) { }
   newClient(user: UserModel) {
     console.log('User service: ', user);
     return this._http.post(URL + '/user', user, { headers: this.headers });
@@ -37,5 +28,11 @@ export class UserService {
   }
   getUsers() {
     return this._http.get(URL + '/user', { headers: this.headers });
+  }
+  updUser(id: string, user: UserModel) {
+    return this._http.put(URL + '/user/' + id, user, { headers: this.headers });
+  }
+  delUser(id: string) {
+    return this._http.delete(URL + '/user/' + id, { headers: this.headers });
   }
 }

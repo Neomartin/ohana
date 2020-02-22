@@ -15,17 +15,16 @@ export class SidebarService {
       // ]
     },
     {
-      title: 'TAREAS',
-      icon: 'mdi mdi-mouse',
+      title: 'Nueva Tarea', url: '/add-task',
+      icon: 'mdi mdi-database-plus',
       // url: '/product',
-      submenu: [
-        { title: 'Ordenes', url: '/orders' },
-        { title: 'Añadir Archivo', url: '/add-file' },
-        { title: 'Nueva Tarea', url: '/add-task' },
-        { title: 'Autocomplete', url: '/autocomplete' },
-
-      ]
+      // submenu: [
+        // { title: 'Autocomplete', url: '/autocomplete' },  //** Eliminar componente */
+        
+      // ]
     },
+    { title: 'Añadir Libro', url: '/add-file', icon: 'mdi mdi-book-open-page-variant' },
+    { title: 'Ordenes', url: '/orders', icon: 'mdi mdi-reorder-horizontal' },
     {
       title: 'Users',
       icon: 'mdi mdi-account-multiple',

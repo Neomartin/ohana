@@ -33,7 +33,7 @@
           </button> -->
           <button class="btn btn-sm btn-danger" [hidden]="!fileListOptions.delete"
                   (click)="deleteFile(element); $event.stopPropagation()" style="margin-right: 2px" matTooltip="Eliminar archivo">
-            <i class="mdi mdi-close"></i>
+            <i class="mdi mdi-delete"></i>
           </button>
           <button [hidden]="!fileListOptions.delete" [hidden]="!fileListOptions.add" matTooltip="Añadir a orden"
                   (click)="addFileToTask(element); $event.stopPropagation()" class="btn waves-effect waves-light btn-sm btn-success" type="button">

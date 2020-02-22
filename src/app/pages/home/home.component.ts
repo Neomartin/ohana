@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private _order: OrderService,
     private _snackBar: MatSnackBar
-  ) { 
+  ) {
   } // constructor
 
   ngOnInit() {
@@ -94,23 +94,23 @@ export class HomeComponent implements OnInit {
 
   reloadTable () {
     this.dataSource = new MatTableDataSource(this.orders);
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.filterPredicate = (data, filter: string) => {
-            const transformedFilter = filter.trim().toLowerCase();
-            const listAsFlatString = (obj): string => {
-              let returnVal = '';
-              Object.values(obj).forEach((val) => {
-                if (typeof val !== 'object') {
-                  returnVal = returnVal + ' ' + val;
-                } else if (val !== null) {
-                  returnVal = returnVal + ' ' + listAsFlatString(val);
-                }
-              });
-              return returnVal.trim().toLowerCase();
-            };
-            return listAsFlatString(data).includes(transformedFilter);
-          };
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.filterPredicate = (data, filter: string) => {
+      const transformedFilter = filter.trim().toLowerCase();
+      const listAsFlatString = (obj): string => {
+        let returnVal = '';
+        Object.values(obj).forEach((val) => {
+          if (typeof val !== 'object') {
+            returnVal = returnVal + ' ' + val;
+          } else if (val !== null) {
+            returnVal = returnVal + ' ' + listAsFlatString(val);
+          }
+        });
+        return returnVal.trim().toLowerCase();
+      };
+      return listAsFlatString(data).includes(transformedFilter);
+    };
   }
   
   filterByDate(orders) {

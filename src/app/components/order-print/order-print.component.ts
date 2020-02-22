@@ -14,7 +14,6 @@ export class OrderPrintComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    
   }
 
   print(data: any) {

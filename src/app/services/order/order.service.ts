@@ -24,6 +24,10 @@ export class OrderService {
       return this._http.get(this.url + '/order');
     }
   }
+  getOrders(parameters = null) {
+    // filtro como parametro de getOrder
+      return this._http.post(this.url + '/orders/', parameters, { headers: this.headers });
+  }
   newOrder(order) {
     return this._http.post(URL + '/order', order, { headers: this.headers });
   }

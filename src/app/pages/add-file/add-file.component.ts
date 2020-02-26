@@ -37,7 +37,6 @@ export class AddFileComponent implements OnInit {
     public yearSelected = 'No corresponde';
     public reloadFiles: Subject<boolean> = new Subject();
     public searchFilter: BehaviorSubject<string> = new BehaviorSubject('');
-    
     constructor(
         private _origin: OriginService,
         private _file: FileService
@@ -150,7 +149,7 @@ export class AddFileComponent implements OnInit {
               },
                 error  => {
                   swal.fire({
-                    type: 'success',
+                    icon: 'success',
                     title: 'Carga finalizada',
                     html:
                       '<span class="text-red">Error al agregar institución</span> <pre><code>' +
@@ -186,13 +185,13 @@ export class AddFileComponent implements OnInit {
         }, err => {
           // console.log(err);
             swal.fire({
-              type: 'error',
+              icon: 'error',
               title: 'Oops...',
-              html: 'No se agrego <b>carrera</b>! <br>' + 
-                    '<span class="text-red">' + err.error.message +'</span>',
-            })
+              html: 'No se agrego <b>carrera</b>! <br>' +
+                    '<span class="text-red">' + err.error.message + '</span>',
+            });
         });
-      })
+      });
     }
     // ***********FILTROS*********** //
     private _filterFrom(value): string[] {
@@ -272,7 +271,7 @@ export class AddFileComponent implements OnInit {
       if (resp.ok) {
         swal.fire({
           position: 'bottom-end',
-          type: 'success',
+          icon: 'success',
           title: resp.message,
           text: resp.saved.name,
           timer: 1000
@@ -289,7 +288,7 @@ export class AddFileComponent implements OnInit {
       console.log(err);
       const error = JSON.stringify(err.error.message);
       swal.fire({
-        type: 'error',
+        icon: 'error',
         title: 'Error al crear archivo',
         html: error + '<br>' + error,
       });

@@ -52,11 +52,10 @@
       </div>
       <!-- <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#home" role="tab" aria-selected="true">Timeline</a>
             </li> -->
-      <mat-tab-group>
+      <mat-tab-group (selectedTabChange)="onTabChange($event)">
         <mat-tab label="Perfil">
           <div class="tab-pane" id="profile" role="tabpanel">
             <div class="card-body">
-               
               <div class="row">
                 <div class="col-md-5 col-xs-6 border-right ">
                   <strong class="text-gray semi-bold">Nombre Completo</strong>
@@ -81,76 +80,75 @@
                   <br>
                   <p class="">{{ localUser.user.email }}</p>
                 </div>
-                <!-- <div class="col-md-3 col-xs-6"> <strong>Location</strong>
-                                <br>
-                                <p class="text-muted">London</p>
-                            </div> -->
               </div>
               <hr class="m-b-0">
               <!-- <a href="" [routerLink]="['/statistics']">Estadisticas</a> -->
-              <app-profile-statistics>
 
-              </app-profile-statistics>
-              <br>
-              <br>
-              <br>
-              <br>
-              <p class="mt-3">
-                <strong>Frase motivacional:</strong>
-                <ng-container *ngIf="localUser.user.observations; else elseObservations">
-                  <p> {{ localUser.user.observations }} </p>
-                </ng-container>
-                <ng-template #elseObservations>
-                  <p class="text-info text-center">
-                    <i class="f-24">
-                      “Todo lo que necesitas para ser feliz se encuentra al otro lado de tus miedo.”
-                    </i>
+              <div>
+                
+
+
+                <p class="mt-3">
+                  <strong>Frase motivacional:</strong>
+                  <ng-container *ngIf="localUser.user.observations; else elseObservations">
+                    <p> {{ localUser.user.observations }} </p>
+                  </ng-container>
+                  <ng-template #elseObservations>
+                    <p class="text-info text-center">
+                      <i class="f-24">
+                        “Todo lo que necesitas para ser feliz se encuentra al otro lado de tus miedo.”
+                      </i>
+                    </p>
+                  </ng-template>
+                  <!-- <hr> -->
+                  <!-- <h2 class="text-center bold">OhanaCop</h2> -->
+                  <p class="text-center">
+                    <img src="../assets/images/background/motivadora.jpg" alt="">
                   </p>
-                </ng-template>
-                <!-- <hr> -->
-                <!-- <h2 class="text-center bold">OhanaCop</h2> -->
-                <p class="text-center">
-                  <img src="../assets/images/background/motivadora.jpg" alt="">
-                </p>
-
+              </div>
             </div>
           </div>
         </mat-tab>
         <mat-tab label="Estadísticas">
           <div class="tab-pane" id="profile" role="tabpanel">
             <div class="card-body">
-              <h3>
-                Estadísticas
-              </h3> 
-              <hr>
-              
-              <h4 class="font-medium mt-4">Skill Set</h4>
-              <hr>
-              <h5 class="mt-4">Entregas <span class="pull-right">80%</span></h5>
-              <div class="progress">
-                <div class="progress-bar bg-success" role="progressbar" aria-valuenow="80" aria-valuemin="0"
-                  aria-valuemax="100" style="width:80%; height:6px;">
-                  <span class="sr-only">50% Complete</span> </div>
-              </div>
-              <h5 class="mt-4">Terminados <span class="pull-right">90%</span></h5>
-              <div class="progress">
-                <div class="progress-bar bg-info" role="progressbar" aria-valuenow="90" aria-valuemin="0"
-                  aria-valuemax="100" style="width:90%; height:6px;">
-                  <span class="sr-only">50% Complete</span> </div>
-              </div>
-              <h5 class="mt-4">En proceso <span class="pull-right">50%</span></h5>
-              <div class="progress">
-                <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="50" aria-valuemin="0"
-                  aria-valuemax="100" style="width:50%; height:6px;">
-                  <span class="sr-only">50% Complete</span> </div>
-              </div>
-              <h5 class="mt-4">Cancelados <span class="pull-right">70%</span></h5>
-              <div class="progress">
-                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="70" aria-valuemin="0"
-                  aria-valuemax="100" style="width:70%; height:6px;">
-                  <span class="sr-only">50% Complete</span> </div>
-              </div>
+              <div class="row">
+                <div fxFlex="100">
+                  Resumen:
+                </div>
+                <app-profile-statistics  id="sta" fxFlex>
+                </app-profile-statistics>
+                <div fxFlex="100" class="p-r-10 p-l-10 statistics-progress">
+                  <h4 class="font-medium mt-4">Skill Set</h4>
+                  <hr>
+                  <h5 class="mt-4">Entregas <span class="pull-right">80%</span></h5>
+                  <div class="progress">
+                    <div class="progress-bar bg-info" role="progressbar" aria-valuenow="80" aria-valuemin="0"
+                      aria-valuemax="100" style="width:80%; height:6px;">
+                      <span class="sr-only">50% Complete</span> </div>
+                  </div>
+                  <h5 class="mt-4">Terminados <span class="pull-right">90%</span></h5>
+                  <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar" aria-valuenow="90" aria-valuemin="0"
+                      aria-valuemax="100" style="width:90%; height:6px;">
+                      <span class="sr-only">50% Complete</span> </div>
+                  </div>
+                  <h5 class="mt-4">En proceso <span class="pull-right">50%</span></h5>
+                  <div class="progress">
+                    <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0"
+                      aria-valuemax="100" style="width:50%; height:6px;">
+                      <span class="sr-only">50% Complete</span> </div>
+                  </div>
+                  <h5 class="mt-4">Cancelados <span class="pull-right">70%</span></h5>
+                  <div class="progress">
+                    <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="70" aria-valuemin="0"
+                      aria-valuemax="100" style="width:70%; height:6px;">
+                      <span class="sr-only">50% Complete</span> </div>
+                  </div>
+                </div>
+
             </div>
+          </div>
           </div>
 
         </mat-tab>
@@ -160,14 +158,17 @@
               <form class="form-horizontal form-material">
                 <div class="form-group">
                   <label class="col-md-12">Full Name</label>
-                  <div class="col-md-12">
-                    <input type="text" placeholder="Johnathan Doe" class="form-control form-control-line">
+                  <div class="col-md-6">
+                    <input type="text" [(ngModel)]="localUser.user.name" name="name" placeholder="Nombre" class="form-control form-control-line">
+                  </div>
+                  <div class="col-md-6">
+                    <input type="text" [(ngModel)]="localUser.user.surname" name="surname" placeholder="Apellido" class="form-control form-control-line">
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="example-email" class="col-md-12">Email</label>
                   <div class="col-md-12">
-                    <input type="email" placeholder="johnathan@admin.com" class="form-control form-control-line"
+                    <input type="email" placeholder="Email" name="email" [(ngModel)]="localUser.user.email" class="form-control form-control-line"
                       name="example-email" id="example-email">
                   </div>
                 </div>
@@ -178,13 +179,13 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="col-md-12">Phone No</label>
+                  <label class="col-md-12">Teléfono</label>
                   <div class="col-md-12">
-                    <input type="text" placeholder="123 456 7890" class="form-control form-control-line">
+                    <input type="text" [(ngModel)]="localUser.user.phone" name="phone" placeholder="Teléfono" class="form-control form-control-line">
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="col-md-12">Message</label>
+                  <label class="col-md-12">Frase personal</label>
                   <div class="col-md-12">
                     <textarea rows="5" class="form-control form-control-line"></textarea>
                   </div>
@@ -203,7 +204,7 @@
                 </div>
                 <div class="form-group">
                   <div class="col-sm-12">
-                    <button class="btn btn-success">Update Profile</button>
+                    <button class="btn btn-info">Actualizar</button>
                   </div>
                 </div>
               </form>

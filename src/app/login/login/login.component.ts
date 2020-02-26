@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
       // if(!this.savedUser.remember)
       this._auth.setUserData(saveUser);
       swal.fire({
-        type: 'success',
+        icon: 'success',
         title: 'Login correcto',
         html: 'Redireccionando al <b class="semi-bold">Panel de Tareas</b>',
         timer: 1500,
@@ -76,7 +76,7 @@ export class LoginComponent implements OnInit {
       });
     }, err => {
       swal.fire({
-         type: 'error',
+         icon: 'error',
          title: 'Error al ingresar',
          html: `<p> ${err.error.message} </p>`,
       });

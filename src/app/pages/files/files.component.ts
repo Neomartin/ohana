@@ -95,7 +95,7 @@ export class FilesComponent implements OnInit {
         err = JSON.stringify(err);
         console.log(err);
         swal.fire({
-          type: 'error',
+          icon: 'error',
           title: 'Error al obtener archivos',
           text: err
         });
@@ -116,7 +116,7 @@ export class FilesComponent implements OnInit {
     deleteFile(file) {
       console.log(file);
       swal.fire({
-        type: 'warning',
+        icon: 'warning',
         title: 'Desea eliminar archivo?',
         html: 'Esta a punto de eliminar el siguiente archivo: <br>' +
               '<span class="text-blue">' + file.name + '</span>',
@@ -132,7 +132,7 @@ export class FilesComponent implements OnInit {
             // console.log(resp);
             swal.fire({
               position: 'bottom-end',
-              type: 'success',
+              icon: 'success',
               title: 'Borrado correctamente',
               html: '<span class="text-red">' + file.name + '</span>',
               timer: 1200

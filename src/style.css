@@ -29,6 +29,9 @@
 .text-gray {
     color: #333
 }
+.text-lime {
+    color: #d0ff00;
+}
 .b-red {
     background-color: rgb(255, 0, 0);
     color: #fff;
@@ -44,6 +47,7 @@
     background-color: #000;
     color: #fff;
 }
+
 .b-orange {
     background-color: #dd8902;
 }
@@ -71,6 +75,9 @@
 }
 .text-right {
     text-align: right;
+}
+.text-left {
+    text-align: left;
 }
 .f-06em {
     font-size: 0.6em;
@@ -147,6 +154,9 @@
 }
 .libros td:last-child {
     width: 40px
+}
+.p-0 {
+    padding: 0 !important;
 }
 .p-r-10 {
     padding-right: 10px;
@@ -285,7 +295,10 @@ app-order-print hr{
     margin-bottom: -18px; 
     margin-right: -2px;
 }
-
+.topbar ul.dropdown-user li .dw-user-box {
+    padding-left: 10px;
+    word-wrap: break-word;
+}
 .profile-text a {
     color: #fff;
 }
@@ -315,10 +328,28 @@ background-color: #000;
 .profile-username h2{
 color: rgb(191, 215, 253);
 }
+.statistics-progress {
+    margin-top: -65px;
+}
 .mat-tab-label {
     font-size: 16px;
 }
-
+.tool-wrapper {
+    padding: 10px 0 !important;
+    /* background-color: #fd1892; */
+}
+.tool {
+    color: #fff !important;
+    padding: 2px;
+}
+.tool-wrapper .legend-label-color {
+    display: inline-block;
+    height: 15px;
+    width: 15px;
+    margin-right: 5px;
+    color: #fff;
+    border-radius: 3px;
+}
 @media print {
     header, app-sidebar, app-breadcumbs, .noDisplay, app-footer
     .left-sidebar, matTooltip {

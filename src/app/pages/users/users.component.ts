@@ -6,7 +6,8 @@ import swal from 'sweetalert2';
 import * as cloneDeep from 'lodash/cloneDeep';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import {MatDialog, MatDialogConfig, MatSnackBar} from '@angular/material';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddUserComponent } from 'src/app/components/add-user/add-user.component';
 import { map } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
@@ -88,7 +89,7 @@ export class UsersComponent implements OnInit {
     console.log('Delete Client ID: ', id);
     console.log('Index: ', i);
     swal.fire({
-      type: 'warning',
+      icon: 'warning',
       title: 'Borrar usuario?',
       html: '<p class="text-red">Realmente desea eliminar este usuario?</p>' +
       '<img src="assets/images/trash.svg" width="120px" height="120px">'
@@ -111,7 +112,7 @@ export class UsersComponent implements OnInit {
   updateUser(user: UserModel) {
     console.log('Update user: ', user);
     swal.fire({
-      type: 'info',
+      icon: 'info',
       title: 'Desea actualizar usuario?',
       html: `<h4> ${user.name + ' ' + user.surname}</h4>`,
       showCancelButton: true,
@@ -169,7 +170,7 @@ export class UsersComponent implements OnInit {
           localStorage.setItem('users', JSON.stringify(this.users));
           this.dataSource = new MatTableDataSource(cloneDeep(this.users));
             swal.fire({
-              type: 'success',
+              icon: 'success',
               title: 'Usuario',
               html: '<p>El usuario fue creado correctamente:</p>' +
                      `<p> ${user.stored.name + ' ' + user.stored.surname }</p>`,

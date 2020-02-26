@@ -192,7 +192,7 @@ export class AddTaskComponent implements OnInit {
         this._order.updateOrder(this.order, this.orderID).subscribe( (resp: any) => {
           console.log('UPDATE ORDER: ', resp);
           swal.fire({
-            type: 'info',
+            icon: 'info',
             title: 'Orden Actualizada!',
             text: 'Se ACTUALIZÓ orden se imprimirá orden',
             position: 'bottom-end',
@@ -211,7 +211,7 @@ export class AddTaskComponent implements OnInit {
         this._order.newOrder(this.order).subscribe( (resp: any) => {
           console.log('Respuesta al agregar orden: ', resp);
           swal.fire({
-            type: 'success',
+            icon: 'success',
             title: 'Orden Creada!',
             text: 'Se ORIGINÓ orden y se imprimirá',
             position: 'bottom-end',
@@ -240,7 +240,7 @@ export class AddTaskComponent implements OnInit {
   }
   async inputTry() {
     const { value: newPerson } = await swal.fire({
-      type: 'info',
+      icon: 'info',
       title: 'Nuevo cliente',
       html: 'Ingrese los datos del cliente <br>' +
             '<input type="text class="form-control" name="name" id="name" placeholder="Nombre" class="swal2-input">' +
@@ -277,14 +277,14 @@ export class AddTaskComponent implements OnInit {
         console.log(resp);
         this.getUsers();
         swal.fire({
-          type: 'success',
+          icon: 'success',
           title: 'Cliente creado',
           html: 'Agregado correctamente!<br>' + this.user.name  + ' ' + this.user.surname
         } );
         this.user = new UserModel(null, null, null, null, null);
       }, err => {
         swal.fire({
-          type: 'error',
+          icon: 'error',
           title: 'Error al crear cliente',
           html: err.error.message + '<br>' + err.error.errors.message
         } );
@@ -329,7 +329,7 @@ checkPartialPayment() {
   agregarArchivo() {
     swal.fire({
       position: 'bottom-end',
-      type: 'success',
+      icon: 'success',
       title: 'Libro agregado',
       text: 'Se agrego libro al pedido actual correctamente',
       showConfirmButton: false,

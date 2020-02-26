@@ -80,7 +80,7 @@
                     <span *ngIf="row.status === 'canceled'">Cancelado</span>
                     <span *ngIf="row.status === 'delivered'">Entregado</span>
                   </span>
-                  <span class="tooltip-content status clearfix">
+                  <span class="tooltip-content-status status clearfix">
                     <!-- <img src="../assets/images/tooltip/Euclid.png"> -->
                     <span class="tooltip-status processed bold" (click)="orderStatus(row._id, 'processed', i); $event.stopPropagation()"
                       matTooltip="Pendiente">P</span>

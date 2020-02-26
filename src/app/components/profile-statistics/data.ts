@@ -1,6 +1,6 @@
 export const multi = [
     {
-      'name': 'Task',
+      'name': 'Tareas Recibidar',
       'series': [
         {
             'value': 24,
@@ -26,7 +26,7 @@ export const multi = [
       ]
     },
     {
-      'name': 'End Task',
+      'name': 'Terminadas',
       'series': [
         {
             'value': 51,
@@ -78,7 +78,7 @@ export const multi = [
       ]
     },
     {
-      'name': 'UK',
+      'name': 'Procesadas',
       'series': [
         {
           'value': 21,

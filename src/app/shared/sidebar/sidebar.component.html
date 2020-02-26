@@ -4,11 +4,16 @@
       <!-- User profile -->
       <div class="user-profile" style="background: url(../assets/images/background/bg.jpg) no-repeat;">
           <!-- User profile image -->
-          <div class="profile-img"> <img src="../assets/images/user.jpg" alt="user" /> </div>
+          <div *ngIf="localUser.user.image" class="profile-img"> <img src="{{localUser.user.image}}" alt="user" /> </div>
+          <div *ngIf="!localUser.user.image" class="profile-img"> <img src="../assets/images/user.jpg" alt="user" /> </div>
+
           <!-- User profile text-->
           <div class="profile-text"> 
               <a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
-                  {{ localUser.user.name + ' ' + localUser.user.surname }}
+                  <span class="text-center text-white">
+                    {{ localUser.user.name + ' ' + localUser.user.surname }}
+                  </span>
+                  <!-- <pre>{{ localUser | json }}</pre> -->
               </a>
               <div class="dropdown-menu animated flipInY">
                   <a [routerLink]="['/profile', localUser.user._id]" href="" class="dropdown-item"><i class="ti-user"></i> Mi Perfil</a>
@@ -62,7 +67,7 @@
       <!-- item-->
       <a href="#" class="link" data-toggle="tooltip" title="Email"><i class="mdi mdi-gmail"></i></a>
       <!-- item-->
-      <a (click)="_user.logout()" class="link pointer" data-toggle="tooltip" title="Logout"><i class="mdi mdi-power"></i></a>
+      <a (click)="_auth.logout()" class="link pointer" data-toggle="tooltip" title="Logout"><i class="mdi mdi-power"></i></a>
   </div>
   <!-- End Bottom points-->
 </aside>

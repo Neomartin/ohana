@@ -37,6 +37,7 @@ body {
     font-weight: 300
 }
 
+
 html {
     position: relative;
     min-height: 100%;
@@ -5136,7 +5137,7 @@ table.dataTable thead .sorting:after {
     pointer-events: auto
 }
 
-.mytooltip:hover .tooltip-content {
+.mytooltip:hover .tooltip-content-status {
     pointer-events: auto;
     opacity: 1;
     -webkit-transform: translate3d(0, 0, 0) rotate3d(0, 0, 0, 0);
@@ -5205,7 +5206,7 @@ table.dataTable thead .sorting:after {
     transform: translateX(-50%)
 }
 
-.tooltip-content {
+.tooltip-content-status {
     position: absolute;
     z-index: 9999;
     width: 360px;
@@ -5223,7 +5224,7 @@ table.dataTable thead .sorting:after {
     cursor: default;
     pointer-events: none
 }
-.tooltip-content.status {
+.tooltip-content-status.status {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -5233,14 +5234,14 @@ table.dataTable thead .sorting:after {
     margin-left: -130px;
     width: 260px
 }
-.tooltip-content img {
+.tooltip-content-status img {
     position: relative;
     height: 60px;
     display: block;
     float: left;
     margin-right: 1em
 }
-.tooltip-content .tooltip-status {
+.tooltip-content-status .tooltip-status {
     flex: 1;
     cursor: pointer;
 }
@@ -5261,7 +5262,7 @@ table.dataTable thead .sorting:after {
 }
 
 
-.tooltip-effect-5 .tooltip-content {
+.tooltip-effect-5 .tooltip-content-status {
     width: 180px;
     margin-left: -90px;
     -webkit-transform-origin: 50% calc(106%);
@@ -5283,7 +5284,7 @@ table.dataTable thead .sorting:after {
     padding: 1.4em
 }
 
-.tooltip-content:after {
+.tooltip-content-status:after {
     content: '';
     top: 100%;
     left: 50%;
@@ -5534,7 +5535,7 @@ table.dataTable thead .sorting:after {
     margin-left: -10px
 }
 
-.tooltip-effect-1 .tooltip-content {
+.tooltip-effect-1 .tooltip-content-status {
     -webkit-transform: translate3d(0, -10px, 0);
     transform: translate3d(0, -10px, 0);
     -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
@@ -5545,7 +5546,7 @@ table.dataTable thead .sorting:after {
     color: #ffffff
 }
 
-.tooltip-effect-2 .tooltip-content {
+.tooltip-effect-2 .tooltip-content-status {
     -webkit-transform-origin: 50% calc(110%);
     -ms-transform-origin: 50% calc(110%);
     transform-origin: 50% calc(110%);
@@ -5558,7 +5559,7 @@ table.dataTable thead .sorting:after {
     transition: opacity 0.2s, transform 0.2s, -webkit-transform 0.2s
 }
 
-.tooltip-effect-3 .tooltip-content {
+.tooltip-effect-3 .tooltip-content-status {
     -webkit-transform: translate3d(0, 10px, 0) rotate3d(1, 1, 0, 25deg);
     transform: translate3d(0, 10px, 0) rotate3d(1, 1, 0, 25deg);
     -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
@@ -5568,7 +5569,7 @@ table.dataTable thead .sorting:after {
     transition: opacity 0.3s, transform 0.3s, -webkit-transform 0.3s
 }
 
-.tooltip-effect-4 .tooltip-content {
+.tooltip-effect-4 .tooltip-content-status {
     -webkit-transform-origin: 50% 100%;
     -ms-transform-origin: 50% 100%;
     transform-origin: 50% 100%;
@@ -5581,7 +5582,7 @@ table.dataTable thead .sorting:after {
     transition: opacity 0.2s, transform 0.2s, -webkit-transform 0.2s
 }
 
-.tooltip.tooltip-effect-2:hover .tooltip-content {
+.tooltip.tooltip-effect-2:hover .tooltip-content-status {
     -webkit-transform: perspective(1000px) rotate3d(1, 0, 0, 0deg);
     transform: perspective(1000px) rotate3d(1, 0, 0, 0deg)
 }

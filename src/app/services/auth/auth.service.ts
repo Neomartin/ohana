@@ -38,7 +38,7 @@ export class AuthService {
     }
 
     logout() {
-
+        this._router.navigate(['login']);
     }
     getData(): Observable<any> {
         console.log('llamado al GetDFAf', this.userData);

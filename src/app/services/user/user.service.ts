@@ -11,12 +11,10 @@ import { map } from 'rxjs/operators';
 })
 export class UserService {
   readonly path: 'users';
-  private usersCollection: AngularFirestoreCollection<UserModel>;
   public URL = URL;
   public headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
   users: Observable<UserModel[]>;
   constructor(
-    private afs: AngularFirestore,
     private _http: HttpClient
     // private afsDoc: AngularFirestoreDocument
   ) { }
@@ -34,5 +32,9 @@ export class UserService {
   }
   delUser(id: string) {
     return this._http.delete(URL + '/user/' + id, { headers: this.headers });
+  }
+  updPassword(id: string, oldPassword: string, newPassword: string) {
+    // tslint:disable-next-line:max-line-length
+    return this._http.put(URL + '/user/password/' + id, { 'oldPassword': oldPassword, 'newPassword': newPassword }, { headers: this.headers });
   }
 }

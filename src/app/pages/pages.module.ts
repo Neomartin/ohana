@@ -50,6 +50,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ProfileStatisticsComponent } from '../components/profile-statistics/profile-statistics.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { DialogPasswordComponent } from '../components/dialog-password/dialog-password.component';
+import { CdkDropList } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -68,6 +70,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     AddUserComponent,
     ProfileComponent,
     ProfileStatisticsComponent,
+    DialogPasswordComponent
   ],
   imports: [
     CommonModule,
@@ -97,7 +100,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     MatSortModule,
     MatSnackBarModule,
     MatDialogModule,
-    NgxChartsModule
+    NgxChartsModule,
+    // CdkDropList
   ],
   exports: [
     NotFoundComponent,
@@ -108,7 +112,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     OrderPrintComponent,
     UsersComponent,
     ProfileComponent,
-    ProfileStatisticsComponent,
+    ProfileStatisticsComponent,DialogPasswordComponent
   ],
   entryComponents: [AddUserComponent]
 })

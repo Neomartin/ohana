@@ -23,6 +23,7 @@ import { UserData } from 'src/app/pages/home/home.component';
 export class AuthService {
     private user: UserModel;
     private URL: URL;
+    public logged;
     public userLogged;
     public userData = new Subject<any>();
     // public data = this.userData.asObservable();
@@ -32,13 +33,24 @@ export class AuthService {
     constructor(
         private _http: HttpClient,
         private _router: Router
-    ) {   }
+    ) {
+        this.logged = localStorage.getItem('token');
+    }
     login(user: string, password: string, remember: boolean) {
-        return this._http.post(URL + '/login', { user, password }, { headers: this.headers });
+        return this._http.post(URL + '/login', { user, password }, { headers: this.headers })
+            .pipe(
+                map((resp: any) => {
+                    localStorage.setItem('token', resp.token);
+                    console.log('Respuesta service', resp.user);
+                    this.logged = true;
+                    return resp;
+                })
+            );
     }
 
     logout() {
-        this._router.navigate(['login']);
+        localStorage.removeItem('token');
+        this._router.navigate(['/login']);
     }
     getData(): Observable<any> {
         console.log('llamado al GetDFAf', this.userData);
@@ -49,6 +61,4 @@ export class AuthService {
        this.userData.next(userToSave);
     }
         // return console.log();
-    
-
 }

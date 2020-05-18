@@ -27,14 +27,14 @@ export class LoginComponent implements OnInit {
     this.savedUser = JSON.parse(localStorage.getItem('user'));
     this.savedUser ? this.rememberCheck = this.savedUser.remember : this.rememberCheck = false;
     if (this.savedUser) {
-      console.log('Diferencia: ', (Date.now() - this.savedUser.timeout) / (1000 * 60 * 60));
+      // console.log('Diferencia: ', (Date.now() - this.savedUser.timeout) / (1000 * 60 * 60));
       if (((Date.now() - this.savedUser.timeout) / (1000 * 60 * 60)) > 2) {
-        console.log('entra al date Diff');
+        // console.log('entra al date Diff');
         localStorage.removeItem('user');
       } else if (this.savedUser.remember) {
         // console.log('entra al saveduser remember set');
         this.user.username = this.savedUser.username;
-        this.user.password = this.savedUser.password;
+        // this.user.password = this.savedUser.password;
 
       }
     }
@@ -42,26 +42,18 @@ export class LoginComponent implements OnInit {
   login() {
     const saveUser = {
       username: this.user.username,
-      password: this.user.password,
+      // password: this.user.password,
       timeout: null,
       remember: this.rememberCheck,
       user: undefined
     };
     // console.log('saveuser: ', saveUser);
     this._auth.login(this.user.username, this.user.password, this.rememberCheck).subscribe((resp: any) => {
+      console.log('Respuesta del Login: ', resp);
       saveUser.user = resp.user;
       saveUser.timeout = Date.now();
-      if (!this.savedUser) {
-        // console.log('Entra al savedUser');
-          localStorage.setItem('user', JSON.stringify(saveUser));
-      } else {
-        // console.log('Entra el else ');
-        if (this.rememberCheck !== this.savedUser.remember) {
-          // console.log('Entra el if else: ');
-          localStorage.setItem('user', JSON.stringify(saveUser));
-        }
-      }
       // if(!this.savedUser.remember)
+      localStorage.setItem('user', JSON.stringify(saveUser));
       this._auth.setUserData(saveUser);
       swal.fire({
         icon: 'success',
@@ -71,7 +63,7 @@ export class LoginComponent implements OnInit {
         // timerProgressBar: true,
       }).then((result) => {
         if (result.dismiss === swal.DismissReason.timer) {
-          this._router.navigate(['home']);
+          window.location.href = '/home';
         }
       });
     }, err => {

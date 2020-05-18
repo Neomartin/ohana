@@ -42,7 +42,7 @@
                     {{ client.name + ' ' + client.surname }} 
                   </div>
                   <div *ngIf="client._id === editable">
-                    <mat-form-field fxFlex style="margin-right: 7px;">
+                    <mat-form-field fxFlex style="margin-right: 7px;" class="inputNew">
                       <input type="text" matInput placeholder="nombre" [(ngModel)]="client.name" name="name" />
                     </mat-form-field>
                     <mat-form-field fxFlex class="m-r-20">

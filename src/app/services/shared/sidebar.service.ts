@@ -37,11 +37,8 @@ export class SidebarService {
     {
       title: 'PERFIL',
       icon: 'mdi mdi-account',
-      submenu: [
-        { title: 'Perfil', url: '/user-profile' },
-        { title: 'Register', url: '/register' },
-        { title: 'Login', url: '/login' }
-      ]
+      url: '/profile',
+      id: true
     },
     // {
     //   title: 'Login',

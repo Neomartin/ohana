@@ -1,5 +1,5 @@
 <div class="row">
-    <div fxFlex="300px" class="m-l-r-10">
+    <div fxFlex="330px" class="m-l-r-10">
         <h2 mat-dialog-title>
             <i class="mdi mdi-account-plus text-success f-24"></i>
             {{ title }}
@@ -9,25 +9,25 @@
         <mat-dialog-content >
           <form fxLayout="column" [formGroup]="form">
             <mat-form-field >
-                <span matPrefix><i class="mdi mdi-account"></i></span>
+                <span matPrefix><i class="mdi mdi-account m-r-10"></i></span>
                 <input matInput placeholder="Nombre"  [formControl]="formName" required fxFlex="300px">
             </mat-form-field>
             <mat-form-field>
-                <span matPrefix><i class="mdi mdi-account"></i></span>
+                <span matPrefix><i class="mdi mdi-account m-r-10"></i></span>
                 <input matInput placeholder="Apellido"  [formControl]="formSurname" required fxFlex="300px">
                 <mat-error *ngIf="formSurname.invalid && (formSurname.dirty || formSurname.touched)" class="text-red">
                     Campo obligatorio*
                 </mat-error>
             </mat-form-field>
             <mat-form-field>
-                <span matPrefix><i class="mdi mdi-phone"></i></span>
+                <span matPrefix><i class="mdi mdi-phone m-r-10"></i></span>
                 <input matInput type="text" [formControl]="formPhone" placeholder="Teléfono" required fxFlex="300px">
             </mat-form-field>
             <mat-form-field>
-                <span matPrefix><i class="mdi mdi-email"></i></span>
+                <span matPrefix><i class="mdi mdi-email m-r-10"></i></span>
                 <input matInput placeholder="Email"  [formControl]="formEmail" 
-                       type="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$   " fxFlex="300px">
-            </mat-form-field>
+                       type="email" pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[A-Za-z]{2,4}$" fxFlex="300px">
+            </mat-form-field>               
             <mat-form-field>
                 <mat-label>Rol</mat-label>
                 <mat-select [formControl]="formRole">
@@ -37,15 +37,15 @@
                   </mat-select>
             </mat-form-field>
             <mat-form-field *ngIf="formRole.value !== 'CLIENT_ROLE'">
-                <span matPrefix><i class="mdi mdi-account"></i></span>
+                <span matPrefix><i class="mdi mdi-account m-r-10"></i></span>
                 <input matInput placeholder="Username" [formControl]="formUsername" type="text" fxFlex="300px">
             </mat-form-field>
             <mat-form-field *ngIf="formRole.value !== 'CLIENT_ROLE'">
-                <span matPrefix><i class="mdi mdi-key-variant"></i></span>
+                <span matPrefix><i class="mdi mdi-key-variant m-r-10"></i></span>
                 <input matInput placeholder="Contraseña" [formControl]="formPassword" type="password" fxFlex="300px">
             </mat-form-field>
             <mat-form-field *ngIf="formRole.value !== 'CLIENT_ROLE'">
-                <span matPrefix><i class="mdi mdi-key-variant"></i></span>
+                <span matPrefix><i class="mdi mdi-key-variant m-r-10"></i></span>
                 <input matInput placeholder="Repita contraseña" [formControl]="formPassword2" type="password" fxFlex="300px">
             </mat-form-field>
           </form>
@@ -54,14 +54,14 @@
         </mat-dialog-content>
         
         <mat-dialog-actions>
-            <button class="btn btn-danger m-r-10"(click)="close()">Salir</button>
-            <button class="btn green"(click)="save()" 
-                [disabled]="!formName.value ||
-                            !formSurname.value ||
-                            !formPhone.value ||
-                            (formRole.value !== 'CLIENT_ROLE' && (formPassword.value !== formPassword2.value || !formEmail.valid || !formPassword.value  || !formUsername.value))" >
-                                Agregar
-            </button>
+            <button class="btn green mr-auto"(click)="save()" 
+            [disabled]="!formName.value ||
+            !formSurname.value ||
+            !formPhone.value ||
+            (formRole.value !== 'CLIENT_ROLE' && (formPassword.value !== formPassword2.value || !formEmail.valid || !formPassword.value  || !formUsername.value))" >
+            Agregar
+        </button>
+        <button class="btn btn-danger m-r-10"(click)="close()">Salir</button>
         </mat-dialog-actions>
         <!-- (formRole.value !== 'CLIENT_ROLE' && formPassword.value !== formPassword2.value && formEmail) -->
     </div>

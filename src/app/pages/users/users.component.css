@@ -4,3 +4,25 @@
 .mat-form-field-wrapper {
     padding-bottom: 1em;
 }
+
+.mat-form-field-underline {
+    bottom: 0.25em !important;
+}
+
+/* .mat-header-cell {
+    color: #f00;
+} */
+
+.inputNew > .mat-form-field-underline {
+    bottom: 0.25em;
+}
+
+.inputNew {
+    color: red
+}
+.mat-form-field-wrapper {
+    padding-bottom: 0.25em !important;
+}
+/* .inputNew .mat-form-field-wrapper {
+    bottom: 0.25em !important;
+} */

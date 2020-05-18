@@ -6,7 +6,7 @@
       <div class="card-img-overlay card-inverse social-profile d-flex justify-content-center">
         <div class="align-self-center">
           <div class="">
-            <img src="../assets/images/user.jpg" class="rounded-circle m-b-20 profile-user-img" width="100"
+            <img src="{{localUser.user.image}}" class="rounded-circle m-b-20 profile-user-img" width="100" height="170"
               *ngIf="localUser.user.image">
             <img src="../assets/images/user.jpg" class="rounded-circle m-b-20 profile-user-img" width="100"
               *ngIf="!localUser.user.image">
@@ -54,6 +54,7 @@
             </li> -->
       <mat-tab-group (selectedTabChange)="onTabChange($event)">
         <mat-tab label="Perfil">
+
           <div class="tab-pane" id="profile" role="tabpanel">
             <div class="card-body">
               <div class="row">
@@ -83,11 +84,7 @@
               </div>
               <hr class="m-b-0">
               <!-- <a href="" [routerLink]="['/statistics']">Estadisticas</a> -->
-
               <div>
-                
-
-
                 <p class="mt-3">
                   <strong>Frase motivacional:</strong>
                   <ng-container *ngIf="localUser.user.observations; else elseObservations">
@@ -102,11 +99,44 @@
                   </ng-template>
                   <!-- <hr> -->
                   <!-- <h2 class="text-center bold">OhanaCop</h2> -->
-                  <p class="text-center">
+                  <!-- VOLVER A HABILITAR -->
+                  <!-- <p class="text-center">
                     <img src="../assets/images/background/motivadora.jpg" alt="">
-                  </p>
+                  </p> -->
               </div>
             </div>
+            <hr>
+            <div class="profile-username">
+              <h2 class="m-b-0">
+                SUCURSALES A CARGO
+                <span class="text-green"> {{ localUser.user.username | uppercase }} </span>
+              </h2>
+            </div>
+            <div class="card-body">
+              Como se veria aca lo siguiente
+              <div class="row">
+                <div class="col-6 border">
+                  <h4 class="text-green">
+                    SUCURSAL A CARGO
+                  </h4>
+                  <!-- <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo"
+                    [cdkDropListConnectedTo]="[doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
+                    <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item}}</div>
+                  </div> -->
+                </div>
+                <div class="col-6 border">
+                  <h4 class="text-blue">
+                    SUCURSAL PARA ASIGNAR
+
+                  </h4>
+                  <!-- <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done"
+                    [cdkDropListConnectedTo]="[todoList]" class="example-list" (cdkDropListDropped)="drop($event)">
+                    <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+
           </div>
         </mat-tab>
         <mat-tab label="Estadísticas">
@@ -116,7 +146,7 @@
                 <div fxFlex="100">
                   Resumen:
                 </div>
-                <app-profile-statistics  id="sta" fxFlex>
+                <app-profile-statistics id="sta" fxFlex>
                 </app-profile-statistics>
                 <div fxFlex="100" class="p-r-10 p-l-10 statistics-progress">
                   <h4 class="font-medium mt-4">Skill Set</h4>
@@ -147,8 +177,8 @@
                   </div>
                 </div>
 
+              </div>
             </div>
-          </div>
           </div>
 
         </mat-tab>
@@ -157,40 +187,74 @@
             <div class="card-body">
               <form class="form-horizontal form-material">
                 <div class="form-group">
-                  <label class="col-md-12">Full Name</label>
-                  <div class="col-md-6">
-                    <input type="text" [(ngModel)]="localUser.user.name" name="name" placeholder="Nombre" class="form-control form-control-line">
+                  <div class="row m-0">
+                    <div class="col-md-6">
+                      <label class="text-info">Nombres</label>
+                      <div>
+                        <input type="text" [(ngModel)]="localUser.user.name" name="name" placeholder="Nombre"
+                          class="form-control form-control-line">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="text-info">Apellido</label>
+                      <div>
+                        <input type="text" [(ngModel)]="localUser.user.surname" name="surname" placeholder="Apellido"
+                          class="form-control form-control-line">
+                      </div>
+                    </div>
+
                   </div>
-                  <div class="col-md-6">
-                    <input type="text" [(ngModel)]="localUser.user.surname" name="surname" placeholder="Apellido" class="form-control form-control-line">
+
+                </div>
+                <div class="form-group">
+                  <div class="row m-0">
+                    <div class="col-md-6">
+                      <label class="text-info">Teléfono</label>
+                      <div>
+                        <input type="text" [(ngModel)]="localUser.user.phone" name="phone" placeholder="Teléfono"
+                          class="form-control form-control-line">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="text-info" for="example-email">Email</label>
+                      <div>
+                        <input type="email" placeholder="Email" name="email" [(ngModel)]="localUser.user.email"
+                          class="form-control form-control-line" name="example-email" id="example-email">
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="example-email" class="col-md-12">Email</label>
+                  <div class="row m-0">
+                    <div class="col-md-6">
+                      <label class="text-info">Imagen</label>
+                      <div>
+                        <textarea rows="6" type="text" [(ngModel)]="localUser.user.image" name="image"
+                          class="form-control form-control-line profile-image"></textarea>
+                      </div>
+                    </div>
+                    <div class="col-md-6 f-11" style="border: 1px dotted #333333; padding: 5px 10px 10px">
+                      <span class="bold f-14 text-danger">
+                        Info para personalizar imagen:
+                      </span>
+                      <p class="text-info m-b-0"> <i> Para agregar una imagen deben copiar el link de la misma y pegarlo
+                          en la caja de texto de la izquierda. </i></p>
+                      <span class="bold text-black f-12"> Click derecho -> Copiar dirreción de la imagen</span>
+                      <p class="text-info m-b-0"><i> El texto copiado debería tener un formato similar al siguiente:
+                        </i></p>
+                      <span
+                        class="">https://dcassetcdn.com/design_img/3666257/638410/638410_21168956_3666257_4834a0b4_image.png</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-md-12 text-info">Frase personal</label>
                   <div class="col-md-12">
-                    <input type="email" placeholder="Email" name="email" [(ngModel)]="localUser.user.email" class="form-control form-control-line"
-                      name="example-email" id="example-email">
+                    <textarea rows="3" class="form-control form-control-line"></textarea>
                   </div>
                 </div>
-                <div class="form-group">
-                  <label class="col-md-12">Password</label>
-                  <div class="col-md-12">
-                    <input type="password" value="password" class="form-control form-control-line">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-12">Teléfono</label>
-                  <div class="col-md-12">
-                    <input type="text" [(ngModel)]="localUser.user.phone" name="phone" placeholder="Teléfono" class="form-control form-control-line">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-12">Frase personal</label>
-                  <div class="col-md-12">
-                    <textarea rows="5" class="form-control form-control-line"></textarea>
-                  </div>
-                </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <label class="col-sm-12">Select Country</label>
                   <div class="col-sm-12">
                     <select class="form-control form-control-line">
@@ -201,10 +265,16 @@
                       <option>Thailand</option>
                     </select>
                   </div>
-                </div>
+                </div> -->
                 <div class="form-group">
                   <div class="col-sm-12">
-                    <button class="btn btn-info">Actualizar</button>
+                    <div>
+                      <button class="btn btn-info" (click)="updateUser()"
+                        [disabled]="!localUser.user.name || !localUser.user.surname || !localUser.user.phone">Actualizar</button>
+                    </div>
+                    <span fxFlex></span>
+                    <button type="button" (click)="passwordChange()" class="btn btn-warning">
+                      <i class="mdi mdi-key-variant"></i>Cambiar contraseña</button>
                   </div>
                 </div>
               </form>

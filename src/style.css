@@ -12,7 +12,7 @@
     color: #fff !important;
 }
 .text-red {
-    color: rgb(255, 0, 0);
+    color: #fd2b1c;
 }
 .text-green {
     color: #5fb410;
@@ -115,6 +115,9 @@
 .f-12 {
     font-size: 12px !important;
 }
+.f-11 {
+    font-size: 11px !important;
+}
 .f-10 {
     font-size: 10px !important;
 }
@@ -142,6 +145,9 @@
 }
 .w-270 {
     width: 270px;
+}
+.full-width {
+    width: 100%;
 }
 .z-100 {
     z-index: 100;
@@ -198,6 +204,21 @@
 .m-b-20 {
     margin-bottom: 20px;
 }
+.m-b-30 {
+    margin-bottom: 30px;
+}
+.m-b-40 {
+    margin-bottom: 40px;
+}
+.dialog-container {
+    padding: 20px -5px 40px;
+}
+.dialog-container > div {
+    margin-bottom: 10px;
+}
+/* .mat-form-field-appearance-legacy .mat-form-field-wrapper {
+    padding-bottom: 0 !important;
+} */
 tr.example-element-row:not(.example-expanded-row):hover, 
 .mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
     background: rgb(196, 236, 255);
@@ -350,6 +371,15 @@ color: rgb(191, 215, 253);
     color: #fff;
     border-radius: 3px;
 }
+.profile-image {
+    word-break: break-all; 
+    font-size: 13px;
+}
+
+
+
+
+
 @media print {
     header, app-sidebar, app-breadcumbs, .noDisplay, app-footer
     .left-sidebar, matTooltip {

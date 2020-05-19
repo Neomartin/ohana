@@ -196,10 +196,10 @@ export class AddTaskComponent implements OnInit {
             title: 'Orden Actualizada!',
             text: 'Se ACTUALIZÓ orden se imprimirá orden',
             position: 'bottom-end',
-            timer: 1500,
+            timer: 2000,
             showConfirmButton: false,
             showCancelButton: true,
-            cancelButtonColor: '#f00',
+            cancelButtonColor: '#d66d00',
             cancelButtonText: 'No imprimir',
           }).then( (result) => {
             if (result.dismiss !== swal.DismissReason.cancel) {
@@ -218,7 +218,7 @@ export class AddTaskComponent implements OnInit {
             timer: 1500,
             showConfirmButton: false,
             showCancelButton: true,
-            cancelButtonColor: '#f00',
+            cancelButtonColor: '#d66d00',
             cancelButtonText: 'No imprimir',
           }).then( (result) => {
             if (result.dismiss !== swal.DismissReason.cancel) {

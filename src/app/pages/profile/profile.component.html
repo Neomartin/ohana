@@ -109,30 +109,46 @@
             <div class="profile-username">
               <h2 class="m-b-0">
                 SUCURSALES A CARGO
-                <span class="text-green"> {{ localUser.user.username | uppercase }} </span>
+                <!-- <span class="text-green"> {{ localUser.user.username | uppercase }} </span> -->
               </h2>
             </div>
             <div class="card-body">
-              Como se veria aca lo siguiente
+              <h3 class="card-title">ASIGNAR SUCURSALES</h3>
+              <h6 class="card-subtitle">
+                Asignar sucursales en las que el usuario podrá trabajar.
+              </h6>
               <div class="row">
-                <div class="col-6 border">
-                  <h4 class="text-green">
-                    SUCURSAL A CARGO
-                  </h4>
-                  <!-- <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo"
-                    [cdkDropListConnectedTo]="[doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
-                    <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item}}</div>
-                  </div> -->
-                </div>
-                <div class="col-6 border">
+                <div class="col-6">
                   <h4 class="text-blue">
-                    SUCURSAL PARA ASIGNAR
-
+                    SUCURSAL VINCULADAS
                   </h4>
-                  <!-- <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done"
-                    [cdkDropListConnectedTo]="[todoList]" class="example-list" (cdkDropListDropped)="drop($event)">
-                    <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
-                  </div> -->
+                  <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="linked_branchs"
+                    [cdkDropListConnectedTo]="[doneList]" class="drag-drop-list" (cdkDropListDropped)="drop($event)">
+                    <div class="dd-box dd-linked" *ngFor="let item of linked_branchs " cdkDrag>
+                      <div>
+                        <span class="semi-bold f-16">{{ item.name }}</span> - {{ item.adress + ' ' + item.adress_number }}
+                        <p class="m-b-0 text-muted">
+                          {{ item.location }}
+                        </p> 
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <h4 class="text-green">
+                    SUCURSALES DISPONIBLES
+                  </h4>
+                  <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="avaiable_branchs"
+                    [cdkDropListConnectedTo]="[todoList]" class="drag-drop-list" (cdkDropListDropped)="drop($event)">
+                    <div class="dd-box" *ngFor="let item of avaiable_branchs" cdkDrag>
+                      <div>
+                        <span class="semi-bold f-16">{{ item.name }}</span> - {{ item.adress + ' ' + item.adress_number }}
+                        <p class="m-b-0 text-muted">
+                          {{ item.location }}
+                        </p> 
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

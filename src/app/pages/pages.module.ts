@@ -51,7 +51,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ProfileStatisticsComponent } from '../components/profile-statistics/profile-statistics.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { DialogPasswordComponent } from '../components/dialog-password/dialog-password.component';
-import { CdkDropList } from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -101,7 +101,7 @@ import { CdkDropList } from '@angular/cdk/drag-drop';
     MatSnackBarModule,
     MatDialogModule,
     NgxChartsModule,
-    // CdkDropList
+    DragDropModule
   ],
   exports: [
     NotFoundComponent,

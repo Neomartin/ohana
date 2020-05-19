@@ -57,7 +57,7 @@
             <button class="btn green mr-auto"(click)="save()" 
             [disabled]="!formName.value ||
             !formSurname.value ||
-            !formPhone.value ||
+            !formPhone.value || formPhone.value === '260-4' ||
             (formRole.value !== 'CLIENT_ROLE' && (formPassword.value !== formPassword2.value || !formEmail.valid || !formPassword.value  || !formUsername.value))" >
             Agregar
         </button>

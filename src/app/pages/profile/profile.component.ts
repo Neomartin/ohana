@@ -16,19 +16,17 @@ import { DialogPasswordComponent } from 'src/app/components/dialog-password/dial
 export class ProfileComponent implements OnInit {
   public localUser;
   public userId;
-  todo = [
-    'Get to work',
-    'Pick up groceries',
-    'Go home',
-    'Fall asleep'
+  linked_branchs = [
+    { name: 'Ohana SR', location: 'San Rafael', adress: 'Corrientes', adress_number: '432'},
+    { name: 'Ohana SR', location: 'San Rafael', adress: 'Ejercito de los Andres', adress_number: '1085'},
+    { name: 'Ohana MG', location: 'Malargüe', adress: 'Godoy Cruz', adress_number: '211'}
   ];
 
-  done = [
-    'Get up',
-    'Brush teeth',
-    'Take a shower',
-    'Check e-mail',
-    'Walk dog'
+  avaiable_branchs = [
+    { name: 'Ohana SR', location: 'San Rafael', adress: 'Av. Moreno', adress_number: '780'},
+    { name: 'Ohana GA', location: 'General Alvear', adress: 'Libertad', adress_number: '360'},
+    { name: 'Ohana MG', location: 'Malargüe', adress: 'Godoy Cruz', adress_number: '814'},
+    { name: 'Ohana SR', location: 'San Rafael', adress: 'Chile', adress_number: '954'},
   ];
   constructor(
     private _user: UserService,
@@ -69,15 +67,15 @@ export class ProfileComponent implements OnInit {
     // });
   }
 
-  // drop(event: CdkDragDrop<string[]>) {
-  //   if (event.previousContainer === event.container) {
-  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-  //   } else {
-  //     transferArrayItem(
-  //                   event.previousContainer.data,
-  //                   event.container.data,
-  //                   event.previousIndex,
-  //                   event.currentIndex);
-  //   }
-  // }
+  drop(event: CdkDragDrop<string[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+                    event.previousContainer.data,
+                    event.container.data,
+                    event.previousIndex,
+                    event.currentIndex);
+    }
+  }
 }

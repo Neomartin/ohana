@@ -49,11 +49,15 @@ export class ProfileStatisticsComponent implements OnInit {
   onDeactivate(data): void {
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
-  changeView(value) {
+  public changeView(value) {
     console.log('Valor recibido', value);
     // setTimeout(() => {
       this.view = value;
     // }, 100);
+  }
+
+  public saludar() {
+    console.log('Saludos delsde el charts');
   }
 
 }

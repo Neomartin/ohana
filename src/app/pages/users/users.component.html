@@ -136,10 +136,15 @@
                 </th>
                 <td mat-cell *matCellDef="let client, let i = index" fxLayoutAlign="start center" fxFlex="100px">
                   <div *ngIf="client._id !== editable">
-                    <button matTooltip="Editar cliente" (click)="setEditable(client._id, i); $event.stopPropagation()" 
-                    class="btn waves-effect waves-light btn-sm btn-success" type="button" style="margin-right: 2px" >
-                      <i class="mdi mdi-account-edit"></i>
+                    <button class="btn btn-sm btn-warning m-r-2"  matTooltip="Ir al perfil del cliente"
+                        (click)="viewClient(client._id); $event.stopPropagation()">
+                      <i class="mdi mdi-eye"></i>
                     </button>
+                    <button matTooltip="Editar cliente" (click)="setEditable(client._id, i); $event.stopPropagation()" 
+                    class="btn waves-effect waves-light btn-sm btn-success m-r-2" type="button">
+                      <i class="mdi mdi-border-color"></i>
+                    </button>
+                    
                     <button class="btn btn-sm btn-danger"  matTooltip="Eliminar cliente"
                         (click)="deleteClient(client._id, i); $event.stopPropagation()">
                       <i class="mdi mdi-delete"></i>

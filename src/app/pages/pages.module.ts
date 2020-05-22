@@ -11,7 +11,7 @@ import { TaskMenuComponent } from '../components/task-menu/task-menu.component';
 import { AddFileComponent } from './add-file/add-file.component';
 import { AddTaskComponent } from './add-task/add-task.component';
 import { UsersComponent } from './users/users.component';
-//Components
+// Components
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from '../login/register/register.component';
@@ -23,14 +23,14 @@ import { FilesComponent } from './files/files.component';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { ProfileComponent } from './profile/profile.component';
 
-//Modules
+// Modules
 import { MomentModule } from 'ngx-moment';
 import {DpDatePickerModule} from 'ng2-date-picker';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 
 // import {MatDatepickerModule} from '@angular/material/datepicker';
-//Material Modules
+// Material Modules
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule} from '@angular/material/button';
 import { MatIconModule} from '@angular/material/icon';
@@ -77,6 +77,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     PAGES_ROUTES,
     SharedModule,
     MomentModule,

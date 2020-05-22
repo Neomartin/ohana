@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddUserComponent } from 'src/app/components/add-user/add-user.component';
 import { map } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -37,7 +38,8 @@ export class UsersComponent implements OnInit {
   constructor(
     private _user: UserService,
     private dialog: MatDialog,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private _router: Router
   ) { }
 
 
@@ -157,6 +159,9 @@ export class UsersComponent implements OnInit {
         if (data) {
           if (data.phone) { data.phone = [ data.phone ]; }
           data.email ? data.email = data.email.toLowerCase() : data.email = undefined;
+          if (data.branch) {
+            data.branch = JSON.parse(localStorage.getItem('user')).user.branch[0]; 
+          }
           return data;
         } else {
           return;
@@ -181,7 +186,11 @@ export class UsersComponent implements OnInit {
         }
     });
   }
+  viewClient(id) {
+    this._router.navigate(['/profile/' + id]);
+  }
 }
+
 
 export interface Role {
   value: string;

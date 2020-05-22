@@ -1,21 +1,21 @@
 <div class="row">
   <!-- Column -->
-  <div class="col-lg-4 col-md-12">
-    <div class="card profile-card">
+  <div class="col-lg-4 col-md-12" *ngIf="user">
+    <div class="card profile-card" >
       <img class="card-img profile-img" src="../assets/images/background/user-profile.jpg" alt="Card image">
       <div class="card-img-overlay card-inverse social-profile d-flex justify-content-center">
         <div class="align-self-center">
-          <div class="">
-            <img src="{{localUser.user.image}}" class="rounded-circle m-b-20 profile-user-img" width="100" height="170"
-              *ngIf="localUser.user.image">
+          <div *ngIf="user">
+            <img src="{{user.user.image}}" class="rounded-circle m-b-20 profile-user-img" width="100" height="170"
+              *ngIf="user.user.image">
             <img src="../assets/images/user.jpg" class="rounded-circle m-b-20 profile-user-img" width="100"
-              *ngIf="!localUser.user.image">
+              *ngIf="!user.user.image">
           </div>
           <h4 class="card-title">
-            {{ localUser.user.name + ' ' + localUser.user.surname }}
+            {{ user.user.name + ' ' + user.user.surname }}
           </h4>
           <h6 class="card-subtitle">
-            {{ localUser.user.email }}
+            {{ user.user.email }}
           </h6>
           <p class="text-white">Ohana User</p>
         </div>
@@ -25,11 +25,11 @@
       <div class="card-body">
 
         <small class="text-muted pt-4 d-block">Usuario</small>
-        <h6 class="text-info">{{ localUser.user.username }}</h6>
+        <h6 class="text-info">{{ user.user.username }}</h6>
         <small class="text-muted">Correo electrónico</small>
-        <h6>{{ localUser.user.email }}</h6>
+        <h6>{{ user.user.email }}</h6>
         <small class="text-muted pt-4 d-block">Phone</small>
-        <h6>{{ localUser.user.phone }}</h6>
+        <h6>{{ user.user.phone }}</h6>
         <!-- <div class="map-box">
                   <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d470029.1604841957!2d72.29955005258641!3d23.019996818380896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e848aba5bd449%3A0x4fcedd11614f6516!2sAhmedabad%2C+Gujarat!5e0!3m2!1sen!2sin!4v1493204785508" width="100%" height="150" frameborder="0" style="border:0" allowfullscreen=""></iframe>
               </div> <small class="text-muted pt-4 d-block">Social Profile</small> -->
@@ -42,12 +42,12 @@
   </div>
   <!-- Column -->
   <!-- Column -->
-  <div class="col-lg-8 col-md-12">
-    <div class="card">
+  <div class="col-lg-8 col-md-12" >
+    <div class="card" *ngIf="user">
       <div class="profile-username">
         <h2 class="m-b-0">
           USUARIO:
-          <span class="text-green"> {{ localUser.user.username | uppercase }} </span>
+          <span class="text-green"> {{ user.user.username | uppercase }} </span>
         </h2>
       </div>
       <!-- <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#home" role="tab" aria-selected="true">Timeline</a>
@@ -62,7 +62,7 @@
                   <strong class="text-gray semi-bold">Nombre Completo</strong>
                   <br>
                   <p class="">
-                    {{ localUser.user.name + ' ' + localUser.user.surname }}
+                    {{ user.user.name + ' ' + user.user.surname }}
                   </p>
                 </div>
                 <div class="col-md-3 col-xs-6 border-right">
@@ -71,7 +71,7 @@
                   </strong>
                   <br>
                   <p class="">
-                    {{ localUser.user.phone }}
+                    {{ user.user.phone }}
                   </p>
                 </div>
                 <div class="col-md-4 col-xs-6 border-right">
@@ -79,7 +79,7 @@
                     Email
                   </strong>
                   <br>
-                  <p class="">{{ localUser.user.email }}</p>
+                  <p class="">{{ user.user.email }}</p>
                 </div>
               </div>
               <hr class="m-b-0">
@@ -87,8 +87,8 @@
               <div>
                 <p class="mt-3">
                   <strong>Frase motivacional:</strong>
-                  <ng-container *ngIf="localUser.user.observations; else elseObservations">
-                    <p> {{ localUser.user.observations }} </p>
+                  <ng-container *ngIf="user.user.observations; else elseObservations">
+                    <p> {{ user.user.observations }} </p>
                   </ng-container>
                   <ng-template #elseObservations>
                     <p class="text-info text-center">
@@ -108,23 +108,33 @@
             <hr>
             <div class="profile-username">
               <h2 class="m-b-0">
-                SUCURSALES A CARGO
-                <!-- <span class="text-green"> {{ localUser.user.username | uppercase }} </span> -->
+                SUCURSALES A CARGO 
+                <!-- <span class="text-green"> {{ user.user.username | uppercase }} </span> -->
               </h2>
             </div>
             <div class="card-body">
-              <h3 class="card-title">ASIGNAR SUCURSALES</h3>
-              <h6 class="card-subtitle">
-                Asignar sucursales en las que el usuario podrá trabajar.
-              </h6>
+              <div class="row m-0" >
+                <div class="mr-auto">
+                  <h3 class="card-title">ASIGNAR SUCURSALES</h3>
+                  <h6 class="card-subtitle">
+                    Asignar sucursales en las que el usuario podrá trabajar.
+                  </h6>
+                </div>
+                <div>
+                  <button class="btn btn-primary m-r-10" [disabled]="!userBranchUpdate"
+                          (click)="updateUser(user.user._id)">
+                    Actualizar
+                  </button>
+                </div>
+              </div>
               <div class="row">
                 <div class="col-6">
                   <h4 class="text-blue">
                     SUCURSAL VINCULADAS
                   </h4>
-                  <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="linked_branchs"
+                  <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="linked_branches"
                     [cdkDropListConnectedTo]="[doneList]" class="drag-drop-list" (cdkDropListDropped)="drop($event)">
-                    <div class="dd-box dd-linked" *ngFor="let item of linked_branchs " cdkDrag>
+                    <div class="dd-box dd-linked" *ngFor="let item of linked_branches " cdkDrag>
                       <div>
                         <span class="semi-bold f-16">{{ item.name }}</span> - {{ item.adress + ' ' + item.adress_number }}
                         <p class="m-b-0 text-muted">
@@ -138,9 +148,9 @@
                   <h4 class="text-green">
                     SUCURSALES DISPONIBLES
                   </h4>
-                  <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="avaiable_branchs"
+                  <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="avaiable_branches"
                     [cdkDropListConnectedTo]="[todoList]" class="drag-drop-list" (cdkDropListDropped)="drop($event)">
-                    <div class="dd-box" *ngFor="let item of avaiable_branchs" cdkDrag>
+                    <div class="dd-box" *ngFor="let item of avaiable_branches" cdkDrag>
                       <div>
                         <span class="semi-bold f-16">{{ item.name }}</span> - {{ item.adress + ' ' + item.adress_number }}
                         <p class="m-b-0 text-muted">
@@ -207,14 +217,14 @@
                     <div class="col-md-6">
                       <label class="text-info">Nombres</label>
                       <div>
-                        <input type="text" [(ngModel)]="localUser.user.name" name="name" placeholder="Nombre"
+                        <input type="text" [(ngModel)]="user.user.name" name="name" placeholder="Nombre"
                           class="form-control form-control-line">
                       </div>
                     </div>
                     <div class="col-md-6">
                       <label class="text-info">Apellido</label>
                       <div>
-                        <input type="text" [(ngModel)]="localUser.user.surname" name="surname" placeholder="Apellido"
+                        <input type="text" [(ngModel)]="user.user.surname" name="surname" placeholder="Apellido"
                           class="form-control form-control-line">
                       </div>
                     </div>
@@ -227,15 +237,26 @@
                     <div class="col-md-6">
                       <label class="text-info">Teléfono</label>
                       <div>
-                        <input type="text" [(ngModel)]="localUser.user.phone" name="phone" placeholder="Teléfono"
+                        <input type="text" [(ngModel)]="user.user.phone" name="phone" placeholder="Teléfono"
                           class="form-control form-control-line">
                       </div>
                     </div>
                     <div class="col-md-6">
                       <label class="text-info" for="example-email">Email</label>
                       <div>
-                        <input type="email" placeholder="Email" name="email" [(ngModel)]="localUser.user.email"
+                        <input type="email" placeholder="Email" name="email" [(ngModel)]="user.user.email"
                           class="form-control form-control-line" name="example-email" id="example-email">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row m-0">
+                    <div class="col-md-6">
+                      <label class="text-info">Nombre de usuario</label>
+                      <div>
+                        <input type="text" [(ngModel)]="user.user.username" name="username" placeholder="username"
+                          class="form-control form-control-line">
                       </div>
                     </div>
                   </div>
@@ -245,7 +266,7 @@
                     <div class="col-md-6">
                       <label class="text-info">Imagen</label>
                       <div>
-                        <textarea rows="6" type="text" [(ngModel)]="localUser.user.image" name="image"
+                        <textarea rows="6" type="text" [(ngModel)]="user.user.image" name="image"
                           class="form-control form-control-line profile-image"></textarea>
                       </div>
                     </div>
@@ -285,8 +306,8 @@
                 <div class="form-group">
                   <div class="col-sm-12">
                     <div>
-                      <button class="btn btn-info" (click)="updateUser()"
-                        [disabled]="!localUser.user.name || !localUser.user.surname || !localUser.user.phone">Actualizar</button>
+                      <button class="btn btn-info" (click)="updateUser(user.user._id)"
+                        [disabled]="!user.user.name || !user.user.surname || !user.user.phone">Actualizar</button>
                     </div>
                     <span fxFlex></span>
                     <button type="button" (click)="passwordChange()" class="btn btn-warning">

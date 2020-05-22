@@ -4,6 +4,7 @@ export class UserModel {
         public surname: string,
         public username: string,
         public password: string,
+        public branch?: string,
         public email?: string,
         public phone?: string,
         public role?: string,

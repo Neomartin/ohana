@@ -24,8 +24,12 @@ export class UserService {
     // console.log('MODELO: ', user);
     // return this.usersCollection.add({...user});
   }
-  getUsers() {
-    return this._http.get(URL + '/user', { headers: this.headers });
+  getUsers(id = null) {
+    if (id) {
+      return this._http.get(URL + '/user/' + id, { headers: this.headers });
+    } else {
+      return this._http.get(URL + '/user', { headers: this.headers });
+    }
   }
   updUser(id: string, user: UserModel) {
     return this._http.put(URL + '/user/' + id, user, { headers: this.headers });

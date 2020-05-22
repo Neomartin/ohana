@@ -18,10 +18,9 @@ export class FileService {
     this.headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     // this.getFiles();
   }
-  
   getFiles(id: String = null) {
     return this._http.get(URL + '/file', { headers: this.headers });
-    //.subscribe( (resp: any) => {
+    // .subscribe( (resp: any) => {
     //   console.log('Service', resp);
     //   // return this.files.next(resp);
     // });

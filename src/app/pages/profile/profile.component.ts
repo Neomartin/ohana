@@ -1,55 +1,75 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import {MatDialog } from '@angular/material/dialog';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import {MatDialog } from '@angular/material/dialog';
 import swal from 'sweetalert2';
 
 
 import { UserService } from 'src/app/services/user/user.service';
 import { ProfileStatisticsComponent } from 'src/app/components/profile-statistics/profile-statistics.component';
 import { DialogPasswordComponent } from 'src/app/components/dialog-password/dialog-password.component';
+import { UserModel } from 'src/app/models/user.model';
+import { Branch } from 'src/app/models/branch.model';
+import { BranchService } from 'src/app/services/branch/branch.service';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
+  providers: [ UserService, BranchService ]
 })
 export class ProfileComponent implements OnInit {
   public localUser;
+  public user;
   public userId;
-  linked_branchs = [
-    { name: 'Ohana SR', location: 'San Rafael', adress: 'Corrientes', adress_number: '432'},
-    { name: 'Ohana SR', location: 'San Rafael', adress: 'Ejercito de los Andres', adress_number: '1085'},
-    { name: 'Ohana MG', location: 'Malargüe', adress: 'Godoy Cruz', adress_number: '211'}
-  ];
-
-  avaiable_branchs = [
-    { name: 'Ohana SR', location: 'San Rafael', adress: 'Av. Moreno', adress_number: '780'},
-    { name: 'Ohana GA', location: 'General Alvear', adress: 'Libertad', adress_number: '360'},
-    { name: 'Ohana MG', location: 'Malargüe', adress: 'Godoy Cruz', adress_number: '814'},
-    { name: 'Ohana SR', location: 'San Rafael', adress: 'Chile', adress_number: '954'},
-  ];
+  public id: String = null;
+  branches: Array<Branch>;
+  userBranchUpdate: Boolean = false;
+  linked_branches = [];
+  avaiable_branches = [];
+  @ViewChild(ProfileStatisticsComponent, { static: false }) charts;
   constructor(
     private _user: UserService,
-    public _dialog: MatDialog
+    private _branch: BranchService,
+    public _dialog: MatDialog,
+    public _route: ActivatedRoute
   ) { }
-  @ViewChild(ProfileStatisticsComponent, { static: true }) charts;
+  
 
   ngOnInit() {
     this.localUser = JSON.parse(localStorage.getItem('user'));
-    console.log(this.localUser);
+    this.id = this._route.snapshot.paramMap.get('id');
+    if (this.id) {
+      this._user.getUsers(this.id).subscribe( (resp: any) => {
+        this.user = resp;
+        this.linked_branches = resp.user.branch;
+        this._branch.getBranches().subscribe( (response: [Branch]) => {
+          this.branches = response;
+          this.avaiable_branches = response;
+          const tempito = this.linked_branches.map(x => x._id);
+          this.avaiable_branches = this.branches.filter((val: any) => {
+            return !tempito.includes(val._id);
+          });
+        });
+      });
+    } else {
+      this.user = this.localUser;
+    }
   }
 
   onTabChange(e) {
-    if (document.getElementById('sta')) {
+    // this.charts.saludar();
+    if (document.getElementById('sta') ) {
       this.charts.changeView([document.getElementById('sta').offsetWidth]);
     }
   }
-  updateUser() {
-    console.log('llamado update', this.localUser.user);
-    this._user.updUser(this.localUser.user._id, this.localUser.user).subscribe( (resp:any) => {
-      console.log('Respuesta desde el update: ', resp);
-      this.localUser.user = resp.updated;
-      localStorage.setItem('user', JSON.stringify(this.localUser));
+  updateUser(id) {
+    this._user.updUser(id, this.user.user).subscribe( (resp: any) => {
+      this.user.user = resp.updated;
+      if (id === this.localUser.user._id) {
+        this.localUser.user = resp.updated;
+        localStorage.setItem('user', JSON.stringify(this.localUser));
+      }
     });
     swal.fire({
        icon: 'success',
@@ -68,6 +88,12 @@ export class ProfileComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
+    // console.log('Evento de drag and drop');
+    // console.log(event.container.data);
+    // console.log(event);
+    
+    // console.log(event);
+
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -77,5 +103,18 @@ export class ProfileComponent implements OnInit {
                     event.previousIndex,
                     event.currentIndex);
     }
+    // this.user.user.branch = this.linked_branches;
+    this.user.user.branch = [];
+    this.linked_branches.forEach( (branch: any) => {
+      this.user.user.branch.push(branch['_id']);
+    });
+    // console.log('DragDrop after Avaiable: ', this.avaiable_branches);
+    console.log('User dRag', this.user);
+    this.userBranchUpdate = true;
   }
+  // updUserBranches(id) {
+  //   this._user.updUser(id, this.user.user).subscribe( (resp: any) => {
+  //     console.log('usuario updatirigeado: ', resp);
+  //   });
+  // }
 }

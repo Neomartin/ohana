@@ -163,8 +163,10 @@ export class HomeComponent implements OnInit {
         this.orders[i].delivered = resp.updated.delivered;
       }
       this.orders[i].status = resp.updated.status;
+      this.orders[i].modified_at = resp.updated.modified_at;
+      // this.orders[i] = resp.updated;
     }, err => {
-      this.openSnackBar('No se pudo cambiar estado de la orden.', 'ERROR')
+      this.openSnackBar('No se pudo cambiar estado de la orden.', 'ERROR');
     });
   }
 

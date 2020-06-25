@@ -134,6 +134,7 @@ export class OrdersComponent implements OnInit {
         this.orders[i].delivered = resp.updated.delivered;
       }
       this.orders[i].status = resp.updated.status;
+      this.orders[i].modified_at = resp.updated.modified_at;
     }, err => {
       this.openSnackBar('No se pudo cambiar estado de la orden.', 'ERROR')
     });

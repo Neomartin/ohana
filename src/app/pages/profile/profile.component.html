@@ -24,12 +24,21 @@
     <div class="card">
       <div class="card-body">
 
-        <small class="text-muted pt-4 d-block">Usuario</small>
-        <h6 class="text-info">{{ user.user.username }}</h6>
-        <small class="text-muted">Correo electrónico</small>
+        <small class="text-info d-block">Usuario</small>
+        <h5 class="">{{ user.user.username }}</h5>
+        <small class="text-info">Correo electrónico</small>
         <h6>{{ user.user.email }}</h6>
-        <small class="text-muted pt-4 d-block">Phone</small>
+        <small class="text-info d-block">Phone</small>
         <h6>{{ user.user.phone }}</h6>
+        <small class="text-info d-block">Domicilio</small>
+        <ng-container *ngIf="user.user.dir; else noDir">
+          <h6>{{ user.user.dir + ' ' + user.user.dir_num }}
+          <i *ngIf="user.user.departament"> {{ '- Dpto: ' + user.user.departament }}</i>
+        </h6>
+        </ng-container>
+        <ng-template #noDir>
+          <h6 class="text-red">No se registra dirección</h6>
+        </ng-template>
         <!-- <div class="map-box">
                   <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d470029.1604841957!2d72.29955005258641!3d23.019996818380896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e848aba5bd449%3A0x4fcedd11614f6516!2sAhmedabad%2C+Gujarat!5e0!3m2!1sen!2sin!4v1493204785508" width="100%" height="150" frameborder="0" style="border:0" allowfullscreen=""></iframe>
               </div> <small class="text-muted pt-4 d-block">Social Profile</small> -->
@@ -253,7 +262,32 @@
                 <div class="form-group">
                   <div class="row m-0">
                     <div class="col-md-6">
-                      <label class="text-info">Nombre de usuario</label>
+                      <label class="text-info">Domicilio</label>
+                      <div>
+                        <input type="text" [(ngModel)]="user.user.dir" name="dir" placeholder="Dirección"
+                          class="form-control form-control-line">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="text-info" for="dir_num">Número</label>
+                      <div>
+                        <input type="text" placeholder="altura dirección" name="email" [(ngModel)]="user.user.dir_num"
+                          class="form-control form-control-line" name="dir_num" id="dir_num">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="text-info" for="departament">Departamento</label>
+                      <div>
+                        <input type="text" placeholder="de corresponder" name="departament" [(ngModel)]="user.user.departament"
+                          class="form-control form-control-line" name="departament" id="departament">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row m-0">
+                    <div class="col-md-6">
+                      <label class="text-info">Usuario</label>
                       <div>
                         <input type="text" [(ngModel)]="user.user.username" name="username" placeholder="username"
                           class="form-control form-control-line">
@@ -277,20 +311,21 @@
                       <p class="text-info m-b-0"> <i> Para agregar una imagen deben copiar el link de la misma y pegarlo
                           en la caja de texto de la izquierda. </i></p>
                       <span class="bold text-black f-12"> Click derecho -> Copiar dirreción de la imagen</span>
-                      <p class="text-info m-b-0"><i> El texto copiado debería tener un formato similar al siguiente:
+                      <!-- <p class="text-info m-b-0"><i> El texto copiado debería tener un formato similar al siguiente:
                         </i></p>
                       <span
-                        class="">https://dcassetcdn.com/design_img/3666257/638410/638410_21168956_3666257_4834a0b4_image.png</span>
+                        class="">https://dcassetcdn.com/design_img/3666257/638410/638410_21168956_3666257_4834a0b4_image.png</span> -->
                     </div>
                   </div>
                 </div>
 
-                <div class="form-group">
+
+                <!-- <div class="form-group">
                   <label class="col-md-12 text-info">Frase personal</label>
                   <div class="col-md-12">
                     <textarea rows="3" class="form-control form-control-line"></textarea>
                   </div>
-                </div>
+                </div> -->
                 <!-- <div class="form-group">
                   <label class="col-sm-12">Select Country</label>
                   <div class="col-sm-12">
@@ -318,7 +353,7 @@
                         Cambiar contraseña
                       </button>
                       <small class="ml-auto m-t-5 text-red f-12">
-                        *<b>CLIENTE</b> clave por defecto: <b>1234</b> 
+                        *Clave por defecto para usuario <br> tipo <b>CLIENTE</b>: <b>1234</b> 
                       </small>
                     </div>
                   </div>

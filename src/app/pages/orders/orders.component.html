@@ -256,17 +256,26 @@
 
                       </div>
                       <!-- <hr> -->
+                      
                       <div fxLayout="row" class="order-detail-date">
-                        <div  fxFlex class="">Pedido creado: {{ element.created_at | amFromUnix | amDateFormat: "DD-MM-YYYY" }} </div>
-                        <div  fxFlex class="">
-                          <span class="text-orange">Entrega pactada: {{ element.end_at | amFromUnix | amDateFormat: "DD-MM-YYYY" }}</span>  
+                        <div fxFlex class="">Pedido creado:
+                          {{ element.created_at | amFromUnix | amDateFormat: "DD-MM-YYYY" }} </div>
+                        <div fxFlex class="">
+                          <span class="text-info">Última modificación:
+                            <span *ngIf="element.modified_at">
+                              {{ element.modified_at | amFromUnix | amDateFormat: "DD-MM-YYYY - HH:mm" }}hs
+                            </span>
+                          </span>
                         </div>
                         <div fxFlex class="">
+                          <span class="text-red">Entrega pactada:
+                            {{ element.end_at | amFromUnix | amDateFormat: "DD-MM-YYYY" }}
+                          </span>
                           <div *ngIf="element.status === 'delivered'" class="bold text-blue">
                             Retiró:
                             <span class="normal">
                               {{ element.delivered | amFromUnix | amDateFormat: "DD-MM-YYYY - HH:mm" }}hs
-                            </span> 
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -280,9 +289,7 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let element; columns: displayedColumns" class="example-element-row"
               [class.example-expanded-row]="expandedElement === element" (click)="
-                expandedElement = expandedElement === element ? null : element
-              ">
-              -->
+                expandedElement = expandedElement === element ? null : element">
             </tr>
             <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
           </table>

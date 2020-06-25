@@ -11,6 +11,7 @@ import { OrdersComponent } from './orders/orders.component';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfileStatisticsComponent } from '../components/profile-statistics/profile-statistics.component';
+import { SubjectTestComponent } from './subject-test/subject-test.component';
 
 const routes: Routes = [
     {   path: '',
@@ -27,6 +28,7 @@ const routes: Routes = [
             { path: 'autocomplete', component: AutocompleteComponent, data: { title: 'Autocomplete'}},
             { path: 'profile/:id', component: ProfileComponent, data: { title: 'Perfil del Usuario'}},
             { path: 'statistics', component: ProfileStatisticsComponent, data: { title: 'Perfil del Usuario'}},
+            { path: 'test', component: SubjectTestComponent, data: { title: 'Test component'}},
             { path: '', redirectTo: '/home', pathMatch: 'full'},
         ]
     },

@@ -54,6 +54,7 @@ export class LoginComponent implements OnInit {
       saveUser.timeout = Date.now();
       // if(!this.savedUser.remember)
       localStorage.setItem('user', JSON.stringify(saveUser));
+      localStorage.setItem('current_branch', JSON.stringify(resp.user.branch[0]));
       this._auth.setUserData(saveUser);
       swal.fire({
         icon: 'success',

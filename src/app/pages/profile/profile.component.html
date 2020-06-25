@@ -310,8 +310,17 @@
                         [disabled]="!user.user.name || !user.user.surname || !user.user.phone">Actualizar</button>
                     </div>
                     <span fxFlex></span>
-                    <button type="button" (click)="passwordChange()" class="btn btn-warning">
-                      <i class="mdi mdi-key-variant"></i>Cambiar contraseña</button>
+                    <div fxLayout="column">
+                      <button type="button" class="btn btn-warning"
+                              (click)="passwordChange()" 
+                              *ngIf="id === localUser.user._id || localUser.user.role === 'ADMIN_ROLE' || localUser.user.role === 'SUPER_ADMIN_ROLE'"> 
+                        <i class="mdi mdi-key-variant"></i>
+                        Cambiar contraseña
+                      </button>
+                      <small class="ml-auto m-t-5 text-red f-12">
+                        *<b>CLIENTE</b> clave por defecto: <b>1234</b> 
+                      </small>
+                    </div>
                   </div>
                 </div>
               </form>

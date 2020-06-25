@@ -26,3 +26,8 @@
 /* .inputNew .mat-form-field-wrapper {
     bottom: 0.25em !important;
 } */
+.mat-stroked-button {
+    line-height: 22px !important;
+    background-color: crimson !important;
+    color: crimson !important;
+}

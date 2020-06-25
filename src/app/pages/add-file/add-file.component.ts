@@ -250,6 +250,7 @@ export class AddFileComponent implements OnInit {
     this.selectedCareer = e._id;
   }
 
+  // tslint:disable-next-line:use-lifecycle-interface
   ngDoCheck(): void {
     if (this.searchCareerCtrl.value) {
       if (this.searchCareerCtrl.value.hasOwnProperty('_id')) {

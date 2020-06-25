@@ -2,167 +2,219 @@
   <div class="col-lg-6 col-xl-5">
     <div class="card m-b-5 p-r-5">
       <div class="card-body">
-            <h3 class="card-title text-orange">
-              BUSCAR ARCHIVO
-            </h3>
-            <!-- <button class="btn btn-success" (click)="resetForm()">
+        <h2 class="card-title text-orange m-b-0">
+          CREAR NUEVA ORDEN
+        </h2>
+        <!-- <button class="btn btn-success" (click)="resetForm()">
               Resetear formulario
             </button> -->
-            <!-- <h6 class="card-subtitle">
+        <!-- <h6 class="card-subtitle">
               Editar archivos visibles en el sistema.
             </h6> -->
-            
-            <form class="form-control-line">
-              <div fxLayout="row" fxFill>
-                <mat-form-field class="full-width">
-                  <span matPrefix class="p-r-10"><i class="fas fas fa-search"></i></span>
-                  <input type="text" matInput placeholder="Buscar" (keyup)="filterFile($event.target.value)"
-                         [(ngModel)]="name" name="name"/>
-                         <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="filterFile(''); name=''">
-                            <i class="mdi mdi-close" matTooltip="Borrar"></i>
-                         </button>
-                </mat-form-field>
-              </div>
-              <div fxLayout="row" fxLayoutAlign="">
-                <div fxFlex>
-                    <mat-form-field class="p-r-10">
-                        <input matInput [matDatepicker]="picker" [min]="minDate" (dateChange)="changeDate($event.value._i)"
-                               placeholder="Fecha de entrega" [formControl]="date" />
-                        <!-- <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle> -->
-                        <mat-datepicker touchUi #picker></mat-datepicker>
-                    </mat-form-field>
-                    <button type="button" class="btn waves-effect waves-light btn-info" (click)="picker.open()">
-                    Fecha
-                    </button>
-                </div>
-                
-              </div>
-              <div fxLayout="row" fxFill>
-                <div fxFlex>
-                  <mat-form-field class="full-width">
-                    <input type="text" matInput [formControl]="searchFromClient" #searchClient
-                    [matAutocomplete]="auto" name="cliente" placeholder="Nombre cliente" />
-                    <button mat-button *ngIf="searchFromClient.value" matSuffix mat-icon-button aria-label="Clear" 
-                            (click)="searchFromClient.reset(); selectedClient.id = ''; _filterClient('')">
-                      <i class="mdi mdi-close" matTooltip="Borrar"></i>
-                   </button>
-                   </mat-form-field>
-                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnClient"
-                    (optionSelected)="setClientID($event.option.value)">
-                    <mat-option *ngFor="let client of filteredClient" [value]="client">
-                      <span>
-                        {{ client.name + ' ' + client.surname }}
-                      </span>
-                      <span class="text-right text-blue dFlex f-08em">
-                        <i class="mdi mdi-phone"></i> {{ ' ' + client.phone[0] }}
-                      </span>
-                    </mat-option>
-                  </mat-autocomplete>
-                </div>
-                <div class="p-10" fxFlex="80px">
-                  <button type="button" class="btn waves-effect waves-light btn-success" (click)="inputTry()">
-                    Añadir
-                  </button>
-                </div>
-              </div>
 
-              <!-- <dp-date-picker [(ngModel)]="selectedDate" [config]="datePickerConfig" name="selectedDate" theme="dp-material"></dp-date-picker> -->
-            </form>
+        <form class="form-control-line">
+          <div fxLayout="row" fxFill>
+            <mat-form-field class="full-width">
+              <span matPrefix class="p-r-10"><i class="fas fas fa-search"></i></span>
+              <input type="text" matInput placeholder="Buscar" (keyup)="filterFile($event.target.value)"
+                [(ngModel)]="name" name="name" />
+              <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear"
+                (click)="filterFile(''); name=''">
+                <i class="mdi mdi-close" matTooltip="Borrar"></i>
+              </button>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="">
+            <div fxFlex>
+              <mat-form-field class="p-r-10">
+                <input matInput [matDatepicker]="picker" [min]="minDate" (dateChange)="changeDate($event.value._i)"
+                  placeholder="Fecha de entrega" [formControl]="date" />
+                <!-- <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle> -->
+                <mat-datepicker touchUi #picker></mat-datepicker>
+              </mat-form-field>
+              <button type="button" class="btn waves-effect waves-light green" (click)="picker.open()">
+                <i class="mdi mdi-calendar-clock"></i> Fecha
+              </button>
+            </div>
+
+          </div>
+          <div fxLayout="row" fxFill>
+            <div fxFlex>
+              <mat-form-field class="full-width">
+                <input matTooltip="Buscar usuario" type="text" matInput [formControl]="searchFromClient" #searchClient
+                  [matAutocomplete]="auto" name="cliente" placeholder="Nombre cliente" />
+                <button mat-button *ngIf="searchFromClient.value" matSuffix mat-icon-button aria-label="Clear"
+                  (click)="searchFromClient.reset(); selectedClient.id = ''; _filterClient(''); client = null">
+                  <i class="mdi mdi-close" matTooltip="Borrar"></i>
+                </button>
+              </mat-form-field>
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnClient"
+                (optionSelected)="setClientID($event.option.value)">
+                <mat-option
+                  style="min-height: 48px; line-height: 1.15; height: auto; padding: 8px 16px; white-space: normal;"
+                  *ngFor="let client of filteredClient" [value]="client">
+                  <div>
+                    <span>
+                      {{ client.name + ' ' + client.surname }} <br>
+                      <span class="text-green f-12">{{ client.dir + ' ' + client.dir_num }}</span>
+                    </span>
+
+                  </div>
+                  <span class="text-right text-blue dFlex f-08em">
+                    <i class="mdi mdi-phone f-20"></i> {{ ' ' + client.phone[0] }}
+                  </span>
+                </mat-option>
+              </mat-autocomplete>
+
+
+            </div>
+            <div class="p-10" fxFlex="100px">
+              <!-- <button type="button" class="btn waves-effect waves-light btn-success" (click)="inputTry()">
+                    Añadir
+                  </button> -->
+              <button class="btn btn-info" (click)="addUserDialog(null, 'Agregar')" matTooltip="Agregar usuario">
+                <i class="mdi mdi-account-plus"></i> Nuevo
+              </button>
+            </div>
+          </div>
+          <div fxLayout="row" *ngIf="client">
+            <ng-container *ngIf="client.dir && client.dir_num; else nonDir">
+              <span class="f-14 text-blue">
+                <i class="mdi mdi-home f-16"></i>
+                {{ client.dir + ' ' + client.dir_num }}
+              </span>
+            </ng-container>
+            <ng-template class="f-14" #nonDir>
+              Agregar domicilio
+            </ng-template>
+            <span fxFlex></span>
+            <button matTooltip="Editar usuario" mat-stroked-button (click)="addUserDialog(client, 'Editar')"
+              color="primary">
+              Editar
+            </button>
+          </div>
+          <!-- <dp-date-picker [(ngModel)]="selectedDate" [config]="datePickerConfig" name="selectedDate" theme="dp-material"></dp-date-picker> -->
+        </form>
 
       </div>
     </div>
     <!-- PEDIDO -->
     <div class="card ">
       <div class="card-body">
-          <h4 class="card-title">
-              ARCHIVOS SOLICITADOS
-            </h4>
-            <h6 class="card-subtitle">
-              Pedido actual.
-            </h6>
-            <table class="table">
-                <thead>
-                  <tr>
-                    <th>Libro/Editorial</th>
-                    <th>Copias</th>
-                    <th>$</th>
-                    <th>Opc</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let file of fileList; let i = index" class="w-60p">
-                   
-                    <td>{{  file.name }}</td>
-                    <td><input [(ngModel)]="fileList[i].quantity" name="quantity" (ngModelChange)="calculateTotal()" 
-                               type="number" value="{{ file.quantity }}" maxlength="3" class="w-55 center"></td>
-                    <td><input [(ngModel)]="fileList[i].price" (ngModelChange)="calculateTotal()" 
-                               type="number" value="{{ file.price }}" maxlength="5" class="w-70 center"></td>
-                    <td>
-                      <button type="button" (click)="removeFileFromTask(i)"
-                              class="btn waves-effect waves-light btn-sm btn-danger">
-                        <i class="ti-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-                <tfoot>
-                <tr>
-                  <td></td>
-                  <td class="text-right" colspan="3">
-                    TOTAL: $ <b class="bold text-blue add-task-total">{{ total }}</b></td>
-                </tr>
-                </tfoot>
-              </table>
-              <div class="card-body b-t">
-                  <div class="row">
-                      <div class="col-8">
-                        <div class="row" style="margin-left: 0">
-                            <div class="col-6">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1">
-                                          <i class="ti ti-money"></i>
-                                        </span>
-                                    </div>
-                                    <input type="number" class="form-control" [(ngModel)]="partialPayment" (ngModelChange)="checkPartialPayment()" name="partialPayment" 
-                                           max="total" placeholder="Seña" [disabled]="checkPayment">
-                                </div>
-                            </div>
-                            <div class="col-5 m-t-5">
-                                <input type="checkbox" [(ngModel)]="checkPayment" (ngModelChange)="partialPayment = 0" id="md_checkbox_7" class="chk-col-light-blue w-55">
-                                <label for="md_checkbox_7">Sin seña</label>
-                            </div>
-                          </div>
-                          
-                        </div>
-                        <div class="col-4 text-right ">
-                            <button (click)="newOrder()" type="button" class="btn btn-info" [hidden]="orderID"
-                                    [disabled]="!fileList.length || !orderButton || date.invalid && (date.dirty || date.touched) || !selectedClient.id">
-                              Generar pedido 
-                            </button>
-                            <!-- newOrder recibe como parametro un booleano para hacer update en vez de generar una nueva orden -->
-                            <button (click)="newOrder(true)" type="button" class="btn btn-primary" [hidden]="!orderID"
-                                    [disabled]="!fileList.length || !updateButton || date.invalid && (date.dirty || date.touched) || !selectedClient._id">
-                              Actualizar Orden
-                            </button>
-                        </div>
+        <h4 class="card-title">
+          ARCHIVOS SOLICITADOS
+        </h4>
+        <h6 class="card-subtitle">
+          Pedido actual.
+        </h6>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Libro/Editorial</th>
+              <th>Copias</th>
+              <th>$</th>
+              <th>Opc</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let file of fileList; let i = index" class="w-60p">
+
+              <td>{{  file.name }}</td>
+              <td><input [(ngModel)]="fileList[i].quantity" name="quantity" (ngModelChange)="calculateTotal()"
+                  type="number" value="{{ file.quantity }}" maxlength="3" class="w-55 center"></td>
+              <td><input [(ngModel)]="fileList[i].price" (ngModelChange)="calculateTotal()" type="number"
+                  value="{{ file.price }}" maxlength="5" class="w-70 center"></td>
+              <td>
+                <button type="button" (click)="removeFileFromTask(i)"
+                  class="btn waves-effect waves-light btn-sm btn-danger">
+                  <i class="ti-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td></td>
+              <td class="text-right" colspan="3">
+                TOTAL: $ <b class="bold text-blue add-task-total">{{ total }}</b></td>
+            </tr>
+          </tfoot>
+        </table>
+        <div class="card-body b-t">
+          <div class="row">
+            <div class="col-8">
+              <div class="row" style="margin-left: 0">
+                <div class="col-6">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1">
+                        <i class="ti ti-money"></i>
+                      </span>
+                    </div>
+                    <input type="number" class="form-control" [(ngModel)]="partialPayment"
+                    (ngModelChange)="checkPartialPayment($event)" name="partialPayment" min="0" [max]="total"
+                    placeholder="Seña" [disabled]="checkPayment || !fileList.length > 0">
                   </div>
+                  <!-- oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" -->
+                </div>
+                <div class="col-6 m-t-5">
+
+                  <input type="checkbox" [(ngModel)]="checkPayment" (ngModelChange)="partialPayment = 0"
+                    id="md_checkbox_7" class="chk-col-light-blue w-55">
+                  <label for="md_checkbox_7">Sin seña</label>
+                </div>
+                <div class="m-t-5" fxLayout="row">
+                  <div class="col-6">
+                    <div class="input-group" fxFlex>
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">
+                          <i class="ti ti-money"></i>
+                        </span>
+                      </div>
+                      <input type="number" class="form-control" [(ngModel)]="shipping_price"
+                        (ngModelChange)="calculateTotal()" name="shipping_price" placeholder="Envío"
+                        [disabled]="!shipping">
+                    </div>
+                  </div>
+                  <div class="col-6" fxLayoutAlign="start center">
+                    <input type="checkbox" [(ngModel)]="shipping" fxFlex id="shipping" class="chk-col-light-green w-55"
+                      (ngModelChange)="shipping_price = null; calculateTotal()">
+                    <label for="shipping" class="m-r-10">Enviar</label>
+                  </div>
+
+                </div>
+
               </div>
-      </div>
-    </div>
-  </div>
-    <div class="col-lg-6 col-xl-7">
-      <div class="card">
-        <div class="card-body">
-          <app-files [reload]="reloadFiles" [file]="searchFilter" (emitAddFileToTask)="addFileToTask($event)"></app-files>
+
+            </div>
+            <div class="col-4 text-right ">
+              <button (click)="newOrder()" type="button" class="btn btn-info" [hidden]="orderID"
+                [disabled]="!fileList.length || !orderButton || date.invalid && (date.dirty || date.touched) || !selectedClient.id">
+                Generar pedido
+              </button>
+              <!-- newOrder recibe como parametro un booleano para hacer update en vez de generar una nueva orden -->
+              <button (click)="newOrder(true)" type="button" class="btn btn-primary" [hidden]="!orderID"
+                [disabled]="!fileList.length || !updateButton || date.invalid && (date.dirty || date.touched) || !selectedClient._id">
+                Actualizar Orden
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  
+  </div>
+  <div class="col-lg-6 col-xl-7">
+    <div class="card">
+      <div class="card-body">
+        <app-files [reload]="reloadFiles" [file]="searchFilter" (emitAddFileToTask)="addFileToTask($event)"></app-files>
+      </div>
+    </div>
+  </div>
+
   <!-- <div class="col-lg-3">
     <app-task-menu></app-task-menu>
   </div> -->
 </div>
-<div class="col-lg-9 col-xs-12">
+<div class="col-lg-12 col-xs-12">
   <app-order-print class="printMe"></app-order-print>
 </div>

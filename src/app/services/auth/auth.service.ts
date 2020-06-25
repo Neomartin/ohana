@@ -53,7 +53,7 @@ export class AuthService {
         this._router.navigate(['/login']);
     }
     getData(): Observable<any> {
-        console.log('llamado al GetDFAf', this.userData);
+        // console.log('llamado al GetDFAf', this.userData);
         return this.userData.asObservable();
     }
     setUserData(userToSave) {

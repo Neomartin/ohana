@@ -20,7 +20,8 @@ export class UserService {
   ) { }
   newClient(user: UserModel) {
     console.log('User service: ', user);
-    return this._http.post(URL + '/user', user, { headers: this.headers });
+    if (!user.password) { user.password = '1234'; }
+    return this._http.post(URL + '/user', user, { headers: this.headers});
     // console.log('MODELO: ', user);
     // return this.usersCollection.add({...user});
   }

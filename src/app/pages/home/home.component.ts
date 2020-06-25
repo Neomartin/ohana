@@ -11,6 +11,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import * as _moment from 'moment';
 import { FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 export interface UserData {
   id: string;
@@ -22,7 +23,7 @@ export interface UserData {
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: [ 'home.component.css'],
-  providers: [ OrderService ],
+  providers: [  ],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({height: '0px', minHeight: '0'})),
@@ -38,6 +39,8 @@ export class HomeComponent implements OnInit {
   orders = [];
   ordersSaved = [];
   total: number;
+  private subscraib: Subscription;
+  public current_branch = null;
   public dateFilter = 'today';
   public today = _moment().unix();
   public end = 1579602556;
@@ -51,46 +54,51 @@ export class HomeComponent implements OnInit {
     private _order: OrderService,
     private _snackBar: MatSnackBar
   ) {
+    this.current_branch = JSON.parse(localStorage.getItem('current_branch'));
+    this._order.getOrder(null, this.current_branch._id);
   } // constructor
 
   ngOnInit() {
     document.getElementById('search').focus();
-    this._order.getOrder(null).subscribe( (resp: any) => {
-      // const dateDiff = _moment.unix(this.end).startOf('day').diff(_moment.unix(this.today).startOf('day'), 'days');
-      // if (this.dateFilter === 'today'){
-
-      // }
-      // this.ordersFiltered = resp.map( (o: any) => o.filter( item => {
-      //   console.log('Filtro', o);
-      // }));
-      console.log(resp);
-        if (resp.order) {
-          console.log('Ordenes obtenidas');
-          console.log(resp.order);
-          // let i = 0;
-          resp.order.forEach(element => {
-            let total = 0;
-            for (const key in element) {
-              if (key === 'items') {
-                total = element[key].reduce( (acc: number, item: any) => {
-                  return acc = acc + (item.quantity * item.price);
-                }, 0);
-                element.total = total;
+    this.subscraib = this._order.orders.subscribe((resp: any) => {
+        console.log('**Resposta', resp);
+        // ///// const dateDiff = _moment.unix(this.end).startOf('day').diff(_moment.unix(this.today).startOf('day'), 'days');
+        // if (this.dateFilter === 'today'){
+        // }
+        // this.ordersFiltered = resp.map( (o: any) => o.filter( item => {
+        //   console.log('Filtro', o);
+        // /////  }));
+        // console.log(resp);
+          if (resp.order) {
+            // console.log('Ordenes obtenidas');
+            // console.log(resp.order);
+            // let i = 0;
+            resp.order.forEach(element => {
+              let total = 0;
+              for (const key in element) {
+                if (key === 'items') {
+                  total = element[key].reduce( (acc: number, item: any) => {
+                    return acc = acc + (item.quantity * item.price);
+                  }, 0);
+                  element.total = total;
+                }
               }
-            }
-            // i++;
-            });
-            this.ordersSaved = resp.order;
-            this.filterByDate(resp.order);
-            this._taskMenuComponent.ordersQtyToday = this.orders.length;
-            this._taskMenuComponent.ordersQtyLater = this.ordersSaved.length - this.orders.length;
-            console.log(this.orders);
+              // i++;
+              });
+              this.ordersSaved = resp.order;
+              this.filterByDate(resp.order);
+              this._taskMenuComponent.ordersQtyToday = this.orders.length;
+              this._taskMenuComponent.ordersQtyLater = this.ordersSaved.length - this.orders.length;
+              // console.log(this.orders);
+          }
+        }, err => {
+          console.log(err);
         }
-      }, err => {
-        console.log(err);
-      });
+    );
+    // this._order.getOrder(null, this.current_branch._id).subscribe( );
 
   }
+
 
   reloadTable () {
     this.dataSource = new MatTableDataSource(this.orders);
@@ -114,7 +122,7 @@ export class HomeComponent implements OnInit {
   }
   
   filterByDate(orders) {
-    console.log(orders);
+    // console.log(orders);
     switch (this.dateFilter) {
       case 'today': {
         // tslint:disable-next-line:max-line-length
@@ -173,5 +181,11 @@ export class HomeComponent implements OnInit {
   print(order: any) {
     // console.log('llamado al print', order);
     this._orderPrintComponent.print(order);
+  }
+    // tslint:disable-next-line:use-lifecycle-interface
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.subscraib.unsubscribe();
   }
 }

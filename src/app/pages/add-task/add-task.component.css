@@ -24,3 +24,24 @@ input.center {
 .mat-option:hover {
     background-color: rgba(0,0,0,.1) !important;
 }
+
+/* .mat-option {
+    height: 65px;
+    line-height: 20px !important;
+    flex-direction: column;
+    overflow: visible;
+  line-height: initial;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+.mat-option > span {
+    flex-direction: column;
+}
+span.mat-option-text {
+    flex-direction: column;
+} */
+.mat-stroked-button {
+    line-height: 22px !important;
+    background-color: #ffb22b !important;
+    color: white !important;
+}

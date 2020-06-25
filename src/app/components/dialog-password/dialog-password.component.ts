@@ -32,8 +32,8 @@ export class DialogPasswordComponent {
     }
 
   updPassword() {
-    console.log('oldPassword', this.oldPassword.value);
-    console.log('newPassword', this.newPassword.value);
+    // console.log('oldPassword', this.oldPassword.value);
+    // console.log('newPassword', this.newPassword.value);
     this._user.updPassword(this.userId, this.oldPassword.value, this.newPassword.value).subscribe((resp: any) => {
       console.log('Respuesta del servicio: ', resp);
       swal.fire({
@@ -44,7 +44,7 @@ export class DialogPasswordComponent {
          onClose: () => {
           this.dialogRef.close(resp);
          }
-      }); 
+      });
     }, err => {
       console.log('Error', err);
       swal.fire({

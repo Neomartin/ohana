@@ -93,13 +93,10 @@
                     </ng-template>
                   </div>
                   <div *ngIf="client._id === editable">
-  
                       <mat-form-field class="m-r-20">
                         <input type="text" matInput 
                         [(ngModel)]="client.email" name="email"/>
                       </mat-form-field>
-  
-  
                   </div>
                 </td>
               </ng-container>
@@ -123,13 +120,11 @@
                       </mat-select>
                     </mat-form-field>
                   </div>
-                  
                 </td>
               </ng-container>
               <!-- <ng-container matColumnDef="office" *ngIf="currentUser.role === 'ADMIN_ROLE'" fxFlex="160px">
                 San Rafael - Olascoaga 21
               </ng-container> -->
-              
               <ng-container matColumnDef="options">
                 <th mat-header-cell *matHeaderCellDef fxLayoutAlign="start center" fxFlex="100px">
                   Editar

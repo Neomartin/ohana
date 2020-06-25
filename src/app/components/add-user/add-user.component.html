@@ -1,11 +1,17 @@
 <form fxLayout="column" [formGroup]="form">
 <div class="row">
     <div fxFlex="330px" class="m-l-r-10">
-        <h2 mat-dialog-title>
-            <i class="mdi mdi-account-plus text-success f-24"></i>
-            {{ title }}
-        </h2>
-        <hr>
+        <div>
+            <div fxFlex fxLayout="row" fxLayoutAlign="start center">
+                <img *ngIf="type === 'Agregar'" src="assets/images/new-user.png" width="150px" height="150px" class="m-r-20">
+                <img *ngIf="type === 'Editar'" src="assets/images/upd-user.png" width="150px" height="150px" class="m-r-20">
+                <h1 mat-dialog-title class="bold f-16em">
+                    <!-- <i class="mdi mdi-account-plus text-success f-24"></i> -->
+                    {{ title | uppercase }}
+                </h1>
+            </div>
+        </div>
+        <!-- <hr> -->
         <p>{{ text }}</p>
         <mat-dialog-content >
             <mat-form-field >
@@ -16,11 +22,29 @@
                 </mat-error>
             </mat-form-field>
             <mat-form-field>
-                <span matPrefix><i class="mdi mdi-account m-r-10"></i></span>
+                <span matPrefix><i class="mdi mdi-account-alert m-r-10"></i></span>
                 <input matInput placeholder="Apellido"  [formControl]="formSurname" required fxFlex="300px">
                 <mat-error *ngIf="formSurname.invalid && (formSurname.dirty || formSurname.touched)" class="text-red">
                     Campo obligatorio*
                 </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <span matPrefix><i class="mdi mdi-map-marker m-r-10"></i></span>
+                <input matInput placeholder="Dirección"  [formControl]="formDir" required fxFlex="300px">
+                <mat-error *ngIf="formDir.invalid && (formDir.dirty || formDir.touched)" class="text-red">
+                    Campo obligatorio*
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="m-r-10">
+                <span matPrefix><i class="mdi mdi-numeric m-r-10"></i></span>
+                <input matInput placeholder="Número"  [formControl]="formDirNumber" required fxFlex="120px">
+                <mat-error *ngIf="formDirNumber.invalid && (formDirNumber.dirty || formDirNumber.touched)" class="text-red">
+                    Campo obligatorio*
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <span matPrefix><i class="mdi mdi-home-modern m-r-10"></i></span>
+                <input type="number" matInput placeholder="Dpto"  [formControl]="formDepartament" fxFlex="120px">
             </mat-form-field>
             <mat-form-field>
                 <span matPrefix><i class="mdi mdi-phone m-r-10"></i></span>
@@ -36,7 +60,14 @@
                 <span matPrefix><i class="mdi mdi-email m-r-10"></i></span>
                 <input matInput placeholder="Email"  [formControl]="formEmail" 
                        type="email" pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[A-Za-z]{2,4}$" fxFlex="300px">
-            </mat-form-field>               
+                <mat-hint class="text-small">
+                    No es necesario completar si es un cliente.
+                </mat-hint> 
+                <mat-error *ngIf="formRole.value != 'CLIENT_ROLE' && formEmail.invalid && (formPhone.dirty || formPhone.touched)">
+                    Campo obligatorio si se crea un <b>usuario</b>.
+                </mat-error>   
+            </mat-form-field>         
+
             <mat-form-field class="full-width">
                 <mat-label>Rol</mat-label>
                 <mat-select [formControl]="formRole">
@@ -48,11 +79,18 @@
         </mat-dialog-content>
         
         <mat-dialog-actions>
-            <button class="btn green mr-auto"(click)="save()" 
+            <button class="btn mr-auto" [ngClass]="{'green': type === 'Agregar', 'btn-info': type === 'Editar'}"(click)="save()" 
             [disabled]="!formName.value ||
             !formSurname.value ||
-            !formPhone.value || formPhone.value === '260-4' ||
+            !formPhone.value || formPhone.value === '260-4' || !formDir.value || !formDirNumber.value ||
             (formRole.value !== 'CLIENT_ROLE' && (formPassword.value !== formPassword2.value || !formEmail.valid || !formPassword.value  || !formUsername.value))" >
+            <span *ngIf="type === 'Agregar'">
+                Agregar
+            </span>
+            <span *ngIf="type === 'Editar'">
+                Actualizar
+            </span>
+            
             Agregar
         </button>
         <button class="btn btn-danger m-r-10"(click)="close()">Salir</button>

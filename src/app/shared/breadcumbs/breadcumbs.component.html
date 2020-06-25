@@ -1,33 +1,71 @@
 <!-- ============================================================== -->
-                <!-- Bread crumb and right sidebar toggle -->
-                <!-- ============================================================== -->
-                <div class="row page-titles">
-                  <div class="col-md-5 col-8 align-self-center">
-                      <h3 class="text-themecolor">{{ title }}</h3>
-                      <ol class="breadcrumb">
-                          <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                          <li class="breadcrumb-item active">{{ title }}</li>
-                      </ol>
-                  </div>
-                  <div class="col-md-7 col-4 align-self-center">
-                      <div class="d-flex m-t-10 justify-content-end">
-                          <div class="d-flex m-r-20 m-l-10 hidden-md-down">
-                              <!-- <div class="chart-text m-r-10" *ngIf="dolar">
-                                  <h6 class="m-b-0"><small>DOLAR HOY</small></h6>
-                                  <h4 class="m-b-0 text-info">$ {{ dolar.dolar }}</h4>
-                                  <h6 class="m-b-0"><small>{{ dolar.created_at | amFromUnix  | amDateFormat: 'DD-MM-YYYY'}} </small></h6>
-                              </div> -->
-                                  
-                              <div class="spark-chart">
-                                  <div id="monthchart"></div>
-                              </div>
-                          </div>
-                          <div class="">
-                              <button class="right-side-toggle waves-effect waves-light btn-success btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
-                          </div>
-                      </div>
-                  </div>
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<div class="row page-titles">
+  <div class="align-self-center">
+    <h3 class="text-themecolor">{{ title }}</h3>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+      <li class="breadcrumb-item active">{{ title }}</li>
+    </ol>
+  </div>
+
+
+  <div class="ml-auto branch-wrapper">
+      <div class="branch-triangle"></div>
+    <mat-form-field class="branch-option">
+    <mat-label  matTooltip="Elegir sucursal">Choose an option</mat-label>
+    <mat-select (selectionChange)="changeBranch($event.value)">
+        <mat-option *ngFor="let branch of branches" panelClass="custom-option" [value]="branch"
+                    style="min-height: 48px; line-height: 1.15; height: auto; padding: 8px 16px; white-space: normal;" >
+            <span class="text-white">
+                {{ branch.name }} <br>
+                <span class="text-right text-blue-light dFlex f-12">
+                    {{ branch.adress + ' ' + branch.adress_number + ' - ' + branch.location}} 
+                </span>
+            </span>
+            
+        <!-- <div>
+                <span>
+                  {{ branch.name }} <br>
+                  <span class="text-green f-12">{{ client.adress + ' ' + client.adress_number }}</span>
+                </span>
+
               </div>
-              <!-- ============================================================== -->
-              <!-- End Bread crumb and right sidebar toggle -->
-              <!-- ============================================================== -->
+              <span class="text-right text-blue dFlex f-08em">
+                <i class="mdi mdi-phone f-20"></i> {{ branch.location }}
+              </span> -->
+        </mat-option>
+    </mat-select>
+    </mat-form-field>
+      <div class="branch-container">
+          <span class="branch-name">
+        {{ current_branch.name }}
+      </span>
+      <span class="f-12">
+        {{ current_branch.adress }}
+        {{ current_branch.adress_number }} -
+        {{ current_branch.location }}
+      </span>
+    </div>
+    <!-- <div class="branch-dropdown">
+        <i class="mdi mdi-chevron-down"></i>
+    </div> -->
+
+
+    <!-- {{ branches[0].adress }}
+                                  {{ branches[0].adress_number }}
+                                  {{ branches[0].location }}
+                                  {{ branches[0].obs }} -->
+
+    <!-- <div class="">
+      <button class="right-side-toggle waves-effect waves-light btn-success btn btn-circle btn-sm pull-right m-l-10"><i
+          class="ti-settings text-white"></i></button>
+    </div> -->
+
+
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- End Bread crumb and right sidebar toggle -->
+  <!-- ============================================================== -->

@@ -1,34 +1,36 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subject, BehaviorSubject } from 'rxjs';
 import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import { Subject, BehaviorSubject } from 'rxjs';
 import { UserService } from 'src/app/services/user/user.service';
 import { FormControl, Validators } from '@angular/forms';
-import { startWith, debounceTime, tap, switchMap } from 'rxjs/operators';
+import { startWith, debounceTime, tap, switchMap, map } from 'rxjs/operators';
 import {MatSnackBar} from '@angular/material/snack-bar';
-
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 // Services
 import { OrderService } from 'src/app/services/order/order.service';
 
 // Plugins
 import swal from 'sweetalert2';
 import * as _moment from 'moment';
+import * as cloneDeep from 'lodash/cloneDeep';
 
 // Components
 import { FilesComponent } from '../files/files.component';
+import { OrderPrintComponent } from 'src/app/components/order-print/order-print.component';
+import { AddUserComponent } from 'src/app/components/add-user/add-user.component';
 // Models
 import { UserModel } from '../../models/user.model';
 import { Order } from '../../models/order.model';
-import { File } from '../../models/file.model';
-import { TaskFileList } from '../../models/file-list.model';
-import { ActivatedRoute } from '@angular/router';
-import { OrderPrintComponent } from 'src/app/components/order-print/order-print.component';
+// import { File } from '../../models/file.model';
+// import { TaskFileList } from '../../models/file-list.model';
 // import moment = require('moment');
 
 @Component({
   selector: 'app-add-task',
   templateUrl: './add-task.component.html',
-  styleUrls: ['add-task.component.css'],
+  styleUrls: ['./add-task.component.css'],
   providers: [OrderService, { provide: MAT_DATE_LOCALE, useValue: 'es-ES',  },
   {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
   {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},]
@@ -36,39 +38,49 @@ import { OrderPrintComponent } from 'src/app/components/order-print/order-print.
 export class AddTaskComponent implements OnInit {
   // public selectedDate: Date;
   public orderID: string;
-  public searchFromClient = new FormControl();
+  public order: Order;
   public user = new UserModel(null, null, null, null);
   public clients: any[] = [];
+  public client: any;
+  public searchFromClient = new FormControl();
+  selectedClient: UserModel = new UserModel(null, null, null, null);
   public filteredClient: any;
   public fileList = [];
   public total = 0;
-  public order: Order;
   public partialPayment = null;
+  public shipping: Boolean = false;
+  public shipping_price = null;
   public orderButton: Boolean = false;
   public updateButton: Boolean = false;
   public reloadFiles: Subject<boolean> = new Subject();
   public searchFilter: BehaviorSubject<string> = new BehaviorSubject('');
+  public current_branch: any;
+
   // Date
   public date = new FormControl(new Date(), [ Validators.required ]);
   public selectedDate;
   public endDate = _moment().unix();
   public minDate = new Date();
+
+  // INPUTS
   @ViewChild(FilesComponent, { static: true }) filesComponent;
   @ViewChild(OrderPrintComponent, { static: true}) _orderPrintComponent;
-  selectedClient: UserModel = new UserModel(null, null, null, null);
+  @ViewChild(AddUserComponent, { static: true}) child: AddUserComponent;
   constructor(
     private _user: UserService,
     private _order: OrderService,
     private _snackBar: MatSnackBar,
-    private _activatedRoute: ActivatedRoute
+    private _activatedRoute: ActivatedRoute,
+    private dialog: MatDialog
   ) {
     this._activatedRoute.params.subscribe(p =>  this.orderID = p['id']);
+    this.current_branch = JSON.parse(localStorage.getItem('current_branch'));
   }
 
   ngOnInit() {
     // Si se recibe un ID de una ordern por parametro de URL para EDITAR
     if (this.orderID) {
-      this._order.getOrder(this.orderID).subscribe( (resp: any) => {
+      this._order.getOrder(this.orderID, this.current_branch._id).subscribe( (resp: any) => {
         console.log('Respuesta de Orden con ID: ', resp);
         this.total = resp.order.price;
         this.partialPayment = resp.order.partial_payment;
@@ -78,6 +90,8 @@ export class AddTaskComponent implements OnInit {
         // console.log('selected', this.selectedClient);
         this.searchFromClient.setValue(this.selectedClient);
         this.updateButton = true;
+        this.shipping = resp.order.shipping;
+        this.shipping_price = resp.order.shipping_price;
         // console.log(this.fileList.length);
         this.fileList = this.fileList.map((o: any) => {
           console.log('O_', o);
@@ -117,13 +131,16 @@ export class AddTaskComponent implements OnInit {
         }
       });
   } // ****** ngOnInit ************/
+
   getUsers() {
     this._user.getUsers().subscribe( (resp: any) => {
-      console.log(resp);
+      // console.log('Respuesta de getUsers', resp);
       this.clients = resp.users;
       this.filteredClient = resp.users;
     });
   }
+
+  
   addFileToTask(file) {
     if (this.fileList.find((o: any) => o._id === file._id)) {
       return this._snackBar.open('El archivo ya se encuentra en la Orden', 'Error', {
@@ -140,29 +157,34 @@ export class AddTaskComponent implements OnInit {
     this.fileList.push(file);
     // console.log('FILELIST ORIGINAL: ', this.fileList);
   }
-
+  
   removeFileFromTask(index) {
     console.log('Index', index);
     this.fileList.splice(index, 1);
     this.calculateTotal();
     if (this.total < this.partialPayment) { this.partialPayment = this.total; }
   }
-
+  
   calculateTotal() {
     console.log(this.fileList);
     if (this.fileList) {
       this.total =  this.fileList.reduce( (val, file) => {
-        console.log('Entra al reduce');
+        // console.log('Entra al reduce');
         file.price ? this.orderButton = true : this.orderButton = false;
         val = val + (file.price * file.quantity);
         return val;
       }, 0);
+      if (this.shipping_price) {
+        // console.log('Entra al shipping price');
+        this.total += this.shipping_price;
+        // console.log('Total', this.total);
+      }
     }
   }
-
+  
   newOrder(update: boolean = false) {
     // console.log('Update', update);
-    if (this.selectedClient && (this.selectedClient.id || this.selectedClient._id) && this.fileList.length > 0 ) {
+    if (this.selectedClient && (this.selectedClient.id || this.selectedClient._id) && (this.fileList.length > 0) ) {
       // console.log('EndDate: ', this.endDate);
       // console.log('Now MOMENT: ', _moment().unix());
       this.order = {
@@ -183,6 +205,9 @@ export class AddTaskComponent implements OnInit {
         partial_payment: (this.partialPayment) ? this.partialPayment : this.partialPayment = 0,
         price: this.total,
         end_at: this.endDate + (23.99 * 3600),
+        shipping: this.shipping,
+        shipping_price: this.shipping_price,
+        branch_id: this.current_branch._id
       };
       // this.orderButton = true;
       // console.log('Orden ----------');
@@ -209,7 +234,7 @@ export class AddTaskComponent implements OnInit {
         });
       } else {
         this._order.newOrder(this.order).subscribe( (resp: any) => {
-          console.log('Respuesta al agregar orden: ', resp);
+          console.log('Respuesta al agregar orden: ', resp.saved2);
           swal.fire({
             icon: 'success',
             title: 'Orden Creada!',
@@ -222,13 +247,14 @@ export class AddTaskComponent implements OnInit {
             cancelButtonText: 'No imprimir',
           }).then( (result) => {
             if (result.dismiss !== swal.DismissReason.cancel) {
-              this._orderPrintComponent.print(resp.saved);
+              this._orderPrintComponent.print(resp.saved2);
             }
           });
         }, err => {
           console.log('Error', err);
         });
       }
+      // this._order.getOrder(null, null);
     }
   }
 
@@ -238,60 +264,59 @@ export class AddTaskComponent implements OnInit {
     // console.log('DateNow',  Date.now());
     this.endDate = _moment(time).unix();
   }
-  async inputTry() {
-    const { value: newPerson } = await swal.fire({
-      icon: 'info',
-      title: 'Nuevo cliente',
-      html: 'Ingrese los datos del cliente <br>' +
-            '<input type="text class="form-control" name="name" id="name" placeholder="Nombre" class="swal2-input">' +
-            '<input type="text name="surname" id="surname" placeholder="Apellido" class="swal2-input">' +
-            '<input type="text name="phone" id="phone" value="260-4" placeholder="Teléfono" class="swal2-input"></form>' +
-            '<input type="email name="email" id="email" placeholder="Email *opcional" class="swal2-input"></form>',
-      showCancelButton: true,
-      confirmButtonColor: '#57af04',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Agregar',
-      footer: '<h3 href>Creador de usuarios</h3>',
-      focusConfirm: true,
-      preConfirm: () => {
-        return [
-          (document.getElementById('name') as HTMLInputElement).value,
-          (document.getElementById('surname') as HTMLInputElement).value,
-          (document.getElementById('phone') as HTMLInputElement).value,
-          (document.getElementById('email') as HTMLInputElement).value,
-        ];
-      },
-      onOpen: () => {
-        document.getElementById('name').focus();
-      },
-    });
-    console.log('NewPerson: ', newPerson);
-    if (newPerson && newPerson[0] && newPerson[1] && newPerson[2]) {
-      this.user.role = 'CLIENT_ROLE';
-      this.user.name = newPerson[0];
-      this.user.surname = newPerson[1];
-      this.user.phone = newPerson[2];
-      if (newPerson[3]) { this.user.email = newPerson[3]; }
+  // async inputTry() {
+  //   const { value: newPerson } = await swal.fire({
+  //     icon: 'info',
+  //     title: 'Nuevo cliente',
+  //     html: 'Ingrese los datos del cliente <br>' +
+  //           '<input type="text class="form-control" name="name" id="name" placeholder="Nombre" class="swal2-input">' +
+  //           '<input type="text name="surname" id="surname" placeholder="Apellido" class="swal2-input">' +
+  //           '<input type="text name="phone" id="phone" value="260-4" placeholder="Teléfono" class="swal2-input"></form>' +
+  //           '<input type="email name="email" id="email" placeholder="Email *opcional" class="swal2-input"></form>',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#57af04',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Agregar',
+  //     footer: '<h3 href>Creador de usuarios</h3>',
+  //     focusConfirm: true,
+  //     preConfirm: () => {
+  //       return [
+  //         (document.getElementById('name') as HTMLInputElement).value,
+  //         (document.getElementById('surname') as HTMLInputElement).value,
+  //         (document.getElementById('phone') as HTMLInputElement).value,
+  //         (document.getElementById('email') as HTMLInputElement).value,
+  //       ];
+  //     },
+  //     onOpen: () => {
+  //       document.getElementById('name').focus();
+  //     },
+  //   });
+  //   console.log('NewPerson: ', newPerson);
+  //   if (newPerson && newPerson[0] && newPerson[1] && newPerson[2]) {
+  //     this.user.role = 'CLIENT_ROLE';
+  //     this.user.name = newPerson[0];
+  //     this.user.surname = newPerson[1];
+  //     this.user.phone = newPerson[2];
+  //     if (newPerson[3]) { this.user.email = newPerson[3]; }
 
-      this._user.newClient(this.user).subscribe( (resp: any) => {
-        console.log(resp);
-        this.getUsers();
-        swal.fire({
-          icon: 'success',
-          title: 'Cliente creado',
-          html: 'Agregado correctamente!<br>' + this.user.name  + ' ' + this.user.surname
-        } );
-        this.user = new UserModel(null, null, null, null, null);
-      }, err => {
-        swal.fire({
-          icon: 'error',
-          title: 'Error al crear cliente',
-          html: err.error.message + '<br>' + err.error.errors.message
-        } );
-      });
-      
-    }
-  }
+  //     this._user.newClient(this.user).subscribe( (resp: any) => {
+  //       console.log(resp);
+  //       this.getUsers();
+  //       swal.fire({
+  //         icon: 'success',
+  //         title: 'Cliente creado',
+  //         html: 'Agregado correctamente!<br>' + this.user.name  + ' ' + this.user.surname
+  //       } );
+  //       this.user = new UserModel(null, null, null, null, null);
+  //     }, err => {
+  //       swal.fire({
+  //         icon: 'error',
+  //         title: 'Error al crear cliente',
+  //         html: err.error.message + '<br>' + err.error.errors.message
+  //       } );
+  //     });
+  //   }
+  // }
 
   filterFile(value: string) {
     this.searchFilter.next(value);
@@ -304,6 +329,9 @@ export class AddTaskComponent implements OnInit {
   }
 
   private _filterClient(value): string[] {
+    if (!value) {
+      return this.clients;
+    }
     let filtrado = this.clients.filter( (s) => new RegExp(value, 'gi').test(s.name));
     console.log('filtrado: ', filtrado);
     if (filtrado.length > 0) {
@@ -317,16 +345,29 @@ export class AddTaskComponent implements OnInit {
     }
 }
 setClientID(client: any) {
-  console.log(client);
+  this.client = client;
   this.selectedClient.id = client._id;
 }
 
-checkPartialPayment() {
-  if (this.partialPayment > this.total) {
+checkPartialPayment(e) {
+  console.log('Event', e);
+  const partial = parseInt(this.partialPayment, 10);
+  if (partial > this.total) {
+    console.log('Entra al Ifito?');
+    console.log('Entra al partial: ', this.partialPayment);
+    console.log('Entra al total: ', this.total);
+    // this.partialPayment = 0;
     this.partialPayment = this.total;
+    console.log('2Entra al partial: ', this.partialPayment);
+    console.log('2Entra al total: ', this.total);
   }
 }
-  agregarArchivo() {
+
+// totalCheck(e) {
+//   console.log('Event check Total: ', e);
+// }
+
+agregarArchivo() {
     swal.fire({
       position: 'bottom-end',
       icon: 'success',
@@ -335,9 +376,9 @@ checkPartialPayment() {
       showConfirmButton: false,
       timer: 2500
     });
-  }
+}
 
-  resetForm() {
+resetForm() {
     this.date.setValue(_moment());
     this.filterFile('');
     this.searchFromClient.setValue('');
@@ -345,5 +386,71 @@ checkPartialPayment() {
     this.fileList = [];
     this.total = 0;
     this.partialPayment = null;
-  }
+}
+
+addUserDialog(client = null, addType) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    console.log('Client: ', client);
+    console.log('Tipo: ', addType);
+    // return;
+    dialogConfig.data = {
+      description:  'Ingrese los datos del cliente o del Usuario',
+      type: addType,
+      client: client
+    };
+    const dialogRef = this.dialog.open(AddUserComponent, dialogConfig);
+    // const dialogRef = this.dialog.open(AddUserComponent, dialogConfig);
+
+    dialogRef.afterClosed().pipe(
+      map((data: any) => {
+        if (data) {
+          if (data.phone) { data.phone = [ data.phone ]; }
+          data.email ? data.email = data.email.toLowerCase() : data.email = undefined;
+          if (data.branch) {
+            data.branch = JSON.parse(localStorage.getItem('user')).user.branch[0]; 
+          }
+          return data;
+        } else {
+          return;
+        }
+      }
+      )
+    ).subscribe( (resp: any ) => {
+      if (resp) {
+        console.log('ADDTYPE:', addType);
+        console.log('Respuestita: ', resp);
+        if (addType === 'Editar') {
+           // Update cliente
+          this._user.updUser(this.client._id, resp).subscribe( (user: any) => {
+            this.getUsers();
+            this.client = '';
+            this.searchFromClient.reset();
+            swal.fire({
+              icon: 'info',
+              title: 'ACTUALIZADO',
+              html: '<p>El usuario se actualizó correctamente:</p>' +
+                     `<p class="text-info"> ${user.updated.name + ' ' + user.updated.surname }</p>`,
+              timer: 2000,
+              position: 'bottom-end'
+            });
+          });
+        } else {
+          // Nuevo cliente
+          this._user.newClient(resp).subscribe( (user: any) => {
+            this.getUsers();
+              swal.fire({
+                icon: 'success',
+                title: 'CREADO',
+                html: '<p>El usuario se creó correctamente:</p>' +
+                       `<p class="text-green"> ${user.stored.name + ' ' + user.stored.surname }</p>`,
+                timer: 2000,
+                position: 'bottom-end'
+              });
+            });
+          }
+        }
+    });
+}
 }

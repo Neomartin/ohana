@@ -160,7 +160,7 @@ export class UsersComponent implements OnInit {
           if (data.phone) { data.phone = [ data.phone ]; }
           data.email ? data.email = data.email.toLowerCase() : data.email = undefined;
           if (data.branch) {
-            data.branch = JSON.parse(localStorage.getItem('user')).user.branch[0]; 
+            data.branch = JSON.parse(localStorage.getItem('user')).user.branch[0];
           }
           return data;
         } else {

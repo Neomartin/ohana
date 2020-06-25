@@ -79,7 +79,7 @@ export class ProfileComponent implements OnInit {
   }
   passwordChange(): void {
     const dialogRef = this._dialog.open(DialogPasswordComponent, {
-      data: { id: this.localUser.user._id, otrodato: 'Hola' }
+      data: { id: this.id, otrodato: 'Hola' }
     });
 
     // dialogRef.afterClosed().subscribe(result => {

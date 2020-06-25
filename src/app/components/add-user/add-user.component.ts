@@ -36,19 +36,26 @@ import { trigger, transition, style, animate } from '@angular/animations';
 })
 export class AddUserComponent implements OnInit {
   form: FormGroup;
-  formName = new FormControl('', Validators.required);
-  formSurname = new FormControl('', Validators.required);
-  formPhone = new FormControl('260-4', Validators.required);
-  formEmail = new FormControl('', Validators.required);
-  formRole = new FormControl('CLIENT_ROLE', Validators.required);
-  formBranch = new FormControl(JSON.parse(localStorage.getItem('user')).user.branch[0], Validators.required);
+  formName;
+  formSurname;
+  formPhone;
+  formEmail;
+  formDir;
+  formDirNumber;
+  formDepartament;
+  formRole;
+  formBranch;
   formPassword = new FormControl('', Validators.required);
   formPassword2 = new FormControl('', Validators.required);
-  formUsername = new FormControl('', Validators.required);
+  formUsername;
   public branches: Array<Object> = [];
+  public localBranch = JSON.parse(localStorage.getItem('user')).user.branch[0];
   public arrayvacio = [];
   public title: string;
   public text: string;
+  // public client: string;
+  public type: string;
+  public client: any;
   public roles: Role[] =  [
     { value: 'CLIENT_ROLE', viewValue: 'Cliente' },
     { value: 'USER_ROLE', viewValue: 'Usuario' },
@@ -60,10 +67,27 @@ export class AddUserComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) data,
         private _branches: BranchService
   ) {
-    this.title = data.title;
+    this.title = data.type + ' usuario.';
     this.text = data.text;
+    this.type = data.type;
+    this.client = data.client;
+    this.formName = new FormControl(this.client ? this.client.name : '', Validators.required);
+    this.formSurname = new FormControl(this.client ? this.client.surname : '', Validators.required);
+    this.formPhone = new FormControl(this.client ? this.client.phone[0] : '260-4', Validators.required);
+    this.formEmail = new FormControl(this.client ? this.client.email : '', Validators.required);
+    this.formDir = new FormControl(this.client ? this.client.dir : null, Validators.required);
+    this.formDirNumber = new FormControl(this.client ? this.client.dir_num : null, Validators.required);
+    this.formDepartament = new FormControl(this.client ? this.client.departament : null);
+    this.formRole = new FormControl(this.client ? this.client.role : 'CLIENT_ROLE', Validators.required);
+    this.formBranch = new FormControl(this.client ? this.client.branch[0] : this.localBranch, Validators.required);
+    this.formUsername = new FormControl(this.client ? this.client.username : null, Validators.required);
+  
+    console.log('Clientito:' , this.client);
    }
   ngOnInit() {
+    if (this.client) {
+      this.form = this.client;
+    }
     this.form = this.fb.group({
       name: this.formName,
       surname: this.formSurname,
@@ -72,7 +96,10 @@ export class AddUserComponent implements OnInit {
       username: this.formUsername,
       role: this.formRole,
       password: this.formPassword,
-      branch: this.formBranch
+      branch: this.formBranch,
+      dir: this.formDir,
+      dir_num: this.formDirNumber,
+      departament: this.formDepartament
     });
     this._branches.getBranches().subscribe( (resp: any) => {
       console.log('Respuesta branches: ', resp);
@@ -86,7 +113,9 @@ export class AddUserComponent implements OnInit {
   close() {
       this.dialogRef.close();
   }
-
+  incoming(data) {
+    console.log('Data incoming from Parent', data);
+  }
 }
 
 export interface Role {

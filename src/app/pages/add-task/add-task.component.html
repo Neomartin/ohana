@@ -152,8 +152,9 @@
                       </span>
                     </div>
                     <input type="number" class="form-control" [(ngModel)]="partialPayment"
-                    (ngModelChange)="checkPartialPayment($event)" name="partialPayment" min="0" [max]="total"
-                    placeholder="Seña" [disabled]="checkPayment || !fileList.length > 0">
+                     name="partialPayment" min="0" [max]="[total]" (keyup)="checkPartialPayment($event)"
+                     placeholder="Seña" [disabled]="checkPayment || !fileList.length > 0">
+                    <!-- (ngModelChange)="checkPartialPayment($event)" -->
                   </div>
                   <!-- oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" -->
                 </div>

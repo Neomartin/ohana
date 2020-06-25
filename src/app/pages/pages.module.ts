@@ -77,7 +77,6 @@ import { SubjectTestComponent } from './subject-test/subject-test.component';
     ProfileStatisticsComponent,
     DialogPasswordComponent,
     SubjectTestComponent,
-    CustomFormsModule
   ],
   imports: [
     CommonModule,
@@ -87,6 +86,7 @@ import { SubjectTestComponent } from './subject-test/subject-test.component';
     BrowserAnimationsModule,
     PAGES_ROUTES,
     SharedModule,
+    // CustomFormsModule,
     MomentModule,
     DpDatePickerModule,
     SweetAlert2Module.forRoot(),

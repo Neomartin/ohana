@@ -349,23 +349,16 @@ setClientID(client: any) {
   this.selectedClient.id = client._id;
 }
 
-checkPartialPayment(e) {
-  console.log('Event', e);
-  const partial = parseInt(this.partialPayment, 10);
-  if (partial > this.total) {
-    console.log('Entra al Ifito?');
-    console.log('Entra al partial: ', this.partialPayment);
-    console.log('Entra al total: ', this.total);
-    // this.partialPayment = 0;
-    this.partialPayment = this.total;
-    console.log('2Entra al partial: ', this.partialPayment);
-    console.log('2Entra al total: ', this.total);
-  }
-}
 
 // totalCheck(e) {
 //   console.log('Event check Total: ', e);
 // }
+checkPartialPayment(e) {
+  const value = this.partialPayment;
+  if (value > this.total) {
+    e.preventDefault();
+  }
+}
 
 agregarArchivo() {
     swal.fire({

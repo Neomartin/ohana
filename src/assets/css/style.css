@@ -115,6 +115,12 @@ h6 {
 .display-6 {
     font-size: 36px
 }
+.display-7 {
+    font-size: 30px
+}
+.display-8 {
+    font-size: 24px
+}
 
 .box {
     border-radius: 4px;

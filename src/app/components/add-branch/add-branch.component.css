@@ -1,0 +1,11 @@
+mat-error {
+    margin-bottom: 10px;
+}
+
+mat-form-field {
+    margin-bottom: 10px;
+}
+.mat-dialog-container {
+    padding: 12px 24px !important;
+}
+

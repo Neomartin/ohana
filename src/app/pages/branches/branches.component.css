@@ -1,0 +1,70 @@
+.branch-image {
+    background-color: #222;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.branch-image-triangle {
+    width: 0;
+    height: 0;
+    border-right: 120px solid #272c33;
+    border-bottom: 120px solid #fff;
+}
+.card-body {
+    padding: 15px 30px; 
+}
+
+.branchis img {
+    height: 150px;
+}
+.row-branch {
+    margin-right: -30px;
+    margin-bottom: 30px;
+}
+.branch-title {
+    padding: 10px 20px;
+}
+.branch-title-container {
+    border-radius: 4px;
+    width: 100%;
+    background-color: #222;
+    margin-right: -10px;
+}
+.branchis::after {
+    display: block;
+    position: relative;
+    background-image: linear-gradient(to left, rgba(0, 0, 0, 0) 0, #222 100%);
+    margin-top: -150px;
+    height: 150px;
+    width: 40%;
+    content: '';
+  }
+.butoncin {
+    /* width: 100px; */
+    transition: all 1s;
+    background-color: #333;
+    /* border: 1px solid #444; */
+    display: flex;
+    align-items: center;
+    padding: 4px 10px;
+    /* flex-flow: row; */
+    border-radius: .25rem;
+}
+
+.butoncin:hover {
+    background-color: #111 !important;
+    transition: ease;
+    cursor: pointer;
+    z-index: 100;
+    box-shadow: 0 8px 15px rgba(114, 123, 132, 0.3);
+}
+
+.mat-simple-snackbar-action {
+    color: rgb(22, 243, 22);
+}
+
+  @media screen and (max-width: 1190px) {
+    .branch-image {
+        display: none !important;
+    }
+}

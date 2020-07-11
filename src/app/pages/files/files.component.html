@@ -10,10 +10,36 @@
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>
       </ng-container>
   
+      <!-- Año Column -->
+      <ng-container matColumnDef="code">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cod. </th>
+        <td mat-cell *matCellDef="let element"  class="f-12"> 
+          <ng-container *ngIf="element.code; else elseCode">
+            {{ element.code }}
+          </ng-container>
+          <ng-template #elseCode>
+            <!-- {{ element._id }} -->
+          </ng-template>
+          {{ element._id | truncate: 5 }}
+        </td>
+      </ng-container>
+
+
       <!-- Institucion Column -->
       <ng-container matColumnDef="from_id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Institución </th>
-        <td mat-cell *matCellDef="let element"> {{element.from_id.name}} </td>
+        <td mat-cell *matCellDef="let element"> 
+          <ng-container *ngIf="element.career_id; else elseCareer">
+            {{ element.career_id.name }} 
+            <br>
+            <small class="text-info">
+              {{ element.from_id.name}}
+            </small> 
+          </ng-container>
+          <ng-template #elseCareer>
+            {{element.from_id.name}} 
+          </ng-template>
+        </td>
       </ng-container>
   
       
@@ -21,7 +47,7 @@
       <!-- Año Column -->
       <ng-container matColumnDef="year">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Año </th>
-        <td mat-cell *matCellDef="let element"> {{element.year}} </td>
+        <td mat-cell *matCellDef="let element"  class="f-12"> {{element.year}}</td>
       </ng-container>
   
       <!-- Creado Column -->
@@ -59,12 +85,12 @@
             <div class="example-element-description">
               <ng-container *ngIf="element.career_id; else noCareer">
                 <span class="text-blue">
-                  {{element.career_id.name}} 
+                  <span class="bold">Carrera:</span> {{element.career_id.name}} 
                 </span> 
               </ng-container>
               <ng-template #noCareer>
                 <span class="text-blue">
-                  No hay carrera asociada.
+                  <span class="bold">Carrera:</span> No hay carrera asociada.
                 </span> 
               </ng-template>
               <br>

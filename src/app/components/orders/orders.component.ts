@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { OrderService } from '../../services/order/order.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 // Componentes
@@ -11,6 +11,9 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import * as _moment from 'moment';
 import { FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { DomElementSchemaRegistry } from '@angular/compiler';
 
 export interface UserData {
   id: string;
@@ -21,8 +24,8 @@ export interface UserData {
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
-  styleUrls: [ 'orders.component.css'],
-  providers: [ OrderService ],
+  styleUrls: ['./orders.component.css'],
+  providers: [  ],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({height: '0px', minHeight: '0'})),
@@ -31,43 +34,63 @@ export interface UserData {
     ]),
   ],
 })
-export class OrdersComponent implements OnInit {
+export class OrdersComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['client', 'quantity', 'details', 'status', 'price', 'end_at' ];
   // 'quantity', 'details', 'status', 'price', 'end_at'
   dataSource: MatTableDataSource<any>;
   orders = [];
   ordersSaved = [];
   total: number;
+  private subscraib: Subscription;
+  public current_branch = null;
   public dateFilter = 'today';
   public today = _moment().unix();
   public end = 1579602556;
   public hora = (1579602556 / (3600)) % 24;
   public expandedElement: any | null;
+  public pagination: Array<Number>;
   public createTable = 'loading';
+  public currentPage: String = null;
   @ViewChild(OrderPrintComponent, { static: true}) _orderPrintComponent;
   @ViewChild(TaskMenuComponent, { static: true }) _taskMenuComponent;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   constructor(
     private _order: OrderService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private _router: Router
   ) {
+    this.current_branch = JSON.parse(localStorage.getItem('current_branch'));
+    this.currentPage = this._router.url.replace('/', '');
   } // constructor
-
   ngOnInit() {
-    this._order.getOrders().subscribe( (resp: any) => {
-      // const dateDiff = _moment.unix(this.end).startOf('day').diff(_moment.unix(this.today).startOf('day'), 'days');
+    // Paginación y determinación de ruta para obtener ordenes
+    if (this.currentPage === 'home') {
+      this.pagination = [10, 20, 40, 50 ];
+      this._order.getOrder(null, this.current_branch._id);
+      this.subscraib = this.getOrder();
+    } else {
+      this._order.getOrders(null, this.current_branch._id);
+      this.pagination = [ 15, 35, 50, 100];
+      this.subscraib = this.getOrder();
+    }
+  }
+
+  getOrder() {
+    return this._order.orders.subscribe((resp: any) => {
+      console.log('**Resposta', resp);
+      // ///// const dateDiff = _moment.unix(this.end).startOf('day').diff(_moment.unix(this.today).startOf('day'), 'days');
       // if (this.dateFilter === 'today'){
-        
-        // }
-        // this.ordersFiltered = resp.map( (o: any) => o.filter( item => {
-          //   console.log('Filtro', o);
-          // }));
-          if (resp.order.length) {
-            // let i = 0;
-            resp.order.forEach(element => {
-              let total = 0;
-              for (const key in element) {
+      // }
+      // this.ordersFiltered = resp.map( (o: any) => o.filter( item => {
+      //   console.log('Filtro', o);
+      // /////  }));
+      // console.log(resp);
+        if (resp.order) {
+          console.log('Ordenes obtenidas');
+          resp.order.forEach(element => {
+            let total = 0;
+            for (const key in element) {
               if (key === 'items') {
                 total = element[key].reduce( (acc: number, item: any) => {
                   return acc = acc + (item.quantity * item.price);
@@ -75,29 +98,28 @@ export class OrdersComponent implements OnInit {
                 element.total = total;
               }
             }
-            // i++;
-          });
-          this.createTable = 'true';
-          setTimeout(() => {
-            document.getElementById('search').focus();
-          }, 250);
-            this.orders = resp.order;
+            });
+            this.createTable = 'true';
             this.ordersSaved = resp.order;
-            // this.filterByDate(resp.order);
-            this.reloadTable();
+            this.filterByDate(resp.order);
             this._taskMenuComponent.ordersQtyToday = this.orders.length;
             this._taskMenuComponent.ordersQtyLater = this.ordersSaved.length - this.orders.length;
-            this._taskMenuComponent.allOrders = true;
-            console.log(this.orders);
-          } else {
-            this.createTable = 'false';
-          }
+            // console.log(this.orders);
+            // this.searchFocus();
+        }
       }, err => {
         console.log(err);
-      });
+      }
+    );
   }
 
-  reloadTable() {
+  // searchFocus(): void {
+  //   setTimeout(() => {
+  //     document.getElementById('search').focus();
+  //   }, 100);
+  // }
+
+  reloadTable () {
     this.dataSource = new MatTableDataSource(this.orders);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -117,7 +139,40 @@ export class OrdersComponent implements OnInit {
       return listAsFlatString(data).includes(transformedFilter);
     };
   }
-
+  filterByDate(orders) {
+    // console.log(orders);
+    switch (this.dateFilter) {
+      case 'today': {
+        // tslint:disable-next-line:max-line-length
+        this.orders = orders.filter((item: any) => _moment.unix(item.end_at).startOf('day')
+                            .diff(_moment.unix(this.today).startOf('day'), 'days') < 2);
+        // this.orders.sort((a, b) =>  (a.))
+        this.reloadTable();
+        return this.orders;
+        break;
+      }
+      case 'later': {
+        // tslint:disable-next-line:max-line-length
+        this.orders = orders.filter((item: any) => _moment.unix(item.end_at).startOf('day')
+                            .diff(_moment.unix(this.today).startOf('day'), 'days') >= 2);
+        this.reloadTable();
+        return this.orders;
+        break;
+      }
+      case 'incomplete': {
+        this.orders = orders;
+        this.reloadTable();
+        return this.orders;
+        break;
+      }
+      default: {
+        this.orders = orders;
+        this.reloadTable();
+        return this.orders;
+        break;
+      }
+    }
+  }
   applyFilter(filterValue: string) {
     console.log('Entra el filter', filterValue);
     if (this.dataSource.paginator) {
@@ -135,8 +190,9 @@ export class OrdersComponent implements OnInit {
       }
       this.orders[i].status = resp.updated.status;
       this.orders[i].modified_at = resp.updated.modified_at;
+      // this.orders[i] = resp.updated;
     }, err => {
-      this.openSnackBar('No se pudo cambiar estado de la orden.', 'ERROR')
+      this.openSnackBar('No se pudo cambiar estado de la orden.', 'ERROR');
     });
   }
 
@@ -154,4 +210,10 @@ export class OrdersComponent implements OnInit {
     // console.log('llamado al print', order);
     this._orderPrintComponent.print(order);
   }
+
+    // tslint:disable-next-line:use-lifecycle-interface
+  ngOnDestroy(): void {
+    this.subscraib.unsubscribe();
+  }
 }
+

@@ -39,3 +39,7 @@ tr.example-detail-row {
 .example-element-description-attribution {
   opacity: 0.5;
 }
+
+.mat-column-from_id {
+  line-height: 1.25;
+}

@@ -18,12 +18,15 @@ import { RegisterComponent } from '../login/register/register.component';
 import { LoginComponent } from '../login/login/login.component';
 import { PAGES_ROUTES } from './pages.routes';
 import { AddUserComponent } from '../components/add-user/add-user.component';
-import { OrdersComponent } from './orders/orders.component';
+import { OrdersComponent } from '../components/orders/orders.component';
 import { FilesComponent } from './files/files.component';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfileStatisticsComponent } from '../components/profile-statistics/profile-statistics.component';
 import { DialogPasswordComponent } from '../components/dialog-password/dialog-password.component';
+import { SubjectTestComponent } from './subject-test/subject-test.component';
+import { BranchesComponent } from './branches/branches.component';
+import { AddBranchComponent } from '../components/add-branch/add-branch.component';
 // Modules
 import { MomentModule } from 'ngx-moment';
 import {DpDatePickerModule} from 'ng2-date-picker';
@@ -32,6 +35,9 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 // Directives
 // import { MinMaxDirective } from '../directives/min-max/min-max.directive';
 import { MultiLineOptionModule } from '../directives/multi-line-option/multi-line-option.module';
+
+// Pipes
+import { PipesModule } from '../pipes/pipes.module';
 
 // import {MatDatepickerModule} from '@angular/material/datepicker';
 // Material Modules
@@ -55,7 +61,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { SubjectTestComponent } from './subject-test/subject-test.component';
+import { TruncatePipe } from '../pipes/truncate.pipe';
+
+
 
 
 @NgModule({
@@ -77,6 +85,9 @@ import { SubjectTestComponent } from './subject-test/subject-test.component';
     ProfileStatisticsComponent,
     DialogPasswordComponent,
     SubjectTestComponent,
+    BranchesComponent,
+    AddBranchComponent,
+    // TruncatePipe
   ],
   imports: [
     CommonModule,
@@ -86,6 +97,7 @@ import { SubjectTestComponent } from './subject-test/subject-test.component';
     BrowserAnimationsModule,
     PAGES_ROUTES,
     SharedModule,
+    PipesModule,
     // CustomFormsModule,
     MomentModule,
     DpDatePickerModule,
@@ -122,8 +134,12 @@ import { SubjectTestComponent } from './subject-test/subject-test.component';
     UsersComponent,
     ProfileComponent,
     ProfileStatisticsComponent,
-    DialogPasswordComponent
+    DialogPasswordComponent,
+    OrdersComponent,
+    // revisar
+    PipesModule
   ],
+  providers: [ PipesModule ],
   entryComponents: [AddUserComponent],
 })
 export class PagesModule { }

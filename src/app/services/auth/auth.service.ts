@@ -8,7 +8,6 @@ import swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { URL} from '../../config/config';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { UserData } from 'src/app/pages/home/home.component';
 
 // interface User {
 //     uid: string;

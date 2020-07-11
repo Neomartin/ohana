@@ -32,8 +32,8 @@ export class AddFileComponent implements OnInit {
     public selectedFrom: any;
     public selectedCareer: String;
     public validCareer: Boolean;
-    public years = [ 'No corresponde', 'Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto', 
-                     'Sexto', 'Séptimo', 'Inicial', 'Medio', 'Avanzado']
+    public years = [ 'No corresponde', 'Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto',
+                     'Sexto', 'Séptimo', 'Octavo', 'Inicial', 'Medio', 'Avanzado' ];
     public yearSelected = 'No corresponde';
     public reloadFiles: Subject<boolean> = new Subject();
     public searchFilter: BehaviorSubject<string> = new BehaviorSubject('');

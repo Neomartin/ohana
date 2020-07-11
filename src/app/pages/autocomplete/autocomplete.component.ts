@@ -1,10 +1,9 @@
-//app.component.ts
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable, BehaviorSubject, combineLatest, Subject  } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
- 
+
 export interface Item {
   text: string;
   color: string;
@@ -39,20 +38,7 @@ export class AutocompleteComponent implements OnInit {
             return query;
         }).valueChanges()
     ));
-    // console.log('1:', this.newQuery);
-    
-    // .switchMap(([size, color]) => 
-    //   afs.collection<Item>('items', ref => {
-      //     let query : firebase.firestore.Query = ref;
-      //     if (size) { query = query.where('size', '==', size) };
-      //     if (color) { query = query.where('color', '==', color) };
-      //     return query;
-      //   }).valueChanges()
-      // );
-      
-      // console.log('3:', this.newQuery);
     }
-    
     ngOnInit() {
       this.newQuery.subscribe((queriedItems: any) => {
         console.log('Queried items', queriedItems);
@@ -61,20 +47,18 @@ export class AutocompleteComponent implements OnInit {
       this.findId();
       console.log('2:', this.newQuery);
     }
-    
   findId(id: string = null) {
     setTimeout( _ => {
       this.items$.next(id);
-
-    }, 300)
+    }, 300);
     // console.log('ID: ', id);
     // console.log('1:', this.newQuery);
   }
 
   filterBySize(size: string|null) {
-    this.sizeFilter$.next(size); 
+    this.sizeFilter$.next(size);
   }
   filterByColor(color: string|null) {
-    this.colorFilter$.next(color); 
+    this.colorFilter$.next(color);
   }
 }

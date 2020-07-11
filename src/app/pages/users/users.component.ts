@@ -13,6 +13,11 @@ import { map } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
+export interface Role {
+  value: string;
+  viewValue: string;
+}
+
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -192,7 +197,4 @@ export class UsersComponent implements OnInit {
 }
 
 
-export interface Role {
-  value: string;
-  viewValue: string;
-}
+

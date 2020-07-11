@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { filter, map, mapTo } from 'rxjs/operators';
 import { Order } from 'src/app/models/order.model';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { HomeComponent } from 'src/app/pages/home/home.component';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class OrderService {
   branch;
   constructor(
     private _http: HttpClient,
+    // private _home: Orders2Component
   ) {
     this.branch = JSON.parse(localStorage.getItem('current_branch'));
   }
@@ -45,9 +47,12 @@ export class OrderService {
     //   return this._http.get(this.url + '/order/' + branch);
     // }
   }
-  getOrders(parameters = null) {
+  getOrders(parameters = null, branch: String) {
     // filtro como parametro de getOrder
-      return this._http.post(this.url + '/orders/', parameters, { headers: this.headers });
+      this._http.post(this.url + '/orders/' + branch, parameters , { headers: this.headers }).subscribe((resp: any) => {
+          this.$orders.next(resp);
+          // this._home.searchFocus();
+      });
   }
   newOrder(order) {
     this.getOrder(null, this.branch._id);

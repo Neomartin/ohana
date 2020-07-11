@@ -6,5 +6,8 @@ export class Branch {
         public adress_number: Number,
         public active: Boolean,
         public location?: String,
+        public email?: String,
+        public obs?: String,
+        public _id?: String
     ) {}
 }

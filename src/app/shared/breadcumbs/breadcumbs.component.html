@@ -16,8 +16,15 @@
     <mat-form-field class="branch-option">
     <mat-label  matTooltip="Elegir sucursal">Choose an option</mat-label>
     <mat-select (selectionChange)="changeBranch($event.value)">
-        <mat-option *ngFor="let branch of branches" panelClass="custom-option" [value]="branch"
-                    style="min-height: 48px; line-height: 1.15; height: auto; padding: 8px 16px; white-space: normal;" >
+        <mat-option *ngFor="let branch of branches" class="custom-option" [value]="branch"
+                    style="min-height: 48px; 
+                    line-height: 1.15; 
+                    height: auto; 
+                    padding: 8px 16px; 
+                    white-space: normal;  
+                    max-width: 400px !important;
+                    color: white;">
+        <!--  -->
             <span class="text-white">
                 {{ branch.name }} <br>
                 <span class="text-right text-blue-light dFlex f-12">

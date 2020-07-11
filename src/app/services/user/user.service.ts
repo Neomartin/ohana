@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AngularFirestore, AngularFirestoreDocument, DocumentReference, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { URL } from '../../config/config';
 import { UserModel } from 'src/app/models/user.model';
 import { map } from 'rxjs/operators';
@@ -14,10 +13,14 @@ export class UserService {
   public URL = URL;
   public headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
   users: Observable<UserModel[]>;
+  user = new BehaviorSubject<UserModel>(JSON.parse(localStorage.getItem('user')));
+  user$ = this.user.asObservable();
   constructor(
     private _http: HttpClient
     // private afsDoc: AngularFirestoreDocument
-  ) { }
+  ) {
+    // this.user.next(JSON.parse(localStorage.getItem('user')));
+  }
   newClient(user: UserModel) {
     console.log('User service: ', user);
     if (!user.password) { user.password = '1234'; }

@@ -40,6 +40,21 @@ export class SidebarService {
       url: '/profile',
       id: true
     },
+    {
+      title: 'Tests',
+      icon: 'mdi mdi-test-tube',
+      url: '/test',
+    },
+    {
+      title: 'Admin',
+      icon: 'mdi mdi-brightness-auto',
+      // url: '/',
+      submenu: [
+        { title: 'Sucursales', url: '/branches' },
+        // icon: 'mdi mdi-home-variant'
+        { title: 'Rxjs', url: '/rxjs' }
+      ]
+    },
     // {
     //   title: 'Login',
     //   icon: 'mdi mdi-account',

@@ -27,7 +27,7 @@ export class FilesComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  @Output() emitAddFileToTask: EventEmitter<any> = new EventEmitter()
+  @Output() emitAddFileToTask: EventEmitter<any> = new EventEmitter();
   // Initialize dataSource
   @Input() reload: Subject<boolean>;
   @Input() file: Subject<string>;
@@ -39,7 +39,7 @@ export class FilesComponent implements OnInit {
   };
   dataSource: MatTableDataSource<any>;
   columnsToDisplay = [
-    'name', 'from_id', 'year', 'edit'
+    'code', 'name', 'from_id', 'year', 'edit'
   ];
   expandedElement: File | null;
   files: Array<Object> = [];
@@ -76,18 +76,36 @@ export class FilesComponent implements OnInit {
           this.applyFilter(value);
         });
         this.dataSource.filterPredicate = (data, filter: string) => {
+         
+          // *** Transforma la string de busqueda a caractéres sin ACENTO
+          filter = filter.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+          // console.log('Filter transformed', filter);
+
           const transformedFilter = filter.trim().toLowerCase();
           const listAsFlatString = (obj): string => {
+            // console.log('Obj: ', obj);
             let returnVal = '';
-            Object.values(obj).forEach((val) => {
+            Object.values(obj).forEach((val: any) => {
+              
+              /************ Si el valor es una cadena de caracteres la va a normalizar para poder
+              realizar el posterior filtrado *************/
+              if (typeof val === 'string') {
+                val = val.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+              }
+
+              // console.log('Valu Object Values: ', val);
               if (typeof val !== 'object') {
                 returnVal = returnVal + ' ' + val;
               } else if (val !== null) {
                 returnVal = returnVal + ' ' + listAsFlatString(val);
               }
             });
+            // console.log('Return Value: ', returnVal);
+
             return returnVal.trim().toLowerCase();
           };
+
+          // **** LLAMADO A FUNCIÓN Y ENVÍO DE DATA
           return listAsFlatString(data).includes(transformedFilter);
         };
         // this.dataSource = resp.files;
@@ -101,8 +119,12 @@ export class FilesComponent implements OnInit {
         });
       });
     }
+
     applyFilter(filterValue: string) {
-      // console.log('Entra', filterValue);
+      // console.log('Entra:', filterValue);
+
+      // console.log('Modif: ', filterValue.normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
+      // console.log('--------------');
       if (this.dataSource.paginator) {
         this.dataSource.paginator.firstPage();
       }

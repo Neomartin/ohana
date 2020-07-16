@@ -34,4 +34,8 @@ export class FileService {
   deleteFile(id: string) {
     return this._http.delete(this.URL + '/file/' + id, { headers: this.headers });
   }
+  checkCode(code) {
+    console.log('Code service', code);
+    return this._http.get(this.URL + '/file/code/' + code, { headers: this.headers });
+  }
 }

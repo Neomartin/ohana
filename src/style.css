@@ -22,7 +22,7 @@
     color: #fd2b1c;
 }
 .text-green {
-    color: #5fb410;
+    color: #5fb410 !important;
 }
 .text-blue {
     color: #1e88e5 !important
@@ -177,6 +177,8 @@
 .libros td:last-child {
     width: 40px
 }
+
+/* Padding */
 .p-5 {
     padding: 5px;
 }
@@ -258,6 +260,7 @@
 .p-l-25 {
     padding-left: 25px;
 }
+/* Margin */
 .m-0 {
     margin: 0;
 }
@@ -297,6 +300,24 @@
 }
 .m-b-40 {
     margin-bottom: 40px;
+}
+.m-t--5 {
+    margin-top: -5px !important;
+}
+.m-t--10 {
+    margin-top: -10px;
+}
+.m-t--15 {
+    margin-top: -15px;
+}
+.m-t--20 {
+    margin-top: -20px;
+}
+
+.custom-error {
+    font-size: 12px;
+    font-weight: 400;
+    /* color: red; */
 }
 .dialog-container {
     padding: 20px -5px 40px;

@@ -8,6 +8,7 @@ import { PagesComponent } from './pages/pages.component';
 import { PagesModule } from './pages/pages.module';
 import { SharedModule } from './shared/shared.module';
 import { TruncatePipe } from './pipes/truncate.pipe';
+
 // import { PipesModule } from './pipes/pipes.module';
 
 

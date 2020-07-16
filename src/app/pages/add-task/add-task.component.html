@@ -151,9 +151,13 @@
                         <i class="ti ti-money"></i>
                       </span>
                     </div>
-                    <input type="number" class="form-control" [(ngModel)]="partialPayment"
-                     name="partialPayment" min="0" [max]="[total]" (keyup)="checkPartialPayment($event)"
+                    <input type="number" class="form-control" [(ngModel)]="partialPayment" (keyup)="totalCheck($event)"
+                     name="partialPayment" min="0" [max]="[total]" 
                      placeholder="Seña" [disabled]="checkPayment || !fileList.length > 0">
+                     
+                     <!-- Volver a agregar
+                          (keyup)="checkPartialPayment($event)" -->
+                     <!-- oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" -->
                     <!-- (ngModelChange)="checkPartialPayment($event)" -->
                   </div>
                   <!-- oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" -->

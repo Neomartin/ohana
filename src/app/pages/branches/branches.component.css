@@ -59,7 +59,7 @@
     box-shadow: 0 8px 15px rgba(114, 123, 132, 0.3);
 }
 
-.mat-simple-snackbar-action {
+.branch-toast .mat-simple-snackbar-action {
     color: rgb(22, 243, 22);
 }
 

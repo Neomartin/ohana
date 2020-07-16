@@ -2056,7 +2056,7 @@ form label {
 }
 
 .page-titles .breadcrumb .breadcrumb-item.active {
-    color: #99abb4
+    color: #000000
 }
 
 @-webkit-keyframes rotate {

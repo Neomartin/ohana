@@ -350,9 +350,25 @@ setClientID(client: any) {
 }
 
 
-// totalCheck(e) {
-//   console.log('Event check Total: ', e);
-// }
+totalCheck(e) {
+  const value = this.partialPayment;
+  if (value >= this.total) {
+    event.preventDefault();
+    this.partialPayment = this.total;
+    // if (totalLength > this.partialPayment.toString().length) {
+    //   this.partialPayment = parseInt(value.toString().substring(0, ), 10);
+    // } else {
+
+    // }
+   
+  }
+  // if (value > this.total) {
+  //   console.log('entra el ifito de value máximun', this.partialPayment, this.total);
+  //   this.partialPayment = this.total;
+  // }
+  // console.log('Event check Total: ', value);
+}
+
 checkPartialPayment(e) {
   const value = this.partialPayment;
   if (value > this.total) {

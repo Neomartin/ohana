@@ -54,6 +54,7 @@ export class FilesComponent implements OnInit {
       this.getFiles();
     });
     console.log(this.fileListOptions);
+
   }  // ***** END OF NGINIT
 
     getFiles() {
@@ -76,7 +77,6 @@ export class FilesComponent implements OnInit {
           this.applyFilter(value);
         });
         this.dataSource.filterPredicate = (data, filter: string) => {
-         
           // *** Transforma la string de busqueda a caractéres sin ACENTO
           filter = filter.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
           // console.log('Filter transformed', filter);
@@ -86,7 +86,6 @@ export class FilesComponent implements OnInit {
             // console.log('Obj: ', obj);
             let returnVal = '';
             Object.values(obj).forEach((val: any) => {
-              
               /************ Si el valor es una cadena de caracteres la va a normalizar para poder
               realizar el posterior filtrado *************/
               if (typeof val === 'string') {

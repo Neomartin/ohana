@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, AbstractControl } from '@angular/forms';
 import swal from 'sweetalert2';
 import { FilesComponent } from '../files/files.component';
 import { UserModel } from 'src/app/models/user.model';
@@ -8,6 +8,7 @@ import { OriginService } from '../../services/origin/origin.service';
 import { map, startWith, debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
 import { FileService } from '../../services/file/file.service';
 import { Subject, BehaviorSubject } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -17,9 +18,14 @@ import { Subject, BehaviorSubject } from 'rxjs';
     providers: [ FileService, OriginService ]
 })
 export class AddFileComponent implements OnInit {
+
     @ViewChild(FilesComponent, { static: true }) filesComponent;
+
+    public codeAvaible = null;
     public user: UserModel = new UserModel('', '', '', '', '', '', '', '', '', '');
     public name: String = '';
+    // public code = new FormControl('', [ Validators.required, Validators.minLength(4) ]);
+    public code = null;
     public searchClientCtrl = new FormControl();
     public searchFromCtrl = new FormControl();
     public searchCareerCtrl = new FormControl();
@@ -27,6 +33,7 @@ export class AddFileComponent implements OnInit {
     public persona = false;
     public filteredFrom: any;
     public filteredCareer: any;
+    public codeLength = null;
     public from = [];
     public career = [];
     public selectedFrom: any;
@@ -39,7 +46,8 @@ export class AddFileComponent implements OnInit {
     public searchFilter: BehaviorSubject<string> = new BehaviorSubject('');
     constructor(
         private _origin: OriginService,
-        private _file: FileService
+        private _file: FileService,
+        private _snack: MatSnackBar
     ) {
       this.yearCtrl.setValue('No corresponde');
     }
@@ -49,7 +57,6 @@ export class AddFileComponent implements OnInit {
         delete: true
       };
       this.loadFrom();
-
       this.searchFromCtrl.valueChanges
       .pipe(
         startWith(''),
@@ -83,6 +90,14 @@ export class AddFileComponent implements OnInit {
           this.filteredCareer.push(data);
         }
       });
+
+      // ********** Subscribe al valueChange del codigo *****
+      // this.code.valueChanges.subscribe( value => {
+      //   if (value) {
+      //     this.filterFile(value.toString());
+      //     this.codeCheck(value);
+      //   }
+      // });
     } // NGONINIT END
 
 
@@ -124,10 +139,10 @@ export class AddFileComponent implements OnInit {
               title: 'Nombre',
               text: 'Nombre de la institución'
             }
-          ]).then( (result) => {
+          ]).then( (result: any) => {
             console.log('Resultado', result);
             const newFrom: any = {};
-            if(!result.dismiss) {
+            if (!result.dismiss) {
               newFrom.type = result.value[0];
               if (result.value[1]) {
                 newFrom.name = result.value[0] + ' - ' + result.value[1] + ' ' + result.value[2];
@@ -174,11 +189,11 @@ export class AddFileComponent implements OnInit {
           html: `<span class="text-blue">${this.selectedFrom.name }</span><br>Ingrese nombre de la carrera`
                 // '<br><span class="text-red">**Si es una universidad omitir este campo</span>'
         }
-      ]).then( (result) => {
+      ]).then( (result: any) => {
         const newCareer = {
           from_id: this.selectedFrom._id,
           name: result.value[0]
-        }
+        };
         this._origin.newCareer(newCareer).subscribe( (resp: any) => {
           // console.log(resp);
           this.findCareers(this.selectedFrom);
@@ -223,14 +238,13 @@ export class AddFileComponent implements OnInit {
       return career.name;
     }
 
-
   filterFile(value: string) {
-    // if (value.length >= 1) {
-      this.searchFilter.next(value);
-      // console.log('Entra al next ');
-    // }
-  }
+ 
+    if (value) { 
+      this.searchFilter.next(value.toString());
+    }
 
+  }
 
   findCareers(e) {
     // console.log('entra', e);
@@ -262,6 +276,7 @@ export class AddFileComponent implements OnInit {
   send() {
     const newFile = {
       name: this.name,
+      code: this.code,
       status: 'activo',
       year: this.yearCtrl.value,
       from_id: this.selectedFrom._id,
@@ -281,20 +296,77 @@ export class AddFileComponent implements OnInit {
           this.searchCareerCtrl.reset();
           this.searchFromCtrl.reset();
           this.name = '';
+          this.code.reset();
           this.yearCtrl.reset();
           this.persona = false;
+          this.filterFile('');
+          this.codeAvaible = null;
+          document.getElementById('name').focus();
         });
       }
     }, err => {
       console.log(err);
-      const error = JSON.stringify(err.error.message);
+      const error = JSON.stringify(err.error.errors.message);
       swal.fire({
         icon: 'error',
         title: 'Error al crear archivo',
         html: error + '<br>' + error,
       });
     });
-  };
+  }
+
+  codeCheck(e) {
+    // console.log('CodeCheck', e);
+    // console.log('Code length: ', e.length);
+    if (e) {
+      this.codeLength = e.toString().length;
+    }
+    // console.log(' this.codeLength:',  this.codeLength);
+    //   console.log('Code Response:', e);
+      if (e &&  this.codeLength >= 4) {
+        this.codeLength = true;
+        console.log('Entra al if', e.toString().length);
+        this.codeAvaible = 'loading';
+        this._file.checkCode(e).subscribe( (resp: any) => {
+          console.log('entra al subscribe', resp);
+          if (resp.code) {
+            this.codeAvaible = 'error';
+          } else {
+            this.codeAvaible = 'done';
+          }
+        }, err => {
+          console.log('Error en la response', err);
+          this._snack.open('Error al obtener código de orden.', 'Error');
+        });
+      } else {
+        this.codeLength = false;
+        this.codeAvaible = null;
+        return;
+      // }
+    }
+    // if (e.length >= 4) {
+    //   this.codeAvaible = 'loading';
+    //   this._file.checkCode(e).subscribe( (resp: any) => {
+    //     // console.log('Code Response', resp);
+    //     if (resp.code) {
+    //       this.code.setErrors({ duplicate: true });
+    //       this.codeAvaible = 'error';
+    //       // this.code.setErrors({ 'not' : true });
+    //     } else {
+    //       this.codeAvaible = 'done';
+    //       this.code.setErrors(null);
+    //     }
+    //   }, err => {
+    //     this._snack.open('Error al obtener código de orden.', 'Error');
+    //   });
+    // } else {
+    //   // console.log('code vacio');
+    //   this.code.setErrors(null);
+    //   this.codeAvaible = null;
+    //   return;
+    // }
+  }
     // this._origin.newFile()
 
 }
+

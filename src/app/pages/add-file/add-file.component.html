@@ -10,106 +10,143 @@
             <h6 class="card-subtitle">
               Agregar y remover archivos en el sistema.
             </h6>
-                  <!-- <i class="fas fa-chess-rook p-r-10"></i> -->
-                  <!-- <span class="label-tab">AÑADIR</span> -->
-                  <hr>
-                <form class="form-control-line">
-                  <mat-form-field class="full-width m-t-20">
-                    <input matInput (keyup)="filterFile($event.target.value)" id="name"
-                      placeholder="Nombre archivo" [(ngModel)]="name" name="name">
-                  </mat-form-field>
-                  <div fxLayout="row" fxFill>
-                    <div fxFlex>
-                      <mat-form-field fxFlex>
-                        <input matInput placeholder="Institución" aria-label="Institución"  required
-                        [matAutocomplete]="from" [formControl]="searchFromCtrl" name='from' >
-                        <mat-autocomplete #from="matAutocomplete" [displayWith]="displayFnFrom"
-                        (optionSelected)="findCareers($event.option.value)">
-                        <!--   -->
-                          <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
-                          <ng-container *ngIf="!isLoading">
-                            <mat-option *ngFor="let from of filteredFrom" [value]="from" >
-                              <span><b>{{from.name}}</b></span>
-                            </mat-option>
-                          </ng-container>
-                        </mat-autocomplete>
-                      </mat-form-field>
-                      <!-- <ng-template> -->
-                        <!-- <ng-container *ngIf="errorMsg">
-                          {{errorMsg}}
-                        </ng-container> -->
-                        <!-- <ng-template #elseTemplate> -->
-                          <!-- <h5>Selected Value: <pre>{{searchClientCtrl.value | json}}</pre></h5> -->
-                        <!-- </ng-template> -->
-                        <!-- <br> -->
-                  </div>
-                  <div class="p-10" fxFlex="60px">
-                    <button mat-mini-fab class="blue" aria-label="Add user" (click)="addFrom()">
-                      <i class="fa fa-university"></i>
-                    </button>
-                  </div>
-                  </div>
-                  <div fxLayout="row" fxFill>
-                    <div fxFlex>
-                      <mat-form-field fxFlex>
-                          <input matInput placeholder="Carrera" aria-label="Carrera" 
-                          [matAutocomplete]="career"  [formControl]="searchCareerCtrl" required>
-                          <mat-autocomplete #career="matAutocomplete" [displayWith]="displayFnCareer"
-                          (optionSelected)="setCareer($event.option.value)">
-                            <mat-option *ngFor="let career of filteredCareer" [value]="career" >
-                              <span><b>{{career.name}}</b></span>
-                            </mat-option>
-                          <!-- </ng-container> -->
-                        </mat-autocomplete>
-                      </mat-form-field>
-                      <!-- <ng-template> -->
-                        <!-- <ng-container *ngIf="errorMsg">
-                          {{errorMsg}}
-                        </ng-container> -->
-                        <!-- <ng-template #elseTemplate> -->
-                          <!-- <h5>Selected Value: <pre>{{searchClientCtrl.value | json}}</pre></h5> -->
-                        <!-- </ng-template> -->
-                        <!-- <br> -->
-                      
-                    </div>
-                    <div class="p-10" fxFlex="60px">
-                      <button mat-mini-fab class="green" aria-label="Add user" 
-                      (click)="addCareer()" [disabled]="!selectedFrom">
-                        <i class="fa fa-graduation-cap"></i>
-                      </button>
-                    </div>
-                  </div>
-                  <div fxLayout="row">
-                      
-                    <mat-form-field fxFlex>
-                      <mat-label>Año/Curso</mat-label>
-                      <mat-select [formControl]="yearCtrl" required [(value)]="yearSelected">
-                        <mat-option *ngFor="let year of years" [value]="year">
-                          {{year}}
+            <!-- <i class="fas fa-chess-rook p-r-10"></i> -->
+            <!-- <span class="label-tab">AÑADIR</span> -->
+            <hr>
+            <form class="form-control-line" #useForm="ngForm">
+              <mat-form-field class="full-width  m-t-20">
+                <input matInput (keyup)="filterFile($event.target.value)" id="name" placeholder="Nombre archivo"
+                  [(ngModel)]="name" name="name">
+              </mat-form-field>
+              <div fxLayout="row">
+                <mat-form-field class="m-r-10" fxFlex="130px">
+                    <input matInput type="number" [(ngModel)]="code" (ngModelChange)="codeCheck(code); filterFile(code)"
+                    #cod="ngModel" name="cod" minlength="4" required
+                    pattern="[0-9]+" min="1000">
+                    <img src="assets/loading.svg" *ngIf="codeAvaible === 'loading'" style="line-height: 16px;"
+                      width="22px" height="22px" matSuffix>
+                    <i class="fa fa-check-circle text-green" *ngIf="codeAvaible === 'done'" matSuffix></i>
+                    <i class="fa fa-times-circle text-red" *ngIf="codeAvaible === 'error'" matSuffix></i>
+                    <mat-error *ngIf="cod.invalid && (cod.dirty || cod.touched)">
+                      *Campo obligatorio! 
+                    </mat-error>
+                </mat-form-field>
+                
+                <!-- <mat-checkbox fxFlex class="p-l-10 m-t-20" [(ngModel)]="persona" name="person"
+                  [checked]="yearCtrl.disabled" (change)="yearCtrl.disabled ? yearCtrl.enable() : yearCtrl.disable()">
+                  Persona
+                </mat-checkbox> -->
+              </div>
+              <div *ngIf="code < 1000 && code > 0" class="custom-error text-red m-t--15">
+                *Número de 4 dígitos o superior.
+              </div>
+
+              <!-- <div class="small m-t--15 custom-error text-blue" *ngIf="!codeAvaible">
+                *Código de 4 dígitos.
+              </div> -->
+              <div class="small m-t--15 custom-error text-red" *ngIf="codeAvaible === 'error'">
+                *<strong>ERROR: </strong> Código en uso
+              </div>
+              <div class="small m-t--15 custom-error text-green" *ngIf="codeAvaible === 'done'">
+                <strong>OK: </strong> Código disponible
+              </div> 
+              <!-- <div *ngIf="codeAvaible === 'error'">
+                {{ codeAvaible }}
+              </div> -->
+              <div fxLayout="row" fxFill class="mt-10">
+                <div fxFlex>
+                  <mat-form-field fxFlex>
+                    <input matInput placeholder="Institución" aria-label="Institución" required [matAutocomplete]="from"
+                      [formControl]="searchFromCtrl" name='from'>
+                    <mat-autocomplete #from="matAutocomplete" [displayWith]="displayFnFrom"
+                      (optionSelected)="findCareers($event.option.value)">
+                      <!--   -->
+                      <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+                      <ng-container *ngIf="!isLoading">
+                        <mat-option *ngFor="let from of filteredFrom" [value]="from">
+                          <span><b>{{from.name}}</b></span>
                         </mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="yearCtrl.hasError('required')">Por favor seleccione un año</mat-error>
-                      <mat-hint>{{year}}</mat-hint>
-                    </mat-form-field>
-                    <mat-checkbox fxFlex class="p-l-10 m-t-20" [(ngModel)]="persona" name="person" [checked]="yearCtrl.disabled"
-                    (change)="yearCtrl.disabled ? yearCtrl.enable() : yearCtrl.disable()">Persona</mat-checkbox>
-                    <div class="p-10" fxFlex="80px">
-                      <button type="button" class="btn waves-effect waves-light btn-success"
-                        (click)="send()" [disabled]="( !yearCtrl.valid && !persona) ||  !searchFromCtrl.valid || !validCareer">
-                        <!-- [swal]="['Oops!', 'This is not implemented yet :/', 'warning']" -->
-                        Añadir
-                      </button>
-                    </div>
-                  </div>
-                  <div fxLayout="row" fxFill>
-                    <div fxFlex>
-                    </div>
-                    
-                  </div>
-                </form>
+                      </ng-container>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                  <!-- <ng-template> -->
+                  <!-- <ng-container *ngIf="errorMsg">
+                          {{errorMsg}}
+                        </ng-container> -->
+                  <!-- <ng-template #elseTemplate> -->
+                  <!-- <h5>Selected Value: <pre>{{searchClientCtrl.value | json}}</pre></h5> -->
+                  <!-- </ng-template> -->
+                  <!-- <br> -->
+                </div>
+                <div class="p-10" fxFlex="60px">
+                  <button mat-mini-fab class="blue" aria-label="Add user" (click)="addFrom()"  matTooltip="AGREGAR Institución">
+                    <i class="fa fa-university"></i>
+                  </button>
+                </div>
+              </div>
+              <div fxLayout="row" fxFill>
+                <div fxFlex>
+                  <mat-form-field fxFlex>
+                    <input matInput placeholder="Carrera" aria-label="Carrera" [matAutocomplete]="career"
+                      [formControl]="searchCareerCtrl" required>
+                    <mat-autocomplete #career="matAutocomplete" [displayWith]="displayFnCareer"
+                      (optionSelected)="setCareer($event.option.value)">
+                      <mat-option *ngFor="let career of filteredCareer" [value]="career">
+                        <span><b>{{career.name}}</b></span>
+                      </mat-option>
+                      <!-- </ng-container> -->
+                    </mat-autocomplete>
+                  </mat-form-field>
+                  <!-- <ng-template> -->
+                  <!-- <ng-container *ngIf="errorMsg">
+                          {{errorMsg}}
+                        </ng-container> -->
+                  <!-- <ng-template #elseTemplate> -->
+                  <!-- <h5>Selected Value: <pre>{{searchClientCtrl.value | json}}</pre></h5> -->
+                  <!-- </ng-template> -->
+                  <!-- <br> -->
+
+                </div>
+                <div class="p-10" fxFlex="60px">
+                  <button mat-mini-fab class="green" aria-label="Add user" (click)="addCareer()" matTooltip="AGREGAR Carrera"
+                    [disabled]="!selectedFrom">
+                    <i class="fa fa-graduation-cap"></i>
+                  </button>
+                </div>
+              </div>
+              <div fxLayout="row">
+
+                <mat-form-field fxFlex>
+                  <mat-label>Año/Curso</mat-label>
+                  <mat-select [formControl]="yearCtrl" required [(value)]="yearSelected">
+                    <mat-option *ngFor="let year of years" [value]="year">
+                      {{year}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="yearCtrl.hasError('required')">Por favor seleccione un año</mat-error>
+                  <mat-hint>{{year}}</mat-hint>
+                </mat-form-field>
+                <mat-checkbox fxFlex class="p-l-10 m-t-20" [(ngModel)]="persona" name="person"
+                  [checked]="yearCtrl.disabled" (change)="yearCtrl.disabled ? yearCtrl.enable() : yearCtrl.disable()">
+                  Persona</mat-checkbox>
+                <div class="p-10" fxFlex="80px">
+                  <button type="button" class="btn waves-effect waves-light btn-success" (click)="send()"
+                    [disabled]="( !yearCtrl.valid && !persona) ||  !searchFromCtrl.valid || !validCareer || 
+                                  codeAvaible !== 'done' || codeLength >= 4">
+                    <!-- [swal]="['Oops!', 'This is not implemented yet :/', 'warning']" -->
+                    Añadir
+                  </button>
+                </div>
+              </div>
+              <div fxLayout="row" fxFill>
+                <div fxFlex>
+                </div>
+
+              </div>
+            </form>
           </div>
           <div class="col-lg-8">
-           <app-files [reload]="reloadFiles" [file]="searchFilter"></app-files>
+            <app-files [reload]="reloadFiles" [file]="searchFilter"></app-files>
           </div>
         </div>
       </div>

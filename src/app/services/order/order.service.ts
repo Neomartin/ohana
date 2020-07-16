@@ -22,13 +22,12 @@ export class OrderService {
   ) {
     this.branch = JSON.parse(localStorage.getItem('current_branch'));
   }
-  
+
   getOrder(id: String = null, branch: String) {
     // filtro como parametro de getOrder
-    console.log('Branch to find: ', branch);
+    // console.log('Branch to find: ', branch);
     // branch ? branch = branch : branch = this.branch;
     if (id) {
-      console.log('Entra al if de recibir ID SERVICE');
       return this._http.get(this.url + '/order/' + branch + '/' + id);
     }
     // else {
@@ -39,13 +38,7 @@ export class OrderService {
       this.$orders.next(resp);
       return;
     });
-    // console.log('Llamado: ');
-    // if (id) {
-    //   console.log('Entra al if de recibir ID SERVICE');
-    //   return this._http.get(this.url + '/order/' + branch + '/' + id);
-    // } else {
-    //   return this._http.get(this.url + '/order/' + branch);
-    // }
+
   }
   getOrders(parameters = null, branch: String) {
     // filtro como parametro de getOrder
@@ -67,8 +60,7 @@ export class OrderService {
     return this._http.put(URL + '/order/' + id, order, { headers: this.headers });
   }
 
-  changeBranch(id: String) {
-    console.log('ChangeBranch');
-    this.getOrder(null, id);
+  changeBranch(branch: String, all: boolean = false) {
+    all ? this.getOrders(null, branch) : this.getOrder(null, branch);
   }
 }

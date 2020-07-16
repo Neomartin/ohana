@@ -19,8 +19,8 @@
           </ng-container>
           <ng-template #elseCode>
             <!-- {{ element._id }} -->
+            {{ element._id | truncate: 5 }}
           </ng-template>
-          {{ element._id | truncate: 5 }}
         </td>
       </ng-container>
 

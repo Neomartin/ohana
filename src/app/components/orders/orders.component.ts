@@ -87,7 +87,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
       // /////  }));
       // console.log(resp);
         if (resp.order) {
-          console.log('Ordenes obtenidas');
+          // console.log('Ordenes obtenidas');
           resp.order.forEach(element => {
             let total = 0;
             for (const key in element) {

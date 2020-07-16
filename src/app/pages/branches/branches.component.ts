@@ -124,7 +124,7 @@ export class BranchesComponent implements OnInit {
       if (result.value) {
         this._branch.updBranch(branch._id, branch).subscribe( (resp: any) => {
         console.log('UPDATE: ', resp);
-          this._snackBar.open('Guardado correctamente!', 'GUARDADO!',  {duration: 1500, panelClass: 'custom_sneak_bar'} );
+          this._snackBar.open('Guardado correctamente!', 'GUARDADO!',  {duration: 1500, panelClass: 'branch-toast'} );
         });
       }
     });

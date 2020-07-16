@@ -120,6 +120,7 @@ import { TruncatePipe } from '../pipes/truncate.pipe';
     MatSortModule,
     MatSnackBarModule,
     MatDialogModule,
+    MatIconModule,
     NgxChartsModule,
     DragDropModule,
     MultiLineOptionModule

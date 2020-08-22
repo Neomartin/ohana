@@ -1,40 +1,21 @@
 import { RouterModule, Routes } from '@angular/router';
+
+import { LoginGuard } from '../services/guards/login.guard';
+// import { AdminGuard } from '../services/guards/admin.guard';
+
+// Components
 import { PagesComponent } from './pages.component';
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from '../login/login/login.component';
-import { UsersComponent } from './users/users.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { LoginGuard } from '../services/guard/login.guard';
-import { AddTaskComponent } from './add-task/add-task.component';
-import { AddFileComponent } from './add-file/add-file.component';
-import { OrdersComponent } from '../components/orders/orders.component';
-import { AutocompleteComponent } from './autocomplete/autocomplete.component';
-import { ProfileComponent } from './profile/profile.component';
-import { ProfileStatisticsComponent } from '../components/profile-statistics/profile-statistics.component';
-import { SubjectTestComponent } from './subject-test/subject-test.component';
-import { BranchesComponent } from './branches/branches.component';
 
 const routes: Routes = [
-    {   path: '',
+    {   
+        path: '',
         component: PagesComponent,
         canActivate: [ LoginGuard ],
-        children: [
-            { path: 'home', component: OrdersComponent, data: { title: 'HomeComponent'} },
-            { path: 'orders', component: OrdersComponent, data: { title: 'Ordenes'}},
-            { path: 'users', component: UsersComponent, data: { title: 'Usuarios'}},
-            { path: 'users/:id', component: UsersComponent, data: { title: 'Usuario'}},
-            { path: 'add-task/:id', component: AddTaskComponent, data: { title: 'Añadir/Quitar Tarea'} },
-            { path: 'add-task', component: AddTaskComponent, data: { title: 'Añadir/Quitar Tarea'} },
-            { path: 'add-file', component: AddFileComponent, data: { title: 'Añadir o Quitar Archivo'}},
-            { path: 'autocomplete', component: AutocompleteComponent, data: { title: 'Autocomplete'}},
-            { path: 'profile/:id', component: ProfileComponent, data: { title: 'Perfil del Usuario'}},
-            { path: 'statistics', component: ProfileStatisticsComponent, data: { title: 'Perfil del Usuario'}},
-            { path: 'branches', component: BranchesComponent, data: { title: 'Administración de Sucursales'}},
-            { path: 'test', component: OrdersComponent, data: { title: 'Test component'}},
-            { path: '', redirectTo: '/branches', pathMatch: 'full'},
-        ]
+        canLoad: [ LoginGuard],
+        loadChildren: () => import('./child-routes.module').then( m => m.ChildRoutesModule )
     },
-    { path: 'login', component: LoginComponent, data: { title: 'Ingreso'} },
+    // { path: '', redirectTo: 'home', pathMatch: 'full'},
     { path: '**', component: NotFoundComponent, data: { title: 'Pagina no encontrada'} },
 ];
 

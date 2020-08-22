@@ -4,6 +4,9 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BranchService } from 'src/app/services/branch/branch.service';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { UserModel } from 'src/app/models/user.model';
+import { User } from 'firebase';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-add-user',
@@ -53,20 +56,25 @@ export class AddUserComponent implements OnInit {
   public arrayvacio = [];
   public title: string;
   public text: string;
-  // public client: string;
+  public user: any;
   public type: string;
   public client: any;
   public roles: Role[] =  [
-    { value: 'CLIENT_ROLE', viewValue: 'Cliente' },
-    { value: 'USER_ROLE', viewValue: 'Usuario' },
-    { value: 'ADMIN_ROLE', viewValue: 'Administrador' },
+    { name: 'CLIENT_ROLE', access_level: 0, viewValue: 'Cliente' },
+    { name: 'USER_ROLE', access_level: 1, viewValue: 'Usuario' },
+    { name: 'ADMIN_ROLE', access_level: 3, viewValue: 'Administrador' },
+    { name: 'SUPER_ADMIN_ROLE', access_level: 4, viewValue: 'Super Admin' },
   ];
   constructor(
         private fb: FormBuilder,
         private dialogRef: MatDialogRef<AddUserComponent>,
         @Inject(MAT_DIALOG_DATA) data,
-        private _branches: BranchService
+        private _branches: BranchService,
+        private _user: UserService
   ) {
+    this._user.user$.subscribe( ( x: any ) => {
+      this.user = x.user;
+    });
     this.title = data.type + ' usuario.';
     this.text = data.text;
     this.type = data.type;
@@ -119,6 +127,7 @@ export class AddUserComponent implements OnInit {
 }
 
 export interface Role {
-  value: string;
-  viewValue: string;
+  name: String;
+  access_level: Number;
+  viewValue: String;
 }

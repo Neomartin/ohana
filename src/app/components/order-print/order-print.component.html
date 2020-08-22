@@ -1,7 +1,10 @@
-<div class="card order" *ngIf="order">
-  <div class="card-body" fxLayout="row" >
+<div class="card order" *ngIf="order" 
+     style="position: absolute;
+            top: 0;
+            left: 0;">
+  <div class="card-body" fxLayout="row">
     
-    <!-- <div fxLayoutAlign="center center">
+    <div fxLayoutAlign="center center">
       <div class="order-logo-wrapper">
         <img src="assets/images/ohana.jpg" alt="">
       </div>
@@ -50,7 +53,7 @@
                 <span *ngIf="order.status === 'processed'"> Pendiente</span>
                 <span *ngIf="order.status === 'in_progress'"> En proceso</span>
                 <span *ngIf="order.status === 'completed'"> Terminado</span>
-                <span *ngIf="order.status === 'canceled'"> Cancelado</span>
+                <span *ngIf="order.status === 'cancelled'"> Cancelado</span>
                 <span *ngIf="order.status === 'delivered'"> Entregado</span>
               </div>
             </div>
@@ -110,7 +113,7 @@
       <div fxFlex fxLayoutAlign=" center" >
         <i class="mdi mdi-instagram"></i> 
         @ohanacop
-      </div> -->
+      </div>
 
     </div>
-  </div>
+</div>

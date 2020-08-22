@@ -1,5 +1,30 @@
 <div class="footer">
-  <p>
-    footer works!
+  <div fxLayout="row" fxLayoutAlign="center center" class="">
+    <div fxFlex="320px">
+      <div class="round round d-inline-block text-center rounded-circle b-dark-gray m-r-5">
+        <i class="fas fa-phone"></i> 
+      </div>
+      <ng-container *ngIf="branch.phone; else elsePhone">
+        {{ branch.phone }}
+      </ng-container>
+      <ng-template #elsePhone>
+        Sin Teléfono
+      </ng-template>
+    </div>
+    <div fxFlex class="" fxLayoutAlign="center center">
+      <div class="footer-company">
+        <img src="./assets/images/ohana-logo.png" alt="">
+        <b><b>Ohana</b></b>Cop
+      </div>
+    </div>
+    <div fxFlex="320px">
+      <div class="round round d-inline-block text-center rounded-circle b-dark-gray m-r-5">
+        <i class="fas fa-map-marker-alt"></i> 
+      </div>
+      {{ branch.adress + ' ' + branch.adress_number + ' - ' + branch.location }}
+    </div>
+  </div>
+  <p class="m-b-0 text-center f-08em">
+    Todos los derechos reservados a OhanaCop © - 2020
   </p>
 </div>

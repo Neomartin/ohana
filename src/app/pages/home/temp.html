@@ -18,14 +18,14 @@
               <span *ngIf="row.status === 'processed'">Pendiente</span>
               <span *ngIf="row.status === 'in_progress'">En proceso</span>
               <span *ngIf="row.status === 'completed'">Terminado</span>
-              <span *ngIf="row.status === 'canceled'">Cancelado</span>
+              <span *ngIf="row.status === 'cancelled'">Cancelado</span>
             </span>
             <span class="tooltip-content status clearfix">
               <!-- <img src="../assets/images/tooltip/Euclid.png"> -->
               <span class="tooltip-status processed" (click)="orderStatus(row._id, 'processed', i)" matTooltip="Pendiente">P</span>
               <span class="tooltip-status in_progress" (click)="orderStatus(row._id, 'in_progress', i)" matTooltip="En proceso">EP</span>
               <span class="tooltip-status completed" (click)="orderStatus(row._id, 'completed', i)" matTooltip="Terminado">T</span>
-              <span class="tooltip-status canceled" (click)="orderStatus(row._id, 'canceled', i)" matTooltip="Cancelado">C</span>
+              <span class="tooltip-status cancelled" (click)="orderStatus(row._id, 'cancelled', i)" matTooltip="Cancelado">C</span>
             </span>
           </span>
           <!-- </span> -->  

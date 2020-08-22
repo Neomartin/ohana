@@ -11,30 +11,31 @@ import { TaskMenuComponent } from '../components/task-menu/task-menu.component';
 import { AddFileComponent } from './add-file/add-file.component';
 import { AddTaskComponent } from './add-task/add-task.component';
 import { UsersComponent } from './users/users.component';
-// Components
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HomeComponent } from './home/home.component';
-import { RegisterComponent } from '../login/register/register.component';
-import { LoginComponent } from '../login/login/login.component';
-import { PAGES_ROUTES } from './pages.routes';
+// import { RegisterComponent } from '../login/register/register.component';
+// import { LoginComponent } from '../login/login/login.component';
 import { AddUserComponent } from '../components/add-user/add-user.component';
 import { OrdersComponent } from '../components/orders/orders.component';
 import { FilesComponent } from './files/files.component';
-import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfileStatisticsComponent } from '../components/profile-statistics/profile-statistics.component';
 import { DialogPasswordComponent } from '../components/dialog-password/dialog-password.component';
 import { SubjectTestComponent } from './subject-test/subject-test.component';
 import { BranchesComponent } from './branches/branches.component';
 import { AddBranchComponent } from '../components/add-branch/add-branch.component';
+
+// Components
+import { AutocompleteComponent } from './autocomplete/autocomplete.component';
+import { PAGES_ROUTES } from './pages.routes';
+
 // Modules
 import { MomentModule } from 'ngx-moment';
-import {DpDatePickerModule} from 'ng2-date-picker';
+import { DpDatePickerModule } from 'ng2-date-picker';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 // Directives
 // import { MinMaxDirective } from '../directives/min-max/min-max.directive';
-import { MultiLineOptionModule } from '../directives/multi-line-option/multi-line-option.module';
 
 // Pipes
 import { PipesModule } from '../pipes/pipes.module';
@@ -44,7 +45,7 @@ import { PipesModule } from '../pipes/pipes.module';
 import { CustomFormsModule } from 'ngx-custom-validators';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule} from '@angular/material/button';
-import { MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -62,6 +63,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TruncatePipe } from '../pipes/truncate.pipe';
+import { DialogCancelComponent } from '../components/dialog-cancel/dialog-cancel.component';
 
 
 
@@ -70,8 +72,8 @@ import { TruncatePipe } from '../pipes/truncate.pipe';
   declarations: [
     NotFoundComponent,
     HomeComponent,
-    RegisterComponent,
-    LoginComponent,
+    // RegisterComponent,
+    // LoginComponent,
     TaskMenuComponent,
     AddTaskComponent,
     AddFileComponent,
@@ -87,6 +89,7 @@ import { TruncatePipe } from '../pipes/truncate.pipe';
     SubjectTestComponent,
     BranchesComponent,
     AddBranchComponent,
+    DialogCancelComponent
     // TruncatePipe
   ],
   imports: [
@@ -123,13 +126,12 @@ import { TruncatePipe } from '../pipes/truncate.pipe';
     MatIconModule,
     NgxChartsModule,
     DragDropModule,
-    MultiLineOptionModule
   ],
   exports: [
     NotFoundComponent,
     HomeComponent,
-    RegisterComponent,
-    LoginComponent,
+    // RegisterComponent,
+    // LoginComponent,
     TaskMenuComponent,
     OrderPrintComponent,
     UsersComponent,
@@ -137,8 +139,11 @@ import { TruncatePipe } from '../pipes/truncate.pipe';
     ProfileStatisticsComponent,
     DialogPasswordComponent,
     OrdersComponent,
+    FormsModule,
+    ReactiveFormsModule,
     // revisar
-    PipesModule
+    PipesModule,
+    // FlexLayoutModule
   ],
   providers: [ PipesModule ],
   entryComponents: [AddUserComponent],

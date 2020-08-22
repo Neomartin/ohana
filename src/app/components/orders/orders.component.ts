@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { OrderService } from '../../services/order/order.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 // Componentes
@@ -14,6 +14,8 @@ import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { DomElementSchemaRegistry } from '@angular/compiler';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { DialogCancelComponent } from '../dialog-cancel/dialog-cancel.component';
 
 export interface UserData {
   id: string;
@@ -33,6 +35,7 @@ export interface UserData {
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
+  // encapsulation : ViewEncapsulation.None,
 })
 export class OrdersComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['client', 'quantity', 'details', 'status', 'price', 'end_at' ];
@@ -58,7 +61,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
   constructor(
     private _order: OrderService,
     private _snackBar: MatSnackBar,
-    private _router: Router
+    private _router: Router,
+    private _dialog: MatDialog
   ) {
     this.current_branch = JSON.parse(localStorage.getItem('current_branch'));
     this.currentPage = this._router.url.replace('/', '');
@@ -72,6 +76,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     } else {
       this._order.getOrders(null, this.current_branch._id);
       this.pagination = [ 15, 35, 50, 100];
+      this.dateFilter = 'incomplete';
       this.subscraib = this.getOrder();
     }
   }
@@ -182,25 +187,68 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
 
   orderStatus(id, status, i) {
-    console.log(id, status, i);
-    this._order.orderStatus(id, status).subscribe( (resp: any) => {
-      console.log('Update: ', resp);
-      if (status === 'delivered') {
-        this.orders[i].delivered = resp.updated.delivered;
-      }
-      this.orders[i].status = resp.updated.status;
-      this.orders[i].modified_at = resp.updated.modified_at;
-      // this.orders[i] = resp.updated;
-    }, err => {
-      this.openSnackBar('No se pudo cambiar estado de la orden.', 'ERROR');
-    });
+    let obs = null;
+    // Checkeo si el status es Anular para abrir el modal e ingresar la observación requerida
+    if (status === 'cancelled') {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.disableClose = true;
+      dialogConfig.autoFocus = true;
+      dialogConfig.data = {
+        title: 'Cancelar orden',
+        description:  'Debe agregar una descripción especificacion por que se anula la orden',
+        status: status,
+        id: id
+      };
+      console.log('cabceked', status);
+      const dialogRef = this._dialog.open(DialogCancelComponent, dialogConfig);
+
+      dialogRef.afterClosed().subscribe( (data: any) => {
+        obs = data;
+        console.log(id, status, i, obs);
+      this._order.orderStatus(id, status, obs).subscribe( (resp: any) => {
+
+        // ****** Cannot reasign resp.updated to orders because isn´t the same object
+        // console.log('Update: ', resp);
+        // console.log('Previous Object', this.orders[i]);
+        // this.orders[i] = resp.updated;
+        // console.log('this.Orders[i]', this.orders[i]);
+
+
+        if (status === 'delivered') {
+          this.orders[i].delivered = resp.updated.delivered;
+        }
+        this.orders[i].status = resp.updated.status;
+        this.orders[i].modified_at = resp.updated.modified_at;
+        this.orders[i].obs = resp.updated.obs;
+        
+        this._snackBar.open('Orden cancelada correctamente!', 'CANCELADA',  {duration: 1500, panelClass: 'toast-warning'} );
+      }, err => {
+        this._snackBar.open('No se pudo cambiar estado de la orden.', 'ERROR');
+      });
+      });
+    } else {
+      // ****** Normal update if status isn't 'cancelled'.
+      console.log(id, status, i, obs);
+      this._order.orderStatus(id, status, obs).subscribe( (resp: any) => {
+        // console.log('Update: ', resp);
+        if (status === 'delivered') {
+          this.orders[i].delivered = resp.updated.delivered;
+        }
+        this.orders[i].status = resp.updated.status;
+        this.orders[i].modified_at = resp.updated.modified_at;
+        this._snackBar.open('Orden actualizada correctamente.', 'ESTADO ACTUALIZADO',  {duration: 1500, panelClass: 'toast-success'} );
+        // this.orders[i] = resp.updated;
+      }, err => {
+        this._snackBar.open('No se pudo cambiar estado de la orden.', 'ERROR');
+      });
+    }
   }
 
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: 2000,
-    });
-  }
+  // openSnackBar(message: string, action: string) {
+  //   this._snackBar.open(message, action, {
+  //     duration: 2000,
+  //   });
+  // }
 
   // editOrder(id) {
   //   console.log('ID');

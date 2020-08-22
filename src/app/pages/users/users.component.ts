@@ -6,16 +6,18 @@ import swal from 'sweetalert2';
 import * as cloneDeep from 'lodash/cloneDeep';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddUserComponent } from 'src/app/components/add-user/add-user.component';
 import { map } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 export interface Role {
-  value: string;
-  viewValue: string;
+    name: String;
+    access_level: Number;
+    viewValue: String;
 }
 
 @Component({
@@ -29,13 +31,15 @@ export class UsersComponent implements OnInit {
   formControl = new FormControl('');
   displayedColumns: string[] = ['name', 'phone', 'email', 'role', 'options'];
   dataSource;
+  public search: String;
   public originalUsers: any;
   public user;
   public editable = '';
   public roles: Role[] =  [
-    { value: 'CLIENT_ROLE', viewValue: 'Cliente' },
-    { value: 'USER_ROLE', viewValue: 'Usuario' },
-    { value: 'ADMIN_ROLE', viewValue: 'Administrador' },
+    { name: 'CLIENT_ROLE', access_level: 0, viewValue: 'Cliente' },
+    { name: 'USER_ROLE', access_level: 1, viewValue: 'Usuario' },
+    { name: 'ADMIN_ROLE', access_level: 3, viewValue: 'Administrador' },
+    { name: 'SUPER_ADMIN_ROLE', access_level: 4, viewValue: 'Super Admin' },
   ];
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -45,17 +49,24 @@ export class UsersComponent implements OnInit {
     private dialog: MatDialog,
     private _snackBar: MatSnackBar,
     private _router: Router
-  ) { }
+  ) { 
+    this.search = ''
+  }
 
 
   ngOnInit() {
     document.getElementById('name').focus();
+    this._user.user$.subscribe( ( x: any ) => {
+      this.user = x.user;
+    });
+
+    // console.log('USER 2', this.user);
     this.users = this._user.getUsers().subscribe((resp: any) => {
-      console.log('clientes', resp);
+      // console.log('clientes', resp);
       localStorage.setItem('users', JSON.stringify(resp.users));
       // this.users = JSON.parse(localStorage.getItem('users'));
       this.users = cloneDeep(resp.users);
-      // this.originalUsers = resp.users;
+      this.originalUsers = resp.users;
       this.dataSource = new MatTableDataSource(resp.users);
       // this.dataSource = resp.users;
       this.dataSource.sort = this.sort;
@@ -81,14 +92,15 @@ export class UsersComponent implements OnInit {
       console.log('Error', err);
     });
   }
+
   setEditable(value: string, i: number) {
-    console.log('Value', value);
-    console.log('Index', i);
+    // console.log('Value', value);
+    // console.log('Index', i);
     if (!value) {
       // this.dataSource = JSON.parse(localStorage.getItem('users'));
       this.dataSource = cloneDeep(this.users);
     }
-    console.log('Users', this.users);
+    // console.log('Users', this.users);
     this.editable = value;
   }
 
@@ -116,8 +128,9 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  updateUser(user: UserModel) {
-    console.log('Update user: ', user);
+  updateUser(user: UserModel, index) {
+    // console.log('Update user: ', user);
+    // console.log('DataSource', this.dataSource);
     swal.fire({
       icon: 'info',
       title: 'Desea actualizar usuario?',
@@ -129,11 +142,25 @@ export class UsersComponent implements OnInit {
     }).then( (result) => {
       if (result.value) {
         this._user.updUser(user._id, user).subscribe( (resp: any) => {
-          console.log('UPDATE: ', resp);
+        this._snackBar.open('Usuario actualizado correctamente', 'ACTUALIZADO', {
+          panelClass: 'toast-update',
+          duration: 1500
+        });
+        this.setEditable(null, index);
+        this.dataSource[index] = user;
+      }, err => {
+        console.log('Error', err);
+        const snackbarRef = this._snackBar.open('No se pudo actualizar usuario', 'ERROR', {
+          duration: 1500
+        });
+        this.dataSource = cloneDeep(this.users);
+        snackbarRef.afterDismissed().subscribe( (data) => {
+          this.setEditable(null, index);
+            console.log('After dismissed snackbar', data);
+          });
         });
       }
     });
-    this.editable = null;
   }
 
   trackByFn(index: any, item: any) {
@@ -153,6 +180,7 @@ export class UsersComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
+      type: 'Agregar',
       title: 'Agregar usuario',
       description:  'Ingrese los datos del cliente o del Usuario'
     };

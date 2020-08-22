@@ -1,13 +1,22 @@
 <div class="row">
+  <!-- czxc -->
+  <!-- <div id="propic" [ngStyle]="{'background-image': 'url(' + user.user.image + ')'}">
+  </div> -->
+</div>
+<div class="row">
+  
   <!-- Column -->
   <div class="col-lg-4 col-md-12" *ngIf="user">
     <div class="card profile-card" >
       <img class="card-img profile-img" src="../assets/images/background/user-profile.jpg" alt="Card image">
       <div class="card-img-overlay card-inverse social-profile d-flex justify-content-center">
         <div class="align-self-center">
-          <div *ngIf="user">
-            <img src="{{user.user.image}}" class="rounded-circle m-b-20 profile-user-img" width="100" height="170"
-              *ngIf="user.user.image">
+          <div *ngIf="user" class="profile-img-container m-b-20">
+            <div id="profileImg" [ngStyle]="{'background-image': 'url(' + user.user.image + ')'}">
+
+            </div>
+            <!-- <img src="{{user.user.image}}" class="rounded-circle m-b-20 profile-user-img" width="100" height="170"
+              *ngIf="user.user.image"> -->
             <img src="../assets/images/user.jpg" class="rounded-circle m-b-20 profile-user-img" width="100"
               *ngIf="!user.user.image">
           </div>
@@ -17,6 +26,13 @@
           <h6 class="card-subtitle">
             {{ user.user.email }}
           </h6>
+          <p>
+            <span *ngIf="user.user.role.access_level === 0" class="badge badge-info px-2 py-1">Cliente</span>
+            <!-- <span class="badge badge-success px-2 py-1">Medium</span> -->
+            <span *ngIf="user.user.role.access_level === 1" class="badge b-green px-2 py-1">Usuario</span>
+            <span *ngIf="user.user.role.access_level === 3" class="badge b-red px-2 py-1">Admin</span>
+            <span *ngIf="user.user.role.access_level === 4" class="badge b-dark-h px-2 py-1">Super Admin</span>
+          </p>
           <p class="text-white">Ohana User</p>
         </div>
       </div>
@@ -109,19 +125,19 @@
                   <!-- <hr> -->
                   <!-- <h2 class="text-center bold">OhanaCop</h2> -->
                   <!-- VOLVER A HABILITAR -->
-                  <!-- <p class="text-center">
+                  <p class="text-center" *ngIf="user.user.role.access_level < 3 && localUser.user.role.access_level <=2">
                     <img src="../assets/images/background/motivadora.jpg" alt="">
-                  </p> -->
+                  </p>
               </div>
             </div>
             <hr>
-            <div class="profile-username">
+            <div class="profile-username" *ngIf="localUser.user.role.access_level >= 3">
               <h2 class="m-b-0">
                 SUCURSALES A CARGO 
                 <!-- <span class="text-green"> {{ user.user.username | uppercase }} </span> -->
               </h2>
             </div>
-            <div class="card-body">
+            <div class="card-body" *ngIf="localUser.user.role.access_level >= 3">
               <div class="row m-0" >
                 <div class="mr-auto">
                   <h3 class="card-title">ASIGNAR SUCURSALES</h3>
@@ -302,6 +318,7 @@
                       <div>
                         <textarea rows="6" type="text" [(ngModel)]="user.user.image" name="image"
                           class="form-control form-control-line profile-image"></textarea>
+                          <small class="text-red pointer" (click)="user.user.image = ''">Borrar texto imagen</small>
                       </div>
                     </div>
                     <div class="col-md-6 f-11" style="border: 1px dotted #333333; padding: 5px 10px 10px">
@@ -338,27 +355,34 @@
                     </select>
                   </div>
                 </div> -->
-                <div class="form-group">
+                <div class="form-group m-t-40">
                   <div class="col-sm-12">
                     <div>
-                      <button class="btn btn-info" (click)="updateUser(user.user._id)"
+                      <button class="btn btn-info waves-effect" (click)="updateUser(user.user._id)"
                         [disabled]="!user.user.name || !user.user.surname || !user.user.phone">Actualizar</button>
                     </div>
                     <span fxFlex></span>
                     <div fxLayout="column">
-                      <button type="button" class="btn btn-warning"
+                      <button type="button" class="btn btn-warning waves-effect"
                               (click)="passwordChange()" 
                               *ngIf="id === localUser.user._id || localUser.user.role === 'ADMIN_ROLE' || localUser.user.role === 'SUPER_ADMIN_ROLE'"> 
                         <i class="mdi mdi-key-variant"></i>
                         Cambiar contraseña
                       </button>
-                      <small class="ml-auto m-t-5 text-red f-12">
-                        *Clave por defecto para usuario <br> tipo <b>CLIENTE</b>: <b>1234</b> 
-                      </small>
+                      <button mat-raised-button color="warn" class="m-t-10" (click)="resetPassword(user.user._id)"
+                               *ngIf="id === localUser.user._id || localUser.user.role.access_level >= 3">
+                        Resetear contraseña
+                      </button>
                     </div>
                   </div>
+                  
                 </div>
               </form>
+            </div>
+            <div class="p-lr-15">
+              <small class="text-red f-12">
+                *Clave por defecto para usuario tipo <b>CLIENTE</b>: <b>1234</b> 
+              </small>
             </div>
           </div>
         </mat-tab>

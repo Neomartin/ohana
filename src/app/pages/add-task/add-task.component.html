@@ -153,7 +153,9 @@
                     </div>
                     <input type="number" class="form-control" [(ngModel)]="partialPayment" (keyup)="totalCheck($event)"
                      name="partialPayment" min="0" [max]="[total]" 
-                     placeholder="Seña" [disabled]="checkPayment || !fileList.length > 0">
+                     placeholder="Seña" [disabled]="!fileList.length"
+                     >
+                     <!-- [disabled]="checkPayment || !fileList.length > 0" -->
                      
                      <!-- Volver a agregar
                           (keyup)="checkPartialPayment($event)" -->
@@ -163,8 +165,8 @@
                   <!-- oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" -->
                 </div>
                 <div class="col-6 m-t-5">
-
-                  <input type="checkbox" [(ngModel)]="checkPayment" (ngModelChange)="partialPayment = 0"
+                  <!-- //  [(ngModel)]="checkPayment" changed -->
+                  <input type="checkbox" [(ngModel)]="partialPayment" (ngModelChange)="partialPayment = 0"
                     id="md_checkbox_7" class="chk-col-light-blue w-55">
                   <label for="md_checkbox_7">Sin seña</label>
                 </div>
@@ -220,6 +222,6 @@
     <app-task-menu></app-task-menu>
   </div> -->
 </div>
-<div class="col-lg-12 col-xs-12">
-  <app-order-print class="printMe"></app-order-print>
-</div>
+<!-- <div class="col-lg-12 col-xs-12">
+</div> -->
+<app-order-print class="printMe"></app-order-print>

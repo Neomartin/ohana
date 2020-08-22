@@ -1,0 +1,29 @@
+<form #cancel="ngForm">
+    
+ <!-- <div fxLayout="column"> -->
+    <!-- <div fxFlex fxLayout="row"> -->
+        <!-- <img src="./assets/images/cancel.jpg" width="170px" height="150px" alt=""> -->
+        <h1 mat-dialog-title class="bold f-32" [ngClass]="{'text-danger': status === 'cancelled'}">
+            <!-- <i class="mdi mdi-account-plus text-success f-24"></i> -->
+            {{ title | uppercase }}
+          </h1>
+    <!-- </div> -->
+    <!-- <hr> -->
+    <p>{{ description }}</p>
+    <hr>
+  <mat-dialog-content>
+    <mat-form-field class="example-full-width">
+      <!-- <mat-label>Observación</mat-label> -->
+      <textarea matInput name="obs" [(ngModel)]="obs" rows="5"
+                placeholder="Completar" minlength="15" required></textarea>
+    </mat-form-field>
+  </mat-dialog-content>
+ <!-- </div> -->
+  
+  <mat-dialog-actions>
+    <button class="btn btn-info waves-effect" (click)="update()" [disabled]="cancel.invalid">
+      Anular Orden
+    </button>
+    <button class="ml-auto btn btn-danger m-r-10"(click)="close()">Salir</button>
+  </mat-dialog-actions>
+</form>

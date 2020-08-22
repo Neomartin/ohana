@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
     private _auth: AuthService,
     private _router: Router
   ) {
-    this.user = new UserModel(null, null, null, '33464282', 'neomartinr@gmail.com');
+    this.user = new UserModel(null, null, null, null, 'neomartinr@gmail.com');
   }
 
   ngOnInit() {
@@ -60,12 +60,10 @@ export class LoginComponent implements OnInit {
         icon: 'success',
         title: 'Login correcto',
         html: 'Redireccionando al <b class="semi-bold">Panel de Tareas</b>',
-        timer: 1500,
+        timer: 750,
         // timerProgressBar: true,
       }).then((result) => {
-        if (result.dismiss === swal.DismissReason.timer) {
-          window.location.href = '/home';
-        }
+        window.location.href = '/home';
       });
     }, err => {
       swal.fire({

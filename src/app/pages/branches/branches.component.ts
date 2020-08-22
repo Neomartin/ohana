@@ -123,18 +123,19 @@ export class BranchesComponent implements OnInit {
     }).then( (result) => {
       if (result.value) {
         this._branch.updBranch(branch._id, branch).subscribe( (resp: any) => {
-        console.log('UPDATE: ', resp);
+        console.log('UPDATE: ', resp.updated);
+        localStorage.setItem('current_branch', JSON.stringify(resp.updated));
           this._snackBar.open('Guardado correctamente!', 'GUARDADO!',  {duration: 1500, panelClass: 'branch-toast'} );
         });
       }
     });
     this.editable = null;
   }
-  
+
   //   trackByFn(index: any, item: any) {
     //     return index;
     //  }
-    
+
     applyFilter(filterValue: string) {
       console.log('Entra el filter', filterValue);
       if (this.dataSource.paginator) {
@@ -143,7 +144,7 @@ export class BranchesComponent implements OnInit {
     }
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  
+
   addBranchDialog(branch = null, addType) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;

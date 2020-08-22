@@ -16,15 +16,16 @@ export class OrderService {
   $orders = new Subject();
   orders = this.$orders.asObservable();
   branch;
+  token = localStorage.getItem('token') || null;
   constructor(
     private _http: HttpClient,
     // private _home: Orders2Component
   ) {
     this.branch = JSON.parse(localStorage.getItem('current_branch'));
+    this.headers = this.headers.set('Authorization', this.token);
   }
-
+  
   getOrder(id: String = null, branch: String) {
-    // filtro como parametro de getOrder
     // console.log('Branch to find: ', branch);
     // branch ? branch = branch : branch = this.branch;
     if (id) {
@@ -33,7 +34,7 @@ export class OrderService {
     // else {
     //   return this._http.get(this.url + '/order/' + branch);
     // }
-    this._http.get(this.url + '/order/' + branch).subscribe((resp: any ) => {
+    this._http.get(this.url + '/order/' + branch, { headers: this.headers }).subscribe((resp: any ) => {
       // console.log('En teoría entra aquí: ', resp);
       this.$orders.next(resp);
       return;
@@ -51,9 +52,9 @@ export class OrderService {
     this.getOrder(null, this.branch._id);
     return this._http.post(URL + '/order', order, { headers: this.headers });
   }
-  orderStatus(id: string, status: string) {
+  orderStatus(id: string, status: string, obs = null) {
     const url = URL + '/order/' + id + '/' + status;
-    return this._http.put( url , { headers: this.headers });
+    return this._http.put( url , { obs: obs }, { headers: this.headers });
   }
   updateOrder(order: Order, id: String) {
     console.log('Order Service: ', order);
@@ -63,4 +64,5 @@ export class OrderService {
   changeBranch(branch: String, all: boolean = false) {
     all ? this.getOrders(null, branch) : this.getOrder(null, branch);
   }
+
 }

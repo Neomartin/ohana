@@ -166,43 +166,41 @@ a.link:hover, a.link:focus {
   color: #798699;
 }
 
-.sidebar-nav ul li a.active, .sidebar-nav ul li a:hover {
+.sidebar-nav ul li a.is-active, .sidebar-nav ul li a:hover {
   color: #26c6da;
 }
 
-.sidebar-nav ul li a.active {
+/* .sidebar-nav ul li a.active {
   color: #ffffff;
-}
+} */
 
 .sidebar-nav ul li.nav-small-cap {
   color: #99abb4;
 }
 
-.sidebar-nav > ul > li.active > a, .sidebar-nav > ul > li.active:hover > a {
+/* .sidebar-nav > ul > li.active > a, .sidebar-nav > ul > li.active:hover > a {
   color: #ffffff !important;
   background: #26c6da !important;
-}
+} */
 
-.sidebar-nav > ul > li.active > a i, .sidebar-nav > ul > li.active:hover > a i {
+/* .sidebar-nav > ul > li.active > a i, .sidebar-nav > ul > li.active:hover > a i {
   color: #ffffff !important;
-}
+} */
 
-.sidebar-nav > ul > li.active > a:after, .sidebar-nav > ul > li.active:hover > a:after {
+/* .sidebar-nav > ul > li.active > a:after, .sidebar-nav > ul > li.active:hover > a:after {
   border-color: #ffffff;
-}
+} */
 
-.sidebar-nav > ul > li > a.active i, .sidebar-nav > ul > li > a:hover i {
+/* .sidebar-nav > ul > li > a.active i, .sidebar-nav > ul > li > a:hover i {
   color: #26c6da;
-}
+} */
 
 .sidebar-nav > ul > li > a i {
   color: #798699;
 }
 
-.sidebar-nav > ul > li > a.active {
-  font-weight: 400;
-  background: #ffffff;
-  color: #1e88e5;
+.sidebar-nav > ul > li > a.is-active i {
+  color: #fff;
 }
 
 .user-profile .profile-text a {

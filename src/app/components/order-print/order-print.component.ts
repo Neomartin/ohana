@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Order } from '../../models/order.model';
+import * as jdspf from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-order-print',
@@ -7,7 +9,7 @@ import { Order } from '../../models/order.model';
   styleUrls: [ './order-print.component.css']
 })
 export class OrderPrintComponent implements OnInit {
-
+  public display: Boolean = true;
   public title;
   public client;
   public order: Order = new Order('', [], '', null, null, null, null);
@@ -23,5 +25,5 @@ export class OrderPrintComponent implements OnInit {
       window.print();
     }, 200);
   }
-
+ 
 }

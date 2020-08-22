@@ -6,6 +6,7 @@
         <div class="row">
           <div class="col-5" fxLayout="column">
             <h1 fxFlex>USUARIOS</h1>
+            
             <div fxLayout="row">
               <mat-form-field fxFlex>
                 <span matPrefix class="p-r-10"><i class="fas fas fa-search"></i></span>
@@ -17,13 +18,12 @@
                </button>
               </mat-form-field>
             </div>
-            
           </div>
           <!-- <div class="col-2">
             
           </div> -->
           <div class="col-7" fxFlex fxLayoutAlign="end center">
-            <button class="btn btn-info" (click)="addUserDialog(null, 'Agregar')">
+            <button class="btn btn-info" (click)="addUserDialog()">
               <i class="mdi mdi-account-plus"></i> Nuevo User
             </button>
             <div fxFlex></div>
@@ -101,21 +101,26 @@
                 </td>
               </ng-container>
               <ng-container matColumnDef="role">
-                <th mat-header-cell *matHeaderCellDef fxLayoutAlign="start center" fxFlex="120px">
+                <th mat-header-cell *matHeaderCellDef fxLayoutAlign="start center" fxFlex="110px">
                   Tipo
                 </th>
-                <td mat-cell *matCellDef="let client; let i = dataIndex" fxLayoutAlign="start center" fxFlex="120px">
+                <td mat-cell *matCellDef="let client; let i = dataIndex" fxLayoutAlign="start center" fxFlex="110px">
                   <div *ngIf="client._id !== editable">
-                    <span class="badge badge-info px-2 py-1" *ngIf="client.role === 'CLIENT_ROLE'">Cliente</span>
-                    <span class="badge b-green px-2 py-1" *ngIf="client.role === 'USER_ROLE'">Usuario</span>
-                    <span class="badge b-red px-2 py-1" *ngIf="client.role === 'ADMIN_ROLE'">Administrador</span>
+                    <span class="badge badge-info px-2 py-1" *ngIf="client.role.name === 'CLIENT_ROLE'">Cliente</span>
+                    <span class="badge b-green px-2 py-1" *ngIf="client.role.name === 'USER_ROLE'">Usuario</span>
+                    <span class="badge b-red px-2 py-1" *ngIf="client.role.name === 'ADMIN_ROLE'">Administrador</span>
+                    <span class="badge b-dark-h px-2 py-1" *ngIf="client.role.name === 'SUPER_ADMIN_ROLE'">Super Admin</span>
+                    <!-- <pre>
+                      {{ client.role | json }}
+                    </pre> -->
                   </div>
                   <div *ngIf="client._id === editable" fxFlex>
                     <mat-form-field fxFlex >
                       <!-- <mat-label>Favorite food</mat-label> -->
-                      <mat-select [(value)]="client.role">
-                        <mat-option *ngFor="let role of roles" [value]="role.value">
-                          {{role.viewValue}}
+                      <!-- {{ client.role.name}} -->
+                      <mat-select [placeholder]="[client.role.viewValue]" [(ngModel)]="client.role">
+                        <mat-option *ngFor="let role of roles | accessLevel: user.role.access_level" [value]="role">
+                          {{ role.viewValue }}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
@@ -146,10 +151,11 @@
                     </button>
                   </div>
                   <div *ngIf="client._id === editable">
-                    <button matTooltip="Editar cliente" (click)="updateUser(client); $event.stopPropagation()" 
+                    <button matTooltip="Editar cliente" (click)="updateUser(client, i); $event.stopPropagation()" 
                     class="btn waves-effect waves-light btn-sm b-green" type="button" style="margin-right: 2px" >
                       <i class="mdi mdi-check"></i>
                     </button>
+                    <!-- Cancel button sends, NULL: reset dataSource, i: Index del array -->
                     <button class="btn btn-sm b-red"  matTooltip="Cancelar"
                         (click)="setEditable(null, i); $event.stopPropagation()">
                       <i class="mdi mdi-close"></i>

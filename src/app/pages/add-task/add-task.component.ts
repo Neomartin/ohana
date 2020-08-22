@@ -37,6 +37,7 @@ import { Order } from '../../models/order.model';
 })
 export class AddTaskComponent implements OnInit {
   // public selectedDate: Date;
+  public name = '';
   public orderID: string;
   public order: Order;
   public user = new UserModel(null, null, null, null);
@@ -432,6 +433,8 @@ addUserDialog(client = null, addType) {
         console.log('Respuestita: ', resp);
         if (addType === 'Editar') {
            // Update cliente
+          const holis = this._user.updUser(this.client._id, resp);
+          console.log('Holis', holis);
           this._user.updUser(this.client._id, resp).subscribe( (user: any) => {
             this.getUsers();
             this.client = '';

@@ -4,8 +4,10 @@
       <!-- User profile -->
       <div class="user-profile" style="background: url(../assets/images/background/bg.jpg) no-repeat;">
           <!-- User profile image -->
-          <div *ngIf="localUser.user.image" class="profile-img"> <img src="{{localUser.user.image}}" alt="user" /> </div>
-          <div *ngIf="!localUser.user.image" class="profile-img"> <img src="../assets/images/user.jpg" alt="user" /> </div>
+          <div *ngIf="localUser.user.image" id="profileImgSidebar" 
+               [ngStyle]="{'background-image': 'url(' + localUser.user.image + ')'}">
+          </div>
+          <div *ngIf="!localUser.user.image" id="profileImgSidebar"> <img src="../assets/images/user.jpg" alt="user" /> </div>
 
           <!-- User profile text-->
           <div class="profile-text"> 
@@ -16,9 +18,9 @@
                   <!-- <pre>{{ localUser | json }}</pre> -->
               </a>
               <div class="dropdown-menu animated flipInY">
-                  <a [routerLink]="['/profile', localUser.user._id]" href="" class="dropdown-item"><i class="ti-user"></i> Mi Perfil</a>
-                  <div class="dropdown-divider"></div> <a href="#" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a>
-                  <div class="dropdown-divider"></div> <a href="pages-login.html" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
+                  <a [routerLink]="['/profile', localUser.user._id]" href="" class="pointer dropdown-item"><i class="ti-user"></i> Mi Perfil</a>
+                  <!-- <div class="dropdown-divider"></div> <a href="#" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a> -->
+                  <div class="dropdown-divider"></div> <a (click)="logout()" class="pointer dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
               </div>
           </div>
       </div>
@@ -29,36 +31,40 @@
               <li class="nav-small-cap">MENU</li>
               <li *ngFor="let m of _sidebar.menu">
                   <ng-container *ngIf="m.id; else noIdLink">
-                    <a *ngIf="m.url" routerLinkActive="active" [routerLink]="[m.url, localUser.user._id]" class="has-arrow waves-effect waves-dark" aria-expanded="false">
-                        <i [class]="m.icon"></i><span class="hide-menu">{{ m.title }}</span>
+                    <a *ngIf="m.url && (!m.tier || m.tier <= localUser.user.role.access_level)" routerLinkActive="is-active" 
+                        (click)="adminLink ? adminLink = false : return" [routerLink]="[m.url, localUser.user._id]" class="has-arrow waves-effect waves-dark" aria-expanded="false">
+                        <i [class]="m.icon"></i><span class="hide-menu">{{ m.title }}  </span>
                     </a>  
                   </ng-container>
                   <ng-template #noIdLink>
-                    <a *ngIf="m.url" routerLinkActive="active" [routerLink]="[m.url]" class="has-arrow waves-effect waves-dark" aria-expanded="false">
+                    <a *ngIf="m.url && (!m.tier || m.tier <= localUser.user.role.access_level)" routerLinkActive="is-active" 
+                        (click)="adminLink ? adminLink = false : return" [routerLink]="[m.url]" class="has-arrow waves-effect waves-dark" aria-expanded="false">
                         <i [class]="m.icon"></i>
                         <span class="hide-menu">{{ m.title }}</span>
                     </a>    
                   </ng-template>
                   
                   
-                  <a *ngIf="!m.url" class="has-arrow waves-effect waves-dark" aria-expanded="false">
+                  <a *ngIf="!m.url && (!m.tier || m.tier <= localUser.user.role.access_level)" [ngClass]="{'admin-active-link': adminLink}" 
+                     (click)="adminLink = true" class="has-arrow waves-effect waves-dark" aria-expanded="false">
                       <i [class]="m.icon"></i>
                       <span class="hide-menu">{{ m.title}}</span>
                   </a>
-                      <ul *ngIf="m.submenu" aria-expanded="false" class="collapse">
+                      <ul *ngIf="m.submenu && (!m.tier || m.tier <= localUser.user.role.access_level)" aria-expanded="false" class="collapse">
                           <li>
-                              <a *ngFor="let submenu of m.submenu" routerLinkActive="active" [routerLink]="[submenu.url]">
+                              <a *ngFor="let submenu of m.submenu" routerLinkActive="is-sub-active" [routerLink]="[submenu.url]" (click)="adminLink = true">
                                   {{ submenu.title}}
                               </a>
                           </li>
                       </ul>
 
               </li>
+              <!-- <li class="nav-small-cap">ADMINISTRAR</li> -->
 
               <li class="nav-devider"></li>
               <li class="nav-small-cap">SESIÓN</li>
               <li>
-                  <a [routerLink]="['/login']" (click)="_auth.logout()" routerLinkActive="active"
+                  <a [routerLink]="['/login']" (click)="_auth.logout()" routerLinkActive="is-active"
                      class="has-arrow waves-effect waves-dark" aria-expanded="false">
                       <i class="mdi mdi-logout"></i><span class="hide-menu">Logout</span>
                     </a>

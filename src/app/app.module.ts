@@ -8,6 +8,10 @@ import { PagesComponent } from './pages/pages.component';
 import { PagesModule } from './pages/pages.module';
 import { SharedModule } from './shared/shared.module';
 import { TruncatePipe } from './pipes/truncate.pipe';
+import { UserService } from './services/user/user.service';
+import { FormsModule } from '@angular/forms';
+import { AuthModule } from './auth/auth.module';
+
 
 // import { PipesModule } from './pipes/pipes.module';
 
@@ -19,17 +23,19 @@ import { TruncatePipe } from './pipes/truncate.pipe';
     // TruncatePipe,
   ],
   imports: [
-    PagesModule,
-    BrowserModule,
     AppRoutingModule,
+    PagesModule,
+    AuthModule,
+    BrowserModule,
     SharedModule,
+    FormsModule
     // PipesModule
     // AngularFireModule.initializeApp(environment.firebase),
     // AngularFireAuthModule,
     // AngularFirestoreModule
     // BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [ UserService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

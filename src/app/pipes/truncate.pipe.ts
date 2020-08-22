@@ -5,10 +5,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TruncatePipe implements PipeTransform {
 
-  transform(value: string, ...args: any[]): unknown {
-    // console.log('value en pipe: ', value);
-    // console.log('arguments pipe:', args);
-    return value.slice(0, args[0] + 1 );
+  transform(value: string, letters: number): string {
+    // return value.slice(0, letters[0] + letters );
+    return  value.slice(0, letters);
   }
 
 }

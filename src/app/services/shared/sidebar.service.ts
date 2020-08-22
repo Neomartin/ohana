@@ -23,8 +23,8 @@ export class SidebarService {
         
       // ]
     },
-    { title: 'Añadir Libro', url: '/add-file', icon: 'mdi mdi-book-open-page-variant' },
-    { title: 'Ordenes', url: '/orders', icon: 'mdi mdi-reorder-horizontal' },
+    { title: 'Añadir Libro', url: '/add-file', icon: 'mdi mdi-book-open-page-variant', tier: 1 },
+    { title: 'Ordenes', url: '/orders', icon: 'mdi mdi-reorder-horizontal', tier: 1 },
     {
       title: 'Users',
       icon: 'mdi mdi-account-multiple',
@@ -40,19 +40,20 @@ export class SidebarService {
       url: '/profile',
       id: true
     },
-    {
-      title: 'Tests',
-      icon: 'mdi mdi-test-tube',
-      url: '/test',
-    },
+    // {
+    //   title: 'Tests',
+    //   icon: 'mdi mdi-test-tube',
+    //   url: '/test',
+    // },
     {
       title: 'Admin',
       icon: 'mdi mdi-brightness-auto',
+      tier: 4,
       // url: '/',
       submenu: [
-        { title: 'Sucursales', url: '/branches' },
+        { title: 'Sucursales', url: '/branches', tier: 4 },
         // icon: 'mdi mdi-home-variant'
-        { title: 'Rxjs', url: '/rxjs' }
+        // { title: 'Rxjs', url: '/rxjs' }
       ]
     },
     // {

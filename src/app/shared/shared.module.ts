@@ -11,6 +11,8 @@ import { BreadcumbsComponent } from './breadcumbs/breadcumbs.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HeaderComponent } from './header/header.component';
+import { UserService } from '../services/user/user.service';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { HeaderComponent } from './header/header.component';
     CommonModule,
     RouterModule,
     MatSelectModule,
-    // PipesModule
+    PipesModule,
+    FlexLayoutModule
   ],
   exports: [
     FooterComponent,
@@ -33,6 +36,9 @@ import { HeaderComponent } from './header/header.component';
     SidebarComponent,
     HeaderComponent,
     // PipesModule
+  ],
+  providers: [
+
   ]
 })
 export class SharedModule { }

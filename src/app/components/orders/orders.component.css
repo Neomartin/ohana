@@ -36,7 +36,7 @@ tr.example-detail-row {
     /* flex-flow: row; */
 }
 .mat-column-expandedDetail, .example-expanded-row {
-    background-color: #fafafa;
+    background-color: #f6f6f6;
 }
 .example-element-diagram {
     min-width: 80px;

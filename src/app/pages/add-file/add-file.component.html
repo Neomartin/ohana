@@ -61,8 +61,8 @@
                     <mat-autocomplete #from="matAutocomplete" [displayWith]="displayFnFrom"
                       (optionSelected)="findCareers($event.option.value)">
                       <!--   -->
-                      <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
-                      <ng-container *ngIf="!isLoading">
+                      <!-- <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option> -->
+                      <ng-container >
                         <mat-option *ngFor="let from of filteredFrom" [value]="from">
                           <span><b>{{from.name}}</b></span>
                         </mat-option>
@@ -124,7 +124,7 @@
                     </mat-option>
                   </mat-select>
                   <mat-error *ngIf="yearCtrl.hasError('required')">Por favor seleccione un año</mat-error>
-                  <mat-hint>{{year}}</mat-hint>
+                  <!-- <mat-hint>{{year}}</mat-hint> -->
                 </mat-form-field>
                 <mat-checkbox fxFlex class="p-l-10 m-t-20" [(ngModel)]="persona" name="person"
                   [checked]="yearCtrl.disabled" (change)="yearCtrl.disabled ? yearCtrl.enable() : yearCtrl.disable()">

@@ -6,13 +6,31 @@
               <!-- ===============================================
               Title Block                       				   
               =============================================== -->
-              <h4 class="card-title">TRABAJOS PARA PENDIENTES PARA MAÑANA</h4>
-                
+              <h2 class="card-title" *ngIf="currentPage === 'home'">
+                <span [ngSwitch]="dateFilter">
+                  <span *ngSwitchCase="'today'" class="text-info">
+                   TRABAJOS PARA MAÑANA
+                  </span>
+                  <span *ngSwitchCase="'later'" class="text-green">
+                   TRABAJOS POSTERIORES
+                  </span>
+                  <span *ngSwitchCase="'incomplete'" class="text-orange">
+                   TRABAJOS INCOMPLETOS
+                  </span>
+                  <p *ngSwitchDefault>
+                    
+                  </p>
+                  </span>
+              </h2>
+              <h2 class="card-title" *ngIf="currentPage === 'orders'">
+                LISTADO DE ORDENES
+              </h2>
+              
               <!-- <h6 class="card-subtitle">
                 
                     Trabajos ordenados por fecha de entrega entre 24 a 36hs
                   </h6> -->
-              <div class="ml-auto" *ngIf="currentPage !== 'test'">
+              <div class="ml-auto" *ngIf="currentPage === 'home'">
                 <select class="custom-select" [(ngModel)]="dateFilter" name="dateFilter"
                   (ngModelChange)="filterByDate(ordersSaved)">
                   <option value="today" selected="today">Para Mañana</option>
@@ -49,6 +67,7 @@
                         Nombre Cliente
                       </th>
                       <td mat-cell *matCellDef="let row" fxFlex="25" fxLayoutAlign="start center">
+                        <!-- solapa de enviar -->
                         <span class="shipping-tag" *ngIf="row.shipping && row.status !== 'delivered'">
                           Enviar
                         </span>
@@ -94,7 +113,7 @@
                             <span *ngIf="row.status === 'processed'">Pendiente</span>
                             <span *ngIf="row.status === 'in_progress'">En proceso</span>
                             <span *ngIf="row.status === 'completed'">Terminado</span>
-                            <span *ngIf="row.status === 'canceled'">Cancelado</span>
+                            <span *ngIf="row.status === 'cancelled'">Cancelado</span>
                             <span *ngIf="row.status === 'delivered'">Entregado</span>
                           </span>
                           <span class="tooltip-content-status status clearfix">
@@ -108,8 +127,8 @@
                             <span class="tooltip-status completed bold"
                               (click)="orderStatus(row._id, 'completed', i); $event.stopPropagation()"
                               matTooltip="Terminado">T</span>
-                            <span class="tooltip-status canceled bold"
-                              (click)="orderStatus(row._id, 'canceled', i); $event.stopPropagation()"
+                            <span class="tooltip-status cancelled bold"
+                              (click)="orderStatus(row._id, 'cancelled', i); $event.stopPropagation()"
                               matTooltip="Cancelado">C</span>
                             <span class="tooltip-status delivered bold"
                               (click)="orderStatus(row._id, 'delivered', i); $event.stopPropagation()"
@@ -157,10 +176,10 @@
                         <span class="text-primary">{{
                           row.end_at | amFromUnix | amDateFormat: "DD-MM-YYYY"
                         }}</span>
-                        <span class="text-muted f-10">IN:
-                          {{
-                            row.created_at | amFromUnix | amDateFormat: "DD-MM-YYYY"
-                          }}</span>
+                        <span class=" f-10"> 
+                          IN:
+                          {{ row.created_at | amFromUnix | amDateFormat: "DD-MM-YYYY" }}
+                        </span>
                       </td>
                     </ng-container>
         
@@ -169,11 +188,11 @@
                       one column that spans across all columns 
                     ********************************************* -->
                     <ng-container matColumnDef="expandedDetail">
-                      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+                      <td mat-cell *matCellDef="let element; let i = dataIndex" [attr.colspan]="displayedColumns.length">
                         <div class="example-element-detail" [@detailExpand]="
                             element == expandedElement ? 'expanded' : 'collapsed'
                           ">
-                          <div>
+                          <div fxLayout="column">
                             <div class="example-element-diagram">
                               <div class="example-element-position">
                                 OHANACOP
@@ -182,19 +201,22 @@
                                 {{ element.status }}
                               </div> -->
                             </div>
-                            <div class="text-center">
+                            <div class="text-center" fxFlex fxLayout="column">
+
                               <p>
                                 <button type="button" class="btn btn-info btn-circle btn-xl" (click)="print(element)"
                                   matTooltip="Imprimir Orden" matTooltipClass="noDisplay">
                                   <i class="mdi mdi-printer"></i>
                                 </button>
                               </p>
+                              <div fxFlex></div>
                               <p>
-                                <!-- <button class="btn waves-effect waves-light btn-warning" type="button"
-                                        [routerLink]="[ '/add-task', element._id ]"> 
-                                  <i class="mdi mdi-edit"></i>
-                                  Editar 
-                                </button> -->
+                                <button *ngIf="element.status !== 'cancelled'"
+                                        class="btn waves-effect waves-light b-red btn-xs" 
+                                       (click)="orderStatus(element._id, 'cancelled', i); $event.stopPropagation()"
+                                        type="button" matTooltip="Anular Orden" matTooltipClass="noDisplay"> 
+                                  <i class="mdi mdi-delete"></i> Anular
+                                </button>
                               </p>
                             </div>
                             <!-- <button></button> -->
@@ -250,10 +272,10 @@
                                         <i class="mdi mdi-map-marker"></i> {{ ' ' + element.client_id.dir }}
                                       </span>
                                       <span>
-                                        {{ ' ' + element.client_id.dir_num }} - 
+                                        {{ ' ' + element.client_id.dir_num }} 
                                       </span>
                                       <span *ngIf="element.client_id.departament">
-                                        <i class="mdi mdi-home-modern m-r-5">Dpto: {{ element.client_id.departament }}</i>
+                                        <i class="mdi mdi-home-modern m-r-5"> - Dpto: {{ element.client_id.departament }}</i>
                                       </span>
                                     </span>
                                   </div>
@@ -301,6 +323,10 @@
                                   </div>
                                 </div>
                               </div>
+                              <div *ngIf="element.status === 'cancelled'" fxLayout="row" class="order-obs">
+                                <span class="bold m-r-5">Observación:</span>
+                                 {{ element.obs }}
+                              </div>
                               <div>
                               </div>
                             </div>
@@ -310,8 +336,9 @@
                     </ng-container>
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let element; columns: displayedColumns" class="example-element-row"
-                      [class.example-expanded-row]="expandedElement === element" (click)="
-                        expandedElement = expandedElement === element ? null : element">
+                      [class.example-expanded-row]="expandedElement === element" 
+                      (click)="expandedElement = expandedElement === element ? null : element"
+                      [ngClass]="{'cancelled-row': element.status === 'cancelled'}">
                     </tr>
                     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
                   </table>
@@ -326,3 +353,4 @@
     <app-task-menu></app-task-menu>
   </div>
 </div>
+<app-order-print class="printMe"></app-order-print>

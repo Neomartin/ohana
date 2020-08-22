@@ -1,20 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { UserService } from 'src/app/services/user/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styles: []
+  styles: [],
 })
 export class HeaderComponent implements OnInit {
   public localUser: any;
+  public subscraib: Subscription;
   constructor(
-    private _auth: AuthService
+    public _auth: AuthService,
+    private _user: UserService
   ) {
-    this.localUser = JSON.parse(localStorage.getItem('user'));
+    // console.log('thisLocal Header USer', this.localUser);
    }
 
   ngOnInit() {
+    this._user.user$.subscribe((resp: any) => {
+      // console.log('Header', resp);
+      this.localUser = resp;
+      // console.log('localUSer', this.localUser);
+    });
   }
+
 
 }

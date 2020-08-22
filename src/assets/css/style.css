@@ -1755,14 +1755,34 @@ form label {
 .card-no-border .sidebar-footer {
     background: #f2f6f8
 }
-
-.card-no-border .sidebar-nav>ul>li>a.active {
-    background: #ffffff
+.sidebar-nav>ul>li>a
+.card-no-border .sidebar-nav>ul>li>a.is-active,  .is-active {
+    background: #26c6da !important;
+    color: #fff !important;
 }
-
+.admin-active-link {
+    background-color: #666;
+    color: #fff !important;
+}
+.is-active, .admin-active-link i {
+    color: #fff !important;
+}
+.sidebar-nav ul li a {
+    color: #abb4c3;
+}
+.is-sub-active {
+    color: #26c6da !important;
+}
+.is-sub-active:hover {
+    color: #fff
+}
 .card-no-border .shadow-none {
     -webkit-box-shadow: none;
     box-shadow: none
+}
+
+.sidebar-nav ul li a.active:hover {
+    color: #fff !important;
 }
 
 .card-outline-danger, .card-outline-info, .card-outline-primary, .card-outline-success, .card-outline-warning {
@@ -1840,7 +1860,8 @@ form label {
 }
 
 .container-fluid {
-    padding: 0 15px 25px 15px
+    padding: 0 15px 25px 15px;
+    margin-bottom: 20px;
 }
 
 .topbar {
@@ -1893,8 +1914,9 @@ form label {
 }
 
 .topbar .profile-pic {
-    width: 35px;
-    height: 35px;
+    margin-top: 5px;
+    width:45px;
+    height:45px;
     border-radius: 100%
 }
 
@@ -1933,8 +1955,10 @@ form label {
 
 .topbar ul.dropdown-user li .dw-user-box .u-img {
     width: 80px;
-    display: inline-block;
-    vertical-align: top
+    display: flex;
+    align-items: center;
+    
+    
 }
 
 .topbar ul.dropdown-user li .dw-user-box .u-img img {
@@ -5261,7 +5285,7 @@ table.dataTable thead .sorting:after {
 .tooltip-status.completed, .tooltip-item.completed {
     background-color: #2cb414
 }
-.tooltip-status.canceled, .tooltip-item.canceled {
+.tooltip-status.cancelled, .tooltip-item.cancelled {
     background-color: #fc4b6c
 }
 .tooltip-status.delivered, .tooltip-item.delivered {
@@ -6152,7 +6176,8 @@ table.footable thead tr.footable-filtering th ul.dropdown-menu li a.checkbox inp
     padding-top: 70px;
     background: #fff;
     -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
-    box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08)
+    box-shadow: 2px 2px 4px #555;
+    /* box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08) */
 }
 
 .fix-sidebar .left-sidebar {
@@ -6162,26 +6187,41 @@ table.footable thead tr.footable-filtering th ul.dropdown-menu li a.checkbox inp
 .user-profile {
     position: relative;
     /* background-size: cover; */
-    width: 100%
+    width: 100%;
+    height: 150px;
+    padding-top: 20px;
 }
 
 .user-profile .profile-img {
-    width: 50px;
-    height: 65px;
+    /* width: 50px;
+    height: 80px; */
+    /* margin-top: 20px; */
     margin-left: 50px;
-    padding: 35px 0;
-    border-radius: 100%
+    padding: 20px 0;
+    /* border-radius: 100% */
+    border-radius:50%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size:auto 100%;
+    height: 80px !important;
+    width: 80px !important;
+}
+
+.profile-img img {
+    
+    height: 80px !important;
+    width: 80px !important;
 }
 
 
-.user-profile .profile-img:before {
+.user-profile .profile-img:before,  .user-profile #profileImgSidebar:before{
     -webkit-animation: 2.5s blow 0s linear infinite;
     animation: 2.5s blow 0s linear infinite;
     position: absolute;
     content: '';
-    top: 35px;
-    width: 50px;
-    height: 50px;
+    top: 20px;
+    width: 80px;
+    height: 80px;
     margin: 0 auto;
     border-radius: 50%;
     z-index: 0
@@ -6242,6 +6282,7 @@ table.footable thead tr.footable-filtering th ul.dropdown-menu li a.checkbox inp
 }
 
 .user-profile .profile-text {
+    margin-top: -20px;
     padding: 5px 0px;
     position: relative
 }
@@ -6249,9 +6290,10 @@ table.footable thead tr.footable-filtering th ul.dropdown-menu li a.checkbox inp
 .user-profile .profile-text>a {
     color: #ffffff!important;
     width: 100%;
-    padding: 6px 30px;
+    padding: 6px 30px 6px 10px;
     background: rgba(0, 0, 0, 0.75);
-    display: block
+    display: block;
+    text-align: center;
 }
 
 .user-profile .profile-text>a:after {
@@ -6320,7 +6362,7 @@ table.footable thead tr.footable-filtering th ul.dropdown-menu li a.checkbox inp
 }
 
 .sidebar-nav ul li a.active {
-    font-weight: 500;
+    /* font-weight: 500; */
     color: #263238
 }
 
@@ -6357,19 +6399,20 @@ table.footable thead tr.footable-filtering th ul.dropdown-menu li a.checkbox inp
 }
 
 .sidebar-nav>ul>li.active>a {
-    color: #ffffff;
-    font-weight: 500;
-    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2)
+    /* color: #ffffff; */
+    color: #798699; 
+    /* font-weight: 500; */
+    /* -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) */
 }
 
-.sidebar-nav>ul>li.active>a i {
+/* .sidebar-nav>ul>li.active>a i {
     color: #26c6da
 }
 
 .sidebar-nav>ul>li>a.active i, .sidebar-nav>ul>li>a:hover i {
     color: #26c6da
-}
+} */
 
 .sidebar-nav>ul>li>a i {
     width: 27px;
@@ -6386,11 +6429,11 @@ table.footable thead tr.footable-filtering th ul.dropdown-menu li a.checkbox inp
     margin-top: 6px
 }
 
-.sidebar-nav>ul>li>a.active {
+/* .sidebar-nav>ul>li>a.active {
     font-weight: 400;
     background: #242933;
     color: #26c6da
-}
+} */
 
 .sidebar-nav .has-arrow {
     position: relative
@@ -6442,6 +6485,17 @@ table.footable thead tr.footable-filtering th ul.dropdown-menu li a.checkbox inp
         display: none;
         padding-left: 1px
     }
+    .mini-sidebar #profileImgSidebar {
+        /* margin-top: 20px !important; */
+        margin-left: 2px;
+        height: 56px;
+        width: 56px;
+    }
+    .mini-sidebar #profileImgSidebar::before {
+        width: 56px;
+        height: 56px;    
+    }
+
     .mini-sidebar .sidebar-nav {
         padding: 5px
     }
